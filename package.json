@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "clear": "rm -rf dist",
     "build": "babel src -d dist",
-    "monitor": "nodemon src/server/index.js",
+    "monitor": "nodemon src/server/index.js --exec babel-node",
     "deploy": "gcloud app deploy app.yaml",
     "start": "node dist/server/index.js"
   },
@@ -22,6 +22,7 @@
   "author": "Himank Barve <hbarve1592@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "google-cloud": "^0.43.0",
     "hapi": "^15.2.0"
   },
   "devDependencies": {
