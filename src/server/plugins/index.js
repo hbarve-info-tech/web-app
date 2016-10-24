@@ -55,5 +55,19 @@ plugins.push({
   }
 });
 
+plugins.push({
+  register: require('hapi-auth-jwt2'),
+  options : {}
+});
+
+plugins.push({
+  register: require('./traffic'),
+  options : {}
+});
+
+plugins.push({
+  register: require('./auth'),
+  options : {}
+});
 
 export default plugins;
