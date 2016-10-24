@@ -75,4 +75,12 @@ plugins.push({
   options : {}
 });
 
+//For development environment it plugin is attached.
+if(NODE_ENV === 'development' && DEV_ENV === "client") {
+  plugins.push({
+    register: require('./development'),
+    options : {}
+  });
+}
+
 export default plugins;
