@@ -70,4 +70,9 @@ plugins.push({
   options : {}
 });
 
+plugins.push({
+  register: require('./views'),
+  options : {}
+});
+
 export default plugins;

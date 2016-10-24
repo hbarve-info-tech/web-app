@@ -23,6 +23,7 @@
   "license": "ISC",
   "dependencies": {
     "boom": "^4.2.0",
+    "font-awesome": "^4.6.3",
     "good": "^7.0.2",
     "good-console": "^6.3.1",
     "good-file": "^6.0.1",
