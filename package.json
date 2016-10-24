@@ -1,0 +1,11 @@
+{
+  "name": "mayash-webapp",
+  "version": "0.0.0",
+  "description": "This is a project for Mayash website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Himank Barve <hbarve1592@gmail.com>",
+  "license": "ISC"
+}
