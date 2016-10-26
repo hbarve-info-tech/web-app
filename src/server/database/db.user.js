@@ -1,12 +1,10 @@
 'use strict';
-const TABLE_NAME = 'elements';
-
 import crypto from "crypto";
 
-import db from "./setup";
+import db, { ELEMENTS } from "./setup";
 
 export const validateUsername  = (username, callback) => {
-  let query = db.createQuery(TABLE_NAME).filter('username', '=', username);
+  let query = db.createQuery(ELEMENTS).filter('username', '=', username);
 
   db.runQuery(query, (error, success) => {
     if(error) {
@@ -50,7 +48,7 @@ export const validateUsername  = (username, callback) => {
 };
 
 export const getUserById       = (id,       callback) => {
-  let key = db.key([TABLE_NAME, parseInt(id, 10)]);
+  let key = db.key([ELEMENTS, parseInt(id, 10)]);
   db.get(key, function (error, result) {
     if(error) {
       console.log(error);
@@ -79,7 +77,7 @@ export const getUserById       = (id,       callback) => {
   });
 };
 export const getUserByUsername = (username, callback) => {
-  let query = db.createQuery(TABLE_NAME).filter('username', '=', username);
+  let query = db.createQuery(ELEMENTS).filter('username', '=', username);
 
   db.runQuery(query, (error, success) => {
     if(error) {
@@ -113,7 +111,7 @@ export const getUserByUsername = (username, callback) => {
 };
 
 export const signInById        = (id,       callback) => {
-  let key = db.key([TABLE_NAME, parseInt(id, 10)]);
+  let key = db.key([ELEMENTS, parseInt(id, 10)]);
 
   db.get(key, (err, result) => {
     if(err) {
@@ -141,7 +139,7 @@ export const signInById        = (id,       callback) => {
   });
 };
 export const signInByUsername  = (username, callback) => {
-  let query = db.createQuery(TABLE_NAME).filter('username', '=', username);
+  let query = db.createQuery(ELEMENTS).filter('username', '=', username);
 
   db.runQuery(query, (err, result) => {
     if(err) {
@@ -181,7 +179,7 @@ export const createUser        = (payload, callback) => {
       payload.valid    = true;
       payload.elementType = 'user';
       let temp = {
-        key  : db.key(TABLE_NAME),
+        key  : db.key(ELEMENTS),
         data : payload
       };
 
@@ -220,7 +218,7 @@ export const updateUserById    = (id, payload, callback) => {
 };
 
 export const deleteUserById    = (id, callback) => {
-  let key = db.key([TABLE_NAME, parseInt(id, 10)]);
+  let key = db.key([ELEMENTS, parseInt(id, 10)]);
   db.delete(key, (err, result) => {
     if(err) {
       console.log(err);
