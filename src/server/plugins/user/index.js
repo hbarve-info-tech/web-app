@@ -5,7 +5,6 @@
 import Joi    from "joi";
 import crypto from "crypto";
 import jwt    from "jsonwebtoken";
-import async  from "async";
 import Boom   from "boom";
 
 import { userdb }  from "../../database";

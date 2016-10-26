@@ -6,7 +6,7 @@ const server = {
 };
 
 const gcloud = {
-  projectId: 'mayash-147416'
+  projectId: 'mayash-webapp'
 };
 
 const token = {
