@@ -337,3 +337,30 @@ export const updateModuleByModuleId = (moduleId, payload, callback) => {
     });
   });
 };
+
+export const deleteModuleByModuleId = (moduleId, callback) => {
+  let key = db.key([MODULES, moduleId]);
+
+  db.delete(key, (err, result) => {
+    if(err) {
+      console.log(err);
+
+      return callback({
+        statusCode: 500,
+        error     : 'server error'
+      });
+    }
+
+    if(result.indexUpdates === 0) {
+      return callback({
+        statusCode: 404,
+        error     : 'Module Not found.'
+      });
+    }
+
+    return callback({
+      statusCode: 200,
+      message   : 'Successfully deleted.'
+    });
+  });
+};
