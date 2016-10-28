@@ -63,25 +63,40 @@ export const getArticlesById = (id, callback) => {
 };
 
 export const createArticleById    = (id, payload, callback) => {
-  payload.authorId = db.key([ELEMENTS, id]);
-  db.save({
-    key : db.key(ARTICLES),
-    data: payload
-  }, (error, success) => {
-    if (error) {
-      console.log (error);
+  let key = db.key(ARTICLES);
 
-      return callback ({
-        statusCode : 500,
-        error : 'Database server error.',
-        message : 'Database server error.'
+  db.allocateIds(key, 1, (err, result) => {
+    if(err) {
+      console.log(err);
+
+      return callback({
+        statusCode: 500,
+        error     : 'Server Error'
       });
     }
 
-    return callback ({
-      statusCode : 201,
-      message : 'Success',
-      payload : payload
+    payload.authorId  = db.key([ELEMENTS, id]);
+    payload.articleId = db.key([ARTICLES, result[0].id]);
+
+    db.save({
+      key : payload.articleId,
+      data: payload
+    }, (error, success) => {
+      if (error) {
+        console.log (error);
+
+        return callback ({
+          statusCode : 500,
+          error : 'Database server error.',
+          message : 'Database server error.'
+        });
+      }
+
+      return callback ({
+        statusCode : 201,
+        message : 'Success',
+        payload : payload
+      });
     });
   });
 };

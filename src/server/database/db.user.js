@@ -169,44 +169,66 @@ export const signInByUsername  = (username, callback) => {
 };
 
 export const createUser        = (payload, callback) => {
-  if(typeof payload.username === 'string' && typeof payload.password === 'string') {
-    validateUsername(payload.username, (result) => {
-      if(typeof result.error === "string") {
-        return callback(result);
+  let query = db.createQuery(ELEMENTS)
+    .filter('username', '=', payload.username)
+    .limit(1);
+
+  db.runQuery(query, (err, result) => {
+    if(err) {
+      console.log(err);
+
+      return callback({
+        statusCode: 500,
+        error: 'server error.'
+      });
+    }
+
+    if(result.length !== 0){
+      return callback({
+        statusCode: 200,
+        message   : 'username taken.'
+      });
+    }
+
+    let key = db.key(ELEMENTS);
+
+    db.allocateIds(key, 1, (err, result1) => {
+      if(err) {
+        console.log(err);
+
+        return callback({
+          statusCode: 500,
+          error     : 'Server error.'
+        });
       }
 
+      payload.id       = db.key([ELEMENTS, result1[0].id]);
       payload.password = crypto.createHash('sha256').update(payload.password).digest('hex');
       payload.valid    = true;
       payload.elementType = 'user';
-      let temp = {
-        key  : db.key(ELEMENTS),
+      let newUser = {
+        key  : payload.id,
         data : payload
       };
 
-      db.save(temp, (error, result) => {
-        if(error) {
-          console.error(error);
+      db.save(newUser, (err, result2) => {
+        if(err) {
+          console.log(err);
 
           return callback({
             statusCode: 500,
-            error     : 'Database server error',
-            message   : 'Database server error'
+            error     : 'Server error.'
           });
         }
 
         return callback({
-          statusCode: 201,
-          message   : 'Successfully created user.'
+          statusCode: 200,
+          message   : 'Success',
+          payload   : payload
         });
       });
     });
-  }
-  else {
-    return callback({
-      statusCode: 400,
-      error     : 'Username and password are required'
-    });
-  }
+  });
 };
 
 export const updateUserById    = (id, payload, callback) => {
