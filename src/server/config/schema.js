@@ -7,8 +7,7 @@
 
 import Joi from "joi";
 
-export const id       = Joi.string().length(24);
-export const mayashId = Joi.string().token().min(2).max(20);
+export const id       = Joi.number().integer();
 export const username = Joi.string().token().min(2).max(20);
 export const postId   = Joi.string().length(24);
 
@@ -23,8 +22,8 @@ export const description= Joi.string().min(1).max(300);
 export const classroom  = Joi.boolean();
 
 
-export const courseId = Joi.string().length(24);
-export const moduleId = Joi.string();
+export const courseId    = Joi.number().integer();
+export const moduleId    = Joi.number().integer();
 export const courseName  = Joi.string().min(3).max(148);
 export const courseUrl   = Joi.string().regex(/[a-zA-Z0-9-]+/);
 export const standard    = Joi.string().valid(
@@ -35,12 +34,12 @@ export const level       = Joi.number().integer().min(1).max(5);
 
 
 export const moduleName  = Joi.string().min(3).max(148);
-export const moduleData  = Joi.string();
+export const moduleData  = Joi.object();
 
 
-export const articleId   = Joi.string().length(24);
+export const articleId   = Joi.number().integer();
 export const articleName = Joi.string().min(3).max(148);
 export const articleUrl  = Joi.string().regex(/[a-zA-Z0-9-]+/);
-export const articleData = Joi.string();
+export const articleData = Joi.object();
 
 //Cover rest all the things here.

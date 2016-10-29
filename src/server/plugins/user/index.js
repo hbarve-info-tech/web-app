@@ -72,7 +72,7 @@ const signIn     = {
             statusCode: 200,
             message   : 'Sign In Successful.',
             payload   : {
-              id        : signInUser.id,
+              id        : signInUser.id.id,
               username  : signInUser.username,
               name      : signInUser.name,
               profilePic: signInUser.profilePic,
@@ -103,7 +103,7 @@ const getUser    = {
     }).length(1)
   },
   handler: (request, reply) => {
-    user.getUserById(request.params.id, (result) => {
+    userdb.getUserById(request.params.id, (result) => {
       return reply(result);
     });
   }

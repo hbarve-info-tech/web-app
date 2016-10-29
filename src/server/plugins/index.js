@@ -80,6 +80,16 @@ plugins.push({
   options : {}
 });
 
+plugins.push({
+  register: require('./articles'),
+  options : {}
+});
+
+plugins.push({
+  register: require('./courses'),
+  options : {}
+});
+
 //For development environment it plugin is attached.
 if(NODE_ENV === 'development' && DEV_ENV === "client") {
   plugins.push({
