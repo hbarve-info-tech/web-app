@@ -13,13 +13,19 @@ export const getArticleByArticleId = (articleId, callback) => {
         message   : 'Database server error.'
       });
     }
-    console.log(success);
 
     if(success) {
       return callback({
         statusCode: 200,
         message   : 'Success',
-        payload   : success
+        payload   : Object.assign(
+          {},
+          success,
+          {
+            authorId : success.authorId.id,
+            articleId: success.articleId.id
+          }
+        )
       });
     }
 
@@ -35,7 +41,7 @@ export const getArticlesById = (id, callback) => {
   var query = db.createQuery(ARTICLES)
                 .filter('authorId', '=', db.key([ELEMENTS, id]));
 
-  db.runQuery(query, (err, result) => {
+  db.runQuery(query, (err, articles) => {
     if(err) {
       console.log(err);
 
@@ -46,7 +52,7 @@ export const getArticlesById = (id, callback) => {
       });
     }
 
-    if(result.length === 0) {
+    if(articles.length === 0) {
       return callback({
         statusCode: 404,
         error     : 'User does not exists.',
@@ -54,10 +60,19 @@ export const getArticlesById = (id, callback) => {
       });
     }
 
+    articles = articles.map((article) => Object.assign(
+      {},
+      article,
+      {
+        articleId: article.articleId.id,
+        authorId : article.authorId.id
+      }
+    ));
+
     return callback({
       statusCode: 200,
       message   : 'Successful.',
-      payload   : result
+      payload   : articles
     });
   });
 };
@@ -94,8 +109,12 @@ export const createArticleById    = (id, payload, callback) => {
 
       return callback ({
         statusCode : 201,
-        message : 'Success',
-        payload : payload
+        message    : 'Success',
+        payload    : {
+          authorId    : payload.authorId.id,
+          articleId   : payload.articleId.id,
+          articleName : payload.articleName
+        }
       });
     });
   });
@@ -106,6 +125,7 @@ export const updateArticleByArticleId = (articleId, payload, callback) => {
 
   transaction.run((err) => {
     if(err) {
+      console.log(err);
       return callback({
         statusCode : 500,
         error      : 'Server error'
@@ -115,6 +135,7 @@ export const updateArticleByArticleId = (articleId, payload, callback) => {
 
     transaction.get(key, (err, data) => {
       if(err) {
+        console.log(err);
         return callback({
           statusCode : 500,
           error      : 'Server error'
@@ -134,6 +155,7 @@ export const updateArticleByArticleId = (articleId, payload, callback) => {
 
       transaction.commit((err) => {
         if(err) {
+          console.log(err);
           return callback({
             statusCode : 500,
             error      : 'Server error'
