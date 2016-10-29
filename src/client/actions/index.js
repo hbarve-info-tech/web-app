@@ -4,8 +4,12 @@
 "use strict";
 
 import * as user     from "./user";
+import * as courses  from "./courses";
+import * as articles from "./articles";
 
 export default Object.assign(
   {},
-  user
+  user,
+  courses,
+  articles
 );
