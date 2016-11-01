@@ -11,6 +11,8 @@ import Layout  from "./Layout";
 import Home    from "./Home";
 import Course  from "./Course";
 import Article from "./Article";
+import Element from "./Element";
+import Classroom from "./Classroom";
 
 
 import actions from '../actions';
@@ -86,9 +88,9 @@ class App extends Component {
               component={Home}
             />
 
-            <Route path ="/:username" component ={()=> <div>this is element</div>}/>
+            <Route path ="/:username" component ={Element}/>
 
-            <Route path="/:username/classroom" component={()=><div>This is classroom</div>} />
+            <Route path="/:username/classroom" component={Classroom} />
 
             <Route
               path="courses/:courseId"
