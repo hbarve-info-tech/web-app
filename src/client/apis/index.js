@@ -114,6 +114,21 @@ export const getUser       = (callback) => {
     .then(json => callback(json));
 };
 
+export const getElement    = (id, q, callback) => {
+  let url = `/api/elements/${id}?q=${q}`;
+
+  fetch(url, {
+    method: 'GET',
+    headers: {
+      'Accept'       : 'application/json',
+      'Content-Type' : 'application/json',
+      'Authorization': getToken()
+    }
+  })
+    .then(response => response.json())
+    .then(json     => callback(json));
+};
+
 export const getCourses    = (callback) => {
   fetch('/api/elements/' + getUserId() + '/courses', {
     method: 'GET',

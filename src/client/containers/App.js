@@ -14,6 +14,12 @@ import Article from "./Article";
 import Element from "./Element";
 import Classroom from "./Classroom";
 
+import ViewHome      from "./ViewHome";
+import ViewElement   from "./ViewElement";
+import ViewArticle   from "./ViewArticle";
+import ViewCourse    from "./ViewCourse";
+import ViewClassroom from "./ViewClassroom";
+
 
 import actions from '../actions';
 
@@ -23,7 +29,42 @@ class App extends Component {
     super(props);
   }
 
-  onEnterCourse(nextState, replace, callback) {
+  onEnterElement(nextState, replace, callback) {
+    let username = nextState.params.username;
+    let elements = this.props.elements;
+
+    if(username === this.props.user.username) {
+      if(!this.props.user.isFetched) {
+        this.props.fetchUser();
+
+        return callback();
+      }
+    }
+    else if(elements.array.length === 0) {
+      this.props.fetchElement({
+        id: username,
+        q : 'username'
+      });
+
+      return callback();
+    }
+    else {
+      elements.array.map((element, index) => {
+        if(element.username === username) {
+          return callback();
+        }
+
+        if(elements.array.length === index + 1) {
+          this.props.fetchElement({
+            id: username,
+            q : 'username'
+          });
+          callback();
+        }
+      });
+    }
+  }
+  onEnterCourse (nextState, replace, callback) {
     let courseId = nextState.params.courseId;
 
     if(this.props.courses.array.length === 0) {
@@ -48,7 +89,6 @@ class App extends Component {
       }
 
     });
-
   }
   onEnterArticle(nextState, replace, callback) {
     let articleId = nextState.params.articleId;
@@ -77,45 +117,50 @@ class App extends Component {
     });
 
   }
+  onEnterClassroom(nextState, replace, callback) {
+    callback();
+  }
 
 
   render () {
-    if(this.props.user.isSignedIn === true) {
-      return (
-        <Router history={browserHistory}>
-          <Route path="/" component={Layout}>
-            <IndexRoute
-              component={Home}
-            />
+    let { user } = this.props;
+    return (
+      <Router history={browserHistory}>
+        <Route path="/">
+          <IndexRoute
+            component={LandingPage}
+            onEnter={()=>{
+                        if(user.isSignedIn) {
+                          window.location.href='/' + user.username;
+                        }
+                      }}
+          />
 
-            <Route path ="/:username" component ={Element}/>
+          <Route
+            path     =":username"
+            component={ViewElement}
+            onEnter  ={this.onEnterElement.bind(this)}
+          />
 
-            <Route path="/:username/classroom" component={Classroom} />
+          <Route
+            path      ="articles/:articleId"
+            component ={ViewArticle}
+            onEnter   ={this.onEnterArticle.bind(this)}
+          />
 
-            <Route
-              path="courses/:courseId"
-              component={Course}
-              onEnter={this.onEnterCourse.bind(this)}
-            />
+          <Route
+            path     =":username/classroom"
+            component={ViewClassroom}
+            onEnter  ={this.onEnterClassroom.bind(this)}
+          />
 
-            <Route
-              path      ="articles/:articleId"
-              component ={Article}
-              onEnter   ={this.onEnterArticle.bind(this)}
-            />
-          </Route>
-        </Router>
-      );
-    }
-    else {
-      return (
-        <Router history={browserHistory}>
-
-          <Route path="/" component={LandingPage}/>
-
-        </Router>
-      );
-    }
+          <Route
+            path     ="courses/:courseId"
+            component={ViewCourse}
+          />
+        </Route>
+      </Router>
+    );
   };
 }
 
