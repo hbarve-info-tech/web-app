@@ -1,10 +1,11 @@
 'use strict';
 import React from "react";
+import { Link } from "react-router";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-const Layout = ({children}) => {
+const RouteLayout = ({children}) => {
   return (
     <div class="wrapper">
       <Header/>
@@ -16,4 +17,4 @@ const Layout = ({children}) => {
   );
 };
 
-export default Layout;
+export default RouteLayout;

@@ -280,8 +280,8 @@ export const deleteModule  = (courseId, moduleId, callback) => {
 };
 
 
-export const getArticles    = (callback) => {
-  let url = '/api/elements/' + getUserId() + '/articles';
+export const getArticles    = (id, callback) => {
+  let url = '/api/elements/' + id + '/articles';
 
   fetch(url, {
     method: 'GET',

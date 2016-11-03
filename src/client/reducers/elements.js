@@ -1,4 +1,5 @@
 "use strict";
+import _ from "lodash";
 import { ELEMENT_FETCH_START, ELEMENT_FETCH_SUCCESS, ELEMENT_FETCH_ERROR, ELEMENT_ADD, ELEMENT_UPDATE } from '../actions/elements';
 let initialElementState = {
   isFetching  : false,
@@ -44,11 +45,6 @@ const elementReducer  = (state = initialElementState, action) => {
 const elementsReducer = (state = initialState, action) => {
   switch (action.type) {
     case ELEMENT_FETCH_START   : {
-      let array = state.array;
-      let newElement = elementReducer(undefined, {
-        type: ELEMENT_ADD,
-        payload: action.payload
-      });
 
       return Object.assign(
         {},
@@ -56,7 +52,7 @@ const elementsReducer = (state = initialState, action) => {
         {
           isError    : false,
           isFetched  : false,
-          isFetching : false,
+          isFetching : true,
           error      : '',
           message    : '',
           lastUpdated: Date.now()
@@ -79,13 +75,19 @@ const elementsReducer = (state = initialState, action) => {
       );
     }
     case ELEMENT_FETCH_SUCCESS : {
-      let array = state.array;
+      let { array } = state;
 
+      array = _.unionBy(state.array, [elementReducer(undefined, {
+        type   : ELEMENT_ADD,
+        payload: action.payload
+      })]);
+      array = _.uniqBy(array, 'id');
 
       return Object.assign(
         {},
         state,
         {
+          array      : array,
           isError    : false,
           isFetched  : true,
           isFetching : false,

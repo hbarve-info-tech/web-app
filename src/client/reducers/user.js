@@ -98,14 +98,8 @@ const userReducer = (state = initialState, action) => {
 
       // removeCookieStore();
       removeLocalStore("user");
-
-      return Object.assign(
-        {},
-        initialState,
-        {
-          lastUpdated: Date.now()
-        }
-      );
+      window.location.href = '/';
+      return state;
     }
 
     case USER_FETCH_START : {

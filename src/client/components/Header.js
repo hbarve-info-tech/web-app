@@ -39,21 +39,17 @@ class Header extends Component {
   validateUser = () => {
     if(this.props.user.isSignedIn === true) {
       return (
-        <NavDropdown eventKey={3}
-                     title={this.props.user.name} id="header-user-info">
-          <MenuItem eventKey={3.1}
-                    href="/settings"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      browserHistory.push('/settings');
-                    }}
-          >
-            Settings
-          </MenuItem>
-          <MenuItem divider />
+        <NavDropdown
+          eventKey={3}
+          title={this.props.user.name}
+          id="header-user-info"
+        >
           <MenuItem
             eventKey={3.3}
-            onClick={() => browserHistory.push('/')}
+            onClick={(e) => {
+              e.preventDefault();
+              this.props.signOut();
+            }}
           >
             Sign Out
           </MenuItem>
@@ -154,7 +150,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
-    {signIn: actions.signIn},
+    {
+      signIn : actions.signIn,
+      signOut: actions.signOut
+    },
     dispatch
   );
 }
