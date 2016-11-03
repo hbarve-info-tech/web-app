@@ -1,15 +1,11 @@
 "use strict";
 import React, { Component, PropTypes }  from "react";
-import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
-import { connect } from 'react-redux';
 import _ from "lodash";
-
-import actions from '../actions';
 
 import Post    from "../components/Post";
 
-class Timeline extends Component {
+export default class Timeline extends Component {
   constructor (props) {
     super(props);
     this.state = {};
@@ -36,19 +32,3 @@ class Timeline extends Component {
     );
   };
 }
-
-function mapStateToProps(state) {
-  return state;
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(
-    actions,
-    dispatch
-  );
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Timeline);
