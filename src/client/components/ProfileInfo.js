@@ -3,23 +3,23 @@ import React from "react";
 import { browserHistory } from "react-router";
 import { Image, Button } from "react-bootstrap";
 
-const ProfileInfo = ({user}) => {
+const ProfileInfo = ({username, name, profilePic, classroom}) => {
   return (
     <div class="box box-primary">
       <div class="box-body box-profile">
-        <Image class="profile-user-img img-responsive img-circle" src={user.profilePic}/>
-        <h3 class="profile-username text-center">@{user.username}</h3>
-        <p class="profile-name text-center">{user.name}</p>
+        <Image class="profile-user-img img-responsive img-circle" src={profilePic}/>
+        <h3 class="profile-username text-center">@{username}</h3>
+        <p class="profile-name text-center">{name}</p>
       </div>
       {
-        user.classroom ? (
+        classroom ? (
           <div class="box-footer text-center">
             <Button
               bsStyle="primary"
               bsSize="small"
               onClick={(e)=>{
                 e.preventDefault();
-                 browserHistory.push('/' + user.username + '/classroom')
+                browserHistory.push('/' + username + '/classroom')
               }}
             >
               Classroom

@@ -1,41 +1,28 @@
 "use strict";
 import React, { Component, PropTypes }  from "react";
-import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
-import { connect } from 'react-redux';
-
-import actions from '../actions';
+import _ from "lodash";
 
 import Post    from "../components/Post";
 
-class Timeline extends Component {
+export default class Timeline extends Component {
   constructor (props) {
     super(props);
     this.state = {};
   };
-
-  configureTimeline() {
-    if(this.props.articles.isFetched === false) {
-      this.props.fetchArticles();
-    }
-  }
-
-  componentWillMount() {
-    this.configureTimeline();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    // this.configureTimeline(nextProps.tab);
-  }
+  componentWillMount() {}
+  componentWillReceiveProps(nextProps) {}
 
   render() {
+    let { timelineType } = this.props;
+    let { posts } = this.props;
+
     return (
       <div>
-        {this.props.articles.array.map((post, index) => {
+        {posts.map((post, index) => {
           return (
             <Post
-              postType='articles'
-              user    ={this.props.user}
+              postType={timelineType === 'articles' ? 'article' : 'course'}
               post    ={post}
               key     ={index}
             />
@@ -45,19 +32,3 @@ class Timeline extends Component {
     );
   };
 }
-
-function mapStateToProps(state) {
-  return state;
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(
-    actions,
-    dispatch
-  );
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Timeline);

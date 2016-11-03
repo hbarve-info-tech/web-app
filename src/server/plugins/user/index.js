@@ -55,7 +55,7 @@ const signIn     = {
 
       if(signInUser.password === hashedPassword) {
         jwt.sign({
-          id       : signInUser.id,
+          id       : signInUser.id.id,
           username : signInUser.username,
           password : signInUser.password
         }, token.key, {

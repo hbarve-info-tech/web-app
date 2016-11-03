@@ -42,9 +42,16 @@ export default class PostCreate extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-    this.props.createArticle({
-      articleName : this.state.textarea
-    });
+    if(this.props.createArticle) {
+      this.props.createArticle({
+        articleName : this.state.textarea
+      });
+    }
+    else {
+      this.props.createCourse({
+        courseName : this.state.textarea
+      });
+    }
   }
 
   render () {
@@ -53,18 +60,18 @@ export default class PostCreate extends Component {
         <div class="box-body">
           <textarea
             style      ={{
-              width: '100%',
-              fontSize: '14px',
+              width     : '100%',
+              fontSize  : '14px',
               lineHeight: '18px',
-              border: '1px solid rgb(221, 221, 221)',
-              padding: '10px',
-              resize : 'none'
+              border    : '1px solid rgb(221, 221, 221)',
+              padding   : '10px',
+              resize    : 'none'
             }}
             rows       ={3}
             required   ={true}
             minLength  ={1}
             maxLength  ={148}
-            placeholder='Write Something...'
+            placeholder={this.props.placeholder || 'Write Something...'}
             onChange   ={this.onChange.bind(this)}
           />
           <div style={{textAlign: 'right'}}>

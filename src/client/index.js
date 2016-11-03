@@ -10,8 +10,6 @@ import configureStore from './store/configureStore';
 import Root  from "./containers/Root";
 
 import "./stylesheets/index.scss";
-import "bootswatch/paper/bootstrap.css";
-
 
 const store = configureStore();
 

@@ -1,4 +1,5 @@
 'use strict';
+import _ from "lodash";
 import db, { ELEMENTS, ARTICLES, COURSES, MODULES } from "./setup";
 
 export const getCourseByCourseId    = (courseId, callback) => {
@@ -47,6 +48,14 @@ export const getCoursesById         = (id, callback) => {
     }
 
     if(success.length !== 0) {
+      success = success.map((course, index) => Object.assign({},
+        course,
+        {
+          courseId: course.courseId.id,
+          authorId: course.authorId.id
+        }
+      ));
+
       return callback({
         statusCode: 200,
         message   : 'Success',

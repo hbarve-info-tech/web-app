@@ -7,6 +7,7 @@ import Boom from "boom";
 import { token } from "../../config";
 
 let IP        = {};
+let visitor   = {};
 let userRead  = {};
 let userWrite = {};
 
@@ -40,6 +41,32 @@ export const register = (server, options, next) => {
   });
   server.auth.strategy('trafficCheck', 'trafficCheckScheme');
 
+  server.auth.scheme('visitorScheme', (server, options) => {
+    return {
+      authenticate: function (request, reply) {
+        var minute = Math.floor(Date.now()/120000);
+
+        if(!visitor[minute]) {
+          visitor[minute] = {};
+          visitor[minute][request.info.remoteAddress] = 1;
+        }
+        else if(!visitor[minute][request.info.remoteAddress]) {
+          visitor[minute][request.info.remoteAddress] = 1;
+        }
+        else {
+          visitor[minute][request.info.remoteAddress]++;
+        }
+
+        if(visitor[minute] && visitor[minute][request.info.remoteAddress] > 10) {
+          return reply(Boom.tooManyRequests('you have exceeded your request limit, try after 2 minutes.'));
+        }
+
+        return reply.continue({ credentials: {} });
+      }
+    };
+  });
+  server.auth.strategy('visitor', 'visitorScheme');
+
   //This auth strategy will check the traffic limit for data read for users
   server.auth.strategy('ReadTrafficCheck',  'jwt', {
     key          : token.key,
@@ -48,16 +75,16 @@ export const register = (server, options, next) => {
 
       if(!userRead[minute]) {
         userRead[minute] = {};
-        userRead[minute][decoded.mayashId] = 1;
+        userRead[minute][decoded.id] = 1;
       }
-      else if(!userRead[minute][decoded.mayashId]) {
-        userRead[minute][decoded.mayashId] = 1;
+      else if(!userRead[minute][decoded.id]) {
+        userRead[minute][decoded.id] = 1;
       }
       else {
-        userRead[minute][decoded.mayashId]++;
+        userRead[minute][decoded.id]++;
       }
 
-      if(userRead[minute] && userRead[minute][decoded.mayashId] > 20) {
+      if(userRead[minute] && userRead[minute][decoded.id] > 5) {
         return callback(Boom.tooManyRequests('you have exceeded your request limit, try after 2 minutes.'), false);
       }
 
@@ -73,16 +100,16 @@ export const register = (server, options, next) => {
 
       if(!userWrite[minute]) {
         userWrite[minute] = {};
-        userWrite[minute][decoded.mayashId] = 1;
+        userWrite[minute][decoded.id] = 1;
       }
-      else if(!userWrite[minute][decoded.mayashId]) {
-        userWrite[minute][decoded.mayashId] = 1;
+      else if(!userWrite[minute][decoded.id]) {
+        userWrite[minute][decoded.id] = 1;
       }
       else {
-        userWrite[minute][decoded.mayashId]++;
+        userWrite[minute][decoded.id]++;
       }
 
-      if(userWrite[minute] && userWrite[minute][decoded.mayashId] > 2) {
+      if(userWrite[minute] && userWrite[minute][decoded.id] > 2) {
         return callback(Boom.tooManyRequests('you have exceeded your request limit, try after 2 minutes.'), false);
       }
 

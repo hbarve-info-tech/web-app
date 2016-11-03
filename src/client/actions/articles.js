@@ -129,12 +129,12 @@ export const fetchArticlesError  = (payload) => {
     payload
   };
 };
-export const fetchArticles       = ()        => {
+export const fetchArticles       = (id)      => {
   return (dispatch) => {
 
     dispatch(fetchArticlesStart({}));
 
-    api.getArticles((json) => {
+    api.getArticles(id, (json) => {
       if(json.statusCode === 200) {
         dispatch(fetchArticlesSuccess(json.payload));
       }

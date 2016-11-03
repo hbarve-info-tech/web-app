@@ -46,13 +46,9 @@ const ArticlePost = ({articleId, articleName, description}) => (
 );
 
 const Post = ({ user , postType, post}) => (
-  <div class="box box-primary box-widget">
-    <div class="box-header with-border">
-      <UserInfo {...user}/>
-    </div>
-
+  <div class="box box-primary">
     <div class="box-body">
-      {postType === "articles" ? <ArticlePost {...post} /> : <CoursePost {...post}/>}
+      {postType === "article" ? <ArticlePost {...post} /> : <CoursePost {...post}/>}
     </div>
   </div>
 );

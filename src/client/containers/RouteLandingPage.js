@@ -8,7 +8,7 @@ import actions from '../actions';
 import { Grid, Row, Col, Button, Well,
   Image, Thumbnail, Panel, Modal, Clearfix } from "react-bootstrap";
 
-import SignIn from "./SignIn";
+import SignIn from "../components/SignIn";
 
 class Head extends Component {
   constructor (props) {
@@ -311,7 +311,7 @@ class Foot extends Component {
 }
 
 
-class LandingPage extends Component {
+class RouteLandingPage extends Component {
   constructor (props) {
     super(props);
   }
@@ -355,30 +355,30 @@ class LandingPage extends Component {
 
     //List of team members.
     let members = [
-        {
-          name: 'Himank Barve',
-          post: 'Founder & CEO',
-          profilePicUrl: 'https://scontent-hkg3-1.xx.fbcdn.net/v/t1.0-9/11218932_964370493606541_2838091133337545054_n.jpg?oh=9f7e055307d65c5c7adbbaa3b230c4f4&oe=58754634'
-        },
-        {
-          name: 'Gourav Goyal',
-          post: 'Mentor',
-          profilePicUrl: 'https://scontent.fdel1-1.fna.fbcdn.net/v/t1.0-9/1908161_10204280787432450_684942185007451458_n.jpg?oh=4874fdd277e819b1dff1e7fab705a09e&oe=5875EE38'
-        },
-        {
-          type: "clearfix"
-        },
-        {
-          name: 'Shreya Sinha',
-          post: 'Manager',
-          profilePicUrl: 'https://s3-ap-southeast-1.amazonaws.com/mayash/web-contents/team-shreya.jpg'
-        },
-        {
-          name: 'Avinash Yadav',
-          post: 'Mentor',
-          profilePicUrl: 'https://scontent.fdel1-1.fna.fbcdn.net/v/t1.0-9/13423882_10209658537125159_48122255777249865_n.jpg?oh=ea061403c472eb1817a1e67938cd62df&oe=587C6C11'
-        }
-      ];
+      {
+        name: 'Himank Barve',
+        post: 'Founder & CEO',
+        profilePicUrl: 'https://scontent-hkg3-1.xx.fbcdn.net/v/t1.0-9/11218932_964370493606541_2838091133337545054_n.jpg?oh=9f7e055307d65c5c7adbbaa3b230c4f4&oe=58754634'
+      },
+      {
+        name: 'Gourav Goyal',
+        post: 'Mentor',
+        profilePicUrl: 'https://scontent.fdel1-1.fna.fbcdn.net/v/t1.0-9/1908161_10204280787432450_684942185007451458_n.jpg?oh=4874fdd277e819b1dff1e7fab705a09e&oe=5875EE38'
+      },
+      {
+        type: "clearfix"
+      },
+      {
+        name: 'Shreya Sinha',
+        post: 'Manager',
+        profilePicUrl: 'https://s3-ap-southeast-1.amazonaws.com/mayash/web-contents/team-shreya.jpg'
+      },
+      {
+        name: 'Avinash Yadav',
+        post: 'Mentor',
+        profilePicUrl: 'https://scontent.fdel1-1.fna.fbcdn.net/v/t1.0-9/13423882_10209658537125159_48122255777249865_n.jpg?oh=ea061403c472eb1817a1e67938cd62df&oe=587C6C11'
+      }
+    ];
 
     return (
       <section class="landing-page">
@@ -427,4 +427,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(LandingPage);
+)(RouteLandingPage);

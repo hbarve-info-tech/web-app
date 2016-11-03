@@ -81,6 +81,11 @@ plugins.push({
 });
 
 plugins.push({
+  register: require('./elements'),
+  options : {}
+});
+
+plugins.push({
   register: require('./articles'),
   options : {}
 });

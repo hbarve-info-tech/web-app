@@ -114,6 +114,28 @@ export const getUser       = (callback) => {
     .then(json => callback(json));
 };
 
+export const getElement    = ({id, username}, callback) => {
+  let url = `/api/elements`;
+
+  if(username) {
+    url += `?username=${username}`;
+  }
+  else {
+    url += `?id=${id}`;
+  }
+
+  fetch(url, {
+    method: 'GET',
+    headers: {
+      'Accept'       : 'application/json',
+      'Content-Type' : 'application/json',
+      'Authorization': getToken()
+    }
+  })
+    .then(response => response.json())
+    .then(json     => callback(json));
+};
+
 export const getCourses    = (callback) => {
   fetch('/api/elements/' + getUserId() + '/courses', {
     method: 'GET',
@@ -265,8 +287,8 @@ export const deleteModule  = (courseId, moduleId, callback) => {
 };
 
 
-export const getArticles    = (callback) => {
-  let url = '/api/elements/' + getUserId() + '/articles';
+export const getArticles    = (id, callback) => {
+  let url = '/api/elements/' + id + '/articles';
 
   fetch(url, {
     method: 'GET',

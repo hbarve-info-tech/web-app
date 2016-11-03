@@ -25,7 +25,7 @@ const getArticles     = {
 const getArticle      = {
   auth    : {
     mode       : 'required',
-    strategies : ['ReadTrafficCheck', 'user']
+    strategies : ['visitor']
   },
   validate: {
     params : Joi.object({

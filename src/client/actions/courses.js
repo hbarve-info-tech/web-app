@@ -166,10 +166,10 @@ export const fetchCoursesError  = (payload) => {
     payload
   };
 };
-export const fetchCourses      = () => {
+export const fetchCourses       = (authorId) => {
   return (dispatch) => {
 
-    dispatch(fetchCoursesStart({}));
+    dispatch(fetchCoursesStart({authorId}));
 
     api.getCourses((json) => {
       if(json.statusCode === 200) {
