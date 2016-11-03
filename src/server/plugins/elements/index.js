@@ -14,19 +14,18 @@ const getElement    = {
       strategies : ['ReadTrafficCheck', 'user']
   },
   validate: {
-    params : Joi.object({
-      id  : Joi.any().allow(id, username)
-    }).length(1),
     query  : Joi.object({
-      q   : Joi.string().valid('id', 'username').required()
-    })
+      id : id,
+      username: username
+    }).length(1)
   },
   handler: (request, reply) => {
-    if(request.query.q === 'username') {
-      elementdb.getElementByUsername(request.params.id, (result) => reply(result));
+    let { username, id } = request.query;
+    if(username) {
+      elementdb.getElementByUsername(username, (result) => reply(result));
     }
     else {
-      elementdb.getElementById(parseInt(request.params.id), (result) => reply(result));
+      elementdb.getElementById(parseInt(id), (result) => reply(result));
     }
   }
 };
@@ -35,7 +34,7 @@ export const register = (server, options, next) => {
 
   server.route([
 
-    {method: 'GET',    path: '/api/elements/{id}',    config: getElement}
+    {method: 'GET',    path: '/api/elements',    config: getElement}
 
   ]);
 

@@ -38,10 +38,7 @@ class App extends Component {
       return callback();
     }
     else if(elements.array.length === 0) {
-      this.props.fetchElement({
-        id: username,
-        q : 'username'
-      });
+      this.props.fetchElement({username});
 
       return callback();
     }
@@ -51,10 +48,7 @@ class App extends Component {
       }
 
       if(elements.array.length === index + 1) {
-        this.props.fetchElement({
-          id: username,
-          q : 'username'
-        });
+        this.props.fetchElement({username});
         return callback();
       }
     });
@@ -150,10 +144,7 @@ class App extends Component {
       return callback();
     }
     else if(elements.array.length === 0) {
-      this.props.fetchElement({
-        id: username,
-        q : 'username'
-      });
+      this.props.fetchElement({username});
 
       return callback();
     }
@@ -163,10 +154,7 @@ class App extends Component {
       }
 
       if(elements.array.length === index + 1) {
-        this.props.fetchElement({
-          id: username,
-          q : 'username'
-        });
+        this.props.fetchElement({username});
         return callback();
       }
     });

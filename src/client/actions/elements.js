@@ -34,7 +34,7 @@ export const fetchElement        = (payload) => {
 
     dispatch(fetchElementStart());
 
-    api.getElement(payload.id, payload.q, (json) => {
+    api.getElement(payload, (json) => {
       if(json.statusCode === 200) {
         dispatch(fetchElementSuccess(json.payload));
       }

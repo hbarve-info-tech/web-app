@@ -114,8 +114,15 @@ export const getUser       = (callback) => {
     .then(json => callback(json));
 };
 
-export const getElement    = (id, q, callback) => {
-  let url = `/api/elements/${id}?q=${q}`;
+export const getElement    = ({id, username}, callback) => {
+  let url = `/api/elements`;
+
+  if(username) {
+    url += `?username=${username}`;
+  }
+  else {
+    url += `?id=${id}`;
+  }
 
   fetch(url, {
     method: 'GET',
