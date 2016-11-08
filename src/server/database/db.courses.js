@@ -18,6 +18,11 @@ export const getCourseByCourseId    = (courseId, callback) => {
     }
 
     if(success) {
+      success = Object.assign({}, success, {
+        authorId : success.authorId.id,
+        courseId : success.courseId.id
+      });
+
       return callback({
         statusCode: 200,
         message   : 'Success',
@@ -223,22 +228,23 @@ export const getModulesByCourseId   = (courseId, callback) => {
       });
     }
 
-    if(success.length !== 0) {
-      return callback({
-        statusCode: 200,
-        message   : 'Success',
-        payload   : success
-      });
-    }
+    success = success.map((module, index) => Object.assign({},
+      module,
+      {
+        courseId: module.courseId.id,
+        moduleId: module.moduleId.id
+      }
+    ));
 
     return callback({
-      statusCode: 404,
-      message   : 'Modules does not exists.'
+      statusCode: 200,
+      message   : 'Success',
+      payload   : success
     });
   });
 };
 
-export const getModuleByModuleId    = (moduleId, callback) => {
+export const getModuleByModuleId    = (courseId, moduleId, callback) => {
   db.get(db.key([MODULES, moduleId]), (error, success) => {
     if(error) {
       console.log(error);
@@ -251,6 +257,15 @@ export const getModuleByModuleId    = (moduleId, callback) => {
     }
 
     if(success) {
+      success = Object.assign(
+        {},
+        success,
+        {
+          courseId: success.courseId.id,
+          moduleId: success.moduleId.id
+        }
+      );
+
       return callback({
         statusCode: 200,
         message   : 'Success',
