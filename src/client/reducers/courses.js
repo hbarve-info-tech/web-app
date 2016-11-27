@@ -2,6 +2,7 @@
  * Created by himank on 6/8/16.
  */
 "use strict";
+import _ from "lodash";
 import {
   COURSE_CREATE, COURSE_CREATE_START, COURSE_CREATE_ERROR, COURSE_CREATE_SUCCESS,
   COURSES_FETCH, COURSES_FETCH_START, COURSES_FETCH_ERROR, COURSES_FETCH_SUCCESS,
@@ -32,6 +33,7 @@ let initialModuleState  = {
   isFetched   : false,
   isDeleted   : false,
 
+  statusCode  : 200,
   isError     : false,
   error       : '',
   message     : '',
@@ -43,13 +45,7 @@ let initialCourseState  = {
   description : '',
   level       : 1,
   standard    : 'graduation',
-  modules     : [
-    {
-      courseId  : '',
-      moduleId  : 'syllabus',
-      moduleName: 'Syllabus'
-    }
-  ],
+  modules     : [],
 
   isCreating  : false,
   isUpdating  : false,
@@ -61,6 +57,7 @@ let initialCourseState  = {
   isFetched   : false,
   isDeleted   : false,
 
+  statusCode  : 200,
   isError     : false,
   error       : '',
   message     : '',
@@ -79,6 +76,7 @@ let initialCoursesState = {
   isFetched   : false,
   isDeleted   : false,
 
+  statusCode  : 200,
   isError     : false,
   error       : '',
   message     : '',
@@ -181,6 +179,58 @@ const courseReducer = (state = initialCourseState, action) => {
           isError     : false,
           error       : '',
           message     : '',
+          lastUpdated : Date.now()
+        }
+      );
+    }
+    case COURSE_FETCH_START : {
+
+      return Object.assign(
+        {},
+        state,
+        action.payload,
+        {
+          isFetching  : true,
+          isFetched   : false,
+          isError     : false,
+
+          error       : '',
+          message     : '',
+
+          lastUpdated : Date.now()
+        }
+      );
+    }
+    case COURSE_FETCH_ERROR : {
+
+      return Object.assign(
+        {},
+        state,
+        {
+          isFetching  : false,
+          isFetched   : false,
+
+          isError     : true,
+          error       : action.error,
+          message     : action.message,
+          lastUpdated : Date.now()
+        }
+      );
+    }
+    case COURSE_FETCH_SUCCESS : {
+
+      return Object.assign(
+        {},
+        state,
+        action.payload,
+        {
+          isFetching  : false,
+          isFetched   : true,
+          isError     : false,
+
+          error       : '',
+          message     : '',
+
           lastUpdated : Date.now()
         }
       );
@@ -381,11 +431,8 @@ const coursesReducer = (state = initialCoursesState, action) => {
         {},
         state,
         {
-          array     : array,
-          isFetching: true,
-          isFetched : false,
-          isError   : false,
-          error     : ''
+          array       : array,
+          lastUpdated : Date.now()
         }
       );
     }
@@ -414,9 +461,9 @@ const coursesReducer = (state = initialCoursesState, action) => {
 
       let array = state.array;
       array.map((course, index) => {
-        if(course.courseId === action.payload.courseId) {
-          array[index] = courseReducer(undefined, {
-            type   : COURSE_UPDATE,
+        if(course.courseId == action.payload.courseId) {
+          array[index] = courseReducer(course, {
+            type   : COURSE_FETCH_SUCCESS,
             payload: action.payload
           });
         }
@@ -439,11 +486,8 @@ const coursesReducer = (state = initialCoursesState, action) => {
         {},
         state,
         {
-          array     : array,
-          isFetching: false,
-          isFetched : true,
-          isError   : false,
-          error     : ''
+          array       : array,
+          lastUpdated : Date.now()
         }
       );
     }
@@ -721,59 +765,20 @@ const coursesReducer = (state = initialCoursesState, action) => {
       );
     }
     case MODULES_FETCH_SUCCESS : {
+      let course = _.find(state.array, (e) => e.courseId == action.payload.courseId);
+
+      course.modules = action.payload.modules;
+
+
       return Object.assign(
         {},
         state,
-        {array: state.array.map((course, index) => {
-            if(course.courseId === action.payload.courseId)   {
-              let modules = course.modules;
-
-              action.payload.modules.map((fetchedModule, index1) => {
-                modules.push(moduleReducer(undefined, {
-                  type   : MODULE_FETCH,
-                  payload: fetchedModule
-                }));
-              });
-
-              for(let i = 0; i < modules.length; i++) {
-                for(let j = i + 1; j < modules.length; j++) {
-                  if(modules[i].moduleId === modules[j].moduleId) {
-                    modules[i] = Object.assign(
-                      {},
-                      modules[i],
-                      modules[j]
-                    );
-                    modules.splice(j, 1);
-                  }
-                }
-              }
-
-              return Object.assign(
-                {},
-                course,
-                {
-                  modules: modules
-                },
-                {
-                  isCreating  : false,
-                  isUpdating  : false,
-                  isFetching  : false,
-                  isDeleting  : false,
-
-                  isCreated   : false,
-                  isUpdated   : false,
-                  isFetched   : true,
-                  isDeleted   : false,
-
-                  isError     : false,
-                  error       : '',
-                  message     : '',
-                  lastUpdated : Date.now()
-                }
-              )
+        {array: state.array.map((e, index) => {
+            if(e.courseId == action.payload.courseId)   {
+              return course;
             }
             else {
-              return course;
+              return e;
             }
           })}
       );
