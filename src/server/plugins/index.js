@@ -95,6 +95,11 @@ plugins.push({
   options : {}
 });
 
+plugins.push({
+  register: require('./classrooms'),
+  options : {}
+});
+
 //For development environment it plugin is attached.
 if(NODE_ENV === 'development' && DEV_ENV === "client") {
   plugins.push({
