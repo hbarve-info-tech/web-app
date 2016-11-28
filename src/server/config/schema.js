@@ -8,7 +8,7 @@
 import Joi from "joi";
 
 export const id       = Joi.number().integer();
-export const username = Joi.string().token().min(2).max(20);
+export const username = Joi.string().lowercase().trim().token().min(2).max(20);
 export const postId   = Joi.string().length(24);
 
 export const password = Joi.string().regex(/[a-zA-Z0-9]+/).min(5).max(30);

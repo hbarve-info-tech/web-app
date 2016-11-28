@@ -2,6 +2,7 @@
 import React, { Component, PropTypes }  from "react";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import _ from "lodash";
 
 import {
   convertToRaw, CompositeDecorator,
@@ -23,88 +24,64 @@ import CourseInfoBox    from "../components/CourseInfoBox";
 import CourseModulesBox from "../components/CourseModulesBox";
 import CourseModuleDisplayBox from "../components/CourseModuleDisplayBox";
 
-class Course extends Component {
+class RouteCourseDisplay extends Component {
   constructor (props) {
     super(props);
-    this.state = {
-      displayModuleId: 'syllabus'
-    };
+    this.state = {};
   };
 
-  configureState = (courseId) => {
-    let courses = this.props.courses;
 
-    courses.array.map((course, index) => {
-      if(course.courseId == courseId) {
-        this.setState({
-          course
-        });
-      }
+  configureState = ({courses, routeParams}) => {
+    this.setState({
+      course: _.find(courses.array, e => e.courseId == routeParams.courseId)
     });
 
+    if(this.state.course && this.state.course.modules.length > 0) {
+      this.setState({
+        displayModuleId: this.state.course.modules[0].moduleId
+      });
+    }
   };
 
   componentWillMount () {
+    this.configureState(this.props);
     let courseId = this.props.routeParams.courseId;
-    this.configureState(courseId);
-
-    this.props.courses.array.map((course, index) => {
-      if(course.courseId === courseId) {
-        this.props.fetchModules(course.courseId);
-      }
-    });
+    let course = _.find(this.props.courses.array, (course) => course.courseId == courseId);
+    this.props.fetchModules(course.courseId);
 
   }
 
   componentWillReceiveProps (nextProps) {
-    this.configureState(nextProps.routeParams.courseId);
+    this.configureState(nextProps);
   }
 
   onSelectModule = (moduleId) => {
-    this.state.course.modules.map((module, index) => {
-      if(module.moduleId === moduleId) {
-        this.setState({
-          displayModuleId: moduleId
-        });
-      }
+    this.setState({
+      displayModuleId: moduleId
     });
   };
 
   render () {
     let courseId = this.props.routeParams.courseId;
-    let course = {};
-
-    this.props.courses.array.map((value, index) => {
-      if(value.courseId == courseId) {
-        course = value;
-      }
-    });
+    let course = _.find(this.props.courses.array, (course) => course.courseId == courseId);
 
     return (
       <section class="content">
         <Row>
-          <Col xs={12} sm={3} md={3} lg={3}>
-            <CourseInfoBox
-              user={this.props.user}
-              course={course}
-              updateCourse={this.props.updateCourse}
-            />
+          <Col xs={12} sm={4} md={4} lg={4}>
+            <CourseInfoBox {...course}/>
             <CourseModulesBox
-              user={this.props.user}
-              course={course}
+              modules        ={course.modules}
               displayModuleId={this.state.displayModuleId}
-              onSelect={this.onSelectModule.bind(this)}
-              createModule={this.props.createModule}
+              onSelect       ={this.onSelectModule.bind(this)}
             />
           </Col>
-          <Col xs={12} sm={9} md={9} lg={9}>
+          <Col xs={12} sm={8} md={8} lg={8}>
             {this.state.course.modules.length ?
               <CourseModuleDisplayBox
-                user           ={this.props.user}
-                course         ={course}
+                modules        ={course.modules}
                 displayModuleId={this.state.displayModuleId}
-                updateModule   ={this.props.updateModule}
-              /> : ''}
+              /> : null}
           </Col>
         </Row>
       </section>
@@ -127,4 +104,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Course);
+)(RouteCourseDisplay);

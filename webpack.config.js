@@ -1,9 +1,14 @@
 "use strict";
-const NODE_ENV = process.env.NODE_ENV;
+const NODE_ENV = process.env.NODE_ENV || 'production';
 
 //Variable declaration.
-const path    = require("path");
-const webpack = require("webpack");
+const path              = require("path");
+const webpack           = require("webpack");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+
+
+// multiple extract instances
+let extractCSS = new ExtractTextPlugin('style.css');
 
 let config = {};
 
@@ -88,17 +93,14 @@ if(NODE_ENV === "development") {
   });
 }
 
-//Add loaders for CSS
-config.module.loaders.push({
-  test: /\.css$/,
-  loaders: ["style", "css"]
-});
-
-//Add loaders for SCSS
-config.module.loaders.push({
-  test: /\.scss$/,
-  loaders: ["style", "css", "sass"]
-});
+if(NODE_ENV === "development") {
+  config.module.loaders.push({test: /\.css$/,  loaders: ["style", "css"]});
+  config.module.loaders.push({test: /\.scss$/, loaders: ["style", "css", "sass"]});
+}
+else {
+  config.module.loaders.push({test: /\.css$/i,  loader: extractCSS.extract(['css'])});
+  config.module.loaders.push({test: /\.scss$/i, loader: extractCSS.extract(['css','sass'])});
+}
 
 //Add loaders for Url
 config.module.loaders.push({
@@ -118,43 +120,31 @@ config.module.loaders.push({
  */
 config.plugins = [];
 
+//Environment variables.
 if(NODE_ENV === "production") {
-  config.plugins.push(
-    new webpack.EnvironmentPlugin([
-      "NODE_ENV"
-    ])
-  );
+  config.plugins.push(new webpack.EnvironmentPlugin(["NODE_ENV"]));
 }
 else {
-  config.plugins.push(
-    new webpack.EnvironmentPlugin([
-      "NODE_ENV",
-      "DEV_ENV"
-    ])
-  );
+  config.plugins.push(new webpack.EnvironmentPlugin(["NODE_ENV", "DEV_ENV"]));
 }
 
-if(NODE_ENV === "production") {
+if(NODE_ENV === "development") {
+  //It should be added along-side with React Hot Loader module.
+  config.plugins.push(new webpack.HotModuleReplacementPlugin());
+}
+else {
   //No Error plugin will eliminate all the errors that occurs while building 'bundle.js'
-  config.plugins.push(
-    new webpack.NoErrorsPlugin()
-  );
+  config.plugins.push(new webpack.NoErrorsPlugin());
+  config.plugins.push(extractCSS);
 
   //Uglify will minimize/compress output file i.e. 'bundle.js'.
   config.plugins.push(
     new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      }
+      compress : { warnings: false },
+      output   : { comments: false },
+      sourceMap: true
     })
-  )
-}
-else {
-  //It should be added along-side with React Hot Loader module.
-  config.plugins.push(
-    new webpack.HotModuleReplacementPlugin()
-  )
-
+  );
 }
 
 module.exports = config;

@@ -53,32 +53,6 @@ class App extends Component {
       }
     });
   }
-  onEnterCourse (nextState, replace, callback) {
-    let courseId = nextState.params.courseId;
-
-    if(this.props.courses.array.length === 0) {
-      this.props.fetchCourse({
-        courseId: courseId
-      });
-
-      return callback();
-    }
-
-    this.props.courses.array.map((course, index) => {
-      if(course.courseId === courseId) {
-        return callback();
-      }
-
-      if(this.props.courses.array.length === index + 1) {
-        this.props.fetchCourse({
-          courseId: courseId
-        });
-
-        return callback();
-      }
-
-    });
-  }
   onEnterArticle(nextState, replace, callback) {
     let articleId = nextState.params.articleId;
 
@@ -160,6 +134,74 @@ class App extends Component {
     });
   }
 
+  getComponentCourseDisplay(nextState, callback) {
+    let courseId = nextState.params.courseId;
+    this.props.fetchCourse({courseId});
+    let count = 0;
+
+    let wait = setInterval(()=> {
+      let course = _.find(this.props.courses.array, (course) => course.courseId == courseId);
+
+      if(course.isFetched) {
+        clearInterval(wait);
+        callback(null, RouteCourseDisplay);
+      }
+      if(course.isError) {
+        clearInterval(wait);
+        callback(null, ErrorPage({statusCode: 404}));
+      }
+      if(++count > 100) {
+        clearInterval(wait);
+        callback(null, ErrorPage({statusCode: 400, messageHeading: 'Server is taking too long to respond.'}));
+      }
+
+    }, 100);
+  }
+  getComponentCourseEdit(nextState, callback) {
+    let courseId = nextState.params.courseId;
+
+    let course = _.find(this.props.courses.array, (e) => e.courseId == courseId);
+
+    if(course) {
+      if(this.props.user.id == course.authorId) {
+        return callback(null, RouteCourseEdit);
+      }
+
+      return callback(null, ErrorPage({
+        statusCode    : 400,
+        messageHeading: 'Not Authorised'
+      }));
+    }
+    else {
+      this.props.fetchCourse({courseId});
+      let count = 0;
+
+      let wait = setInterval(()=> {
+        let course = _.find(this.props.courses.array, (course) => course.courseId == courseId);
+
+        if(course.isFetched) {
+          clearInterval(wait);
+          if(this.props.user.id != course.authorId) {
+            return callback(null, ErrorPage({
+              statusCode: 400,
+              messageHeading: 'Not Authorised'
+            }));
+          }
+
+          return callback(null, RouteCourseEdit);
+        }
+        if(course.isError) {
+          clearInterval(wait);
+          return callback(null, ErrorPage({statusCode: 400}));
+        }
+        if(++count > 100) {
+          clearInterval(wait);
+          return callback(null, ErrorPage({statusCode: 401}));
+        }
+      }, 100);
+    }
+  }
+
   render () {
     return (
       <Router history={browserHistory}>
@@ -187,13 +229,11 @@ class App extends Component {
 
           <Route
             path     ="courses/:courseId"
-            component={RouteCourseDisplay}
-            onEnter  ={this.onEnterCourse.bind(this)}
+            getComponent={this.getComponentCourseDisplay.bind(this)}
           />
           <Route
             path     ="courses/:courseId/edit"
-            component={RouteCourseEdit}
-            onEnter  ={this.onEnterCourse.bind(this)}
+            getComponent={this.getComponentCourseEdit.bind(this)}
           />
 
           <Route

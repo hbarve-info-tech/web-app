@@ -57,7 +57,7 @@ export const register = (server, options, next) => {
           visitor[minute][request.info.remoteAddress]++;
         }
 
-        if(visitor[minute] && visitor[minute][request.info.remoteAddress] > 10) {
+        if(visitor[minute] && visitor[minute][request.info.remoteAddress] > 20) {
           return reply(Boom.tooManyRequests('you have exceeded your request limit, try after 2 minutes.'));
         }
 
@@ -84,7 +84,7 @@ export const register = (server, options, next) => {
         userRead[minute][decoded.id]++;
       }
 
-      if(userRead[minute] && userRead[minute][decoded.id] > 5) {
+      if(userRead[minute] && userRead[minute][decoded.id] > 20) {
         return callback(Boom.tooManyRequests('you have exceeded your request limit, try after 2 minutes.'), false);
       }
 

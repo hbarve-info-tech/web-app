@@ -171,7 +171,7 @@ export const fetchCourses       = (authorId) => {
 
     dispatch(fetchCoursesStart({authorId}));
 
-    api.getCourses((json) => {
+    api.getCourses(authorId, (json) => {
       if(json.statusCode === 200) {
         dispatch(fetchCoursesSuccess(json.payload));
       }
