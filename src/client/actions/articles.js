@@ -32,24 +32,24 @@ import fetch from 'isomorphic-fetch';
 
 import * as api from "../apis";
 
-export const createArticleStart  = ()        => {
+const createArticleStart  = ()        => {
   return {
     type: ARTICLE_CREATE_START
   };
 };
-export const createArticleSuccess= (payload) => {
+const createArticleSuccess= (payload) => {
   return {
     type: ARTICLE_CREATE_SUCCESS,
     payload
   };
 };
-export const createArticleError  = (payload) => {
+const createArticleError  = (payload) => {
   return {
     type: ARTICLE_CREATE_ERROR,
     payload
   };
 };
-export const createArticle       = (payload) => {
+export const createArticle= (payload) => {
   return (dispatch) => {
 
     dispatch(createArticleStart());
@@ -66,25 +66,25 @@ export const createArticle       = (payload) => {
   };
 };
 
-export const fetchArticleStart  = (payload) => {
+const fetchArticleStart  = (payload) => {
   return {
     type: ARTICLE_FETCH_START,
     payload
   };
 };
-export const fetchArticleSuccess= (payload) => {
+const fetchArticleSuccess= (payload) => {
   return {
     type: ARTICLE_FETCH_SUCCESS,
     payload
   };
 };
-export const fetchArticleError  = (payload) => {
+const fetchArticleError  = (payload) => {
   return {
     type: ARTICLE_FETCH_ERROR,
     payload
   };
 };
-export const fetchArticle       = (payload) => {
+export const fetchArticle= (payload) => {
   return (dispatch) => {
 
     dispatch(fetchArticleStart(payload));
@@ -111,25 +111,25 @@ export const fetchArticle       = (payload) => {
   };
 };
 
-export const fetchArticlesStart  = (payload) => {
+const fetchArticlesStart  = (payload) => {
   return {
     type: ARTICLES_FETCH_START,
     payload
   };
 };
-export const fetchArticlesSuccess= (payload) => {
+const fetchArticlesSuccess= (payload) => {
   return {
     type: ARTICLES_FETCH_SUCCESS,
     payload
   };
 };
-export const fetchArticlesError  = (payload) => {
+const fetchArticlesError  = (payload) => {
   return {
     type: ARTICLES_FETCH_ERROR,
     payload
   };
 };
-export const fetchArticles       = (id)      => {
+export const fetchArticles= (id)      => {
   return (dispatch) => {
 
     dispatch(fetchArticlesStart({}));
@@ -145,25 +145,25 @@ export const fetchArticles       = (id)      => {
   };
 };
 
-export const updateArticleStart  = (payload) => {
+const updateArticleStart  = (payload) => {
   return {
     type: ARTICLE_UPDATE_START,
     payload
   };
 };
-export const updateArticleSuccess= (payload) => {
+const updateArticleSuccess= (payload) => {
   return {
     type: ARTICLE_UPDATE_SUCCESS,
     payload
   };
 };
-export const updateArticleError  = (payload) => {
+const updateArticleError  = (payload) => {
   return {
     type: ARTICLE_UPDATE_ERROR,
     payload
   };
 };
-export const updateArticle       = (articleId, payload) => {
+export const updateArticle= (articleId, payload) => {
   return (dispatch) => {
 
     dispatch(updateArticleStart({articleId}));
@@ -181,24 +181,24 @@ export const updateArticle       = (articleId, payload) => {
   };
 };
 
-export const deleteArticleStart  = ()        => {
+const deleteArticleStart  = ()        => {
   return {
     type: ARTICLE_DELETE_START
   };
 };
-export const deleteArticleSuccess= (payload) => {
+const deleteArticleSuccess= (payload) => {
   return {
     type: ARTICLE_DELETE_SUCCESS,
     payload
   };
 };
-export const deleteArticleError  = (payload) => {
+const deleteArticleError  = (payload) => {
   return {
     type: ARTICLE_DELETE_ERROR,
     payload
   };
 };
-export const deleteArticle       = (payload) => {
+export const deleteArticle= (payload) => {
   return {
     type: ARTICLE_DELETE,
     payload

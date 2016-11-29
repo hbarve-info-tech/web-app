@@ -54,27 +54,26 @@ import { browserHistory } from "react-router";
 
 //Import library here.
 import fetch from 'isomorphic-fetch';
-
 import * as api from "../apis";
 
-export const createCourseStart  = ()        => {
+const createCourseStart  = ()        => {
   return {
     type: COURSE_CREATE_START
   };
 };
-export const createCourseSuccess= (payload) => {
+const createCourseSuccess= (payload) => {
   return {
     type: COURSE_CREATE_SUCCESS,
     payload
   };
 };
-export const createCourseError  = (payload) => {
+const createCourseError  = (payload) => {
   return {
     type: COURSE_CREATE_ERROR,
     payload
   };
 };
-export const createCourse       = (payload) => {
+export const createCourse= (payload) => {
   return (dispatch) => {
 
     dispatch(createCourseStart());
@@ -103,25 +102,25 @@ export const createCourse       = (payload) => {
   };
 };
 
-export const fetchCourseStart  = (payload) => {
+const fetchCourseStart  = (payload) => {
   return {
     type: COURSE_FETCH_START,
     payload
   };
 };
-export const fetchCourseSuccess= (payload) => {
+const fetchCourseSuccess= (payload) => {
   return {
     type: COURSE_FETCH_SUCCESS,
     payload
   };
 };
-export const fetchCourseError  = (payload) => {
+const fetchCourseError  = (payload) => {
   return {
     type: COURSE_FETCH_ERROR,
     payload
   };
 };
-export const fetchCourse       = (payload) => {
+export const fetchCourse= (payload) => {
   return (dispatch) => {
 
     dispatch(fetchCourseStart(payload));
@@ -182,25 +181,25 @@ export const fetchCourses       = (authorId) => {
   };
 };
 
-export const updateCourseStart  = (payload) => {
+const updateCourseStart  = (payload) => {
   return {
     type: COURSE_UPDATE_START,
     payload
   };
 };
-export const updateCourseSuccess= (payload) => {
+const updateCourseSuccess= (payload) => {
   return {
     type: COURSE_UPDATE_SUCCESS,
     payload
   };
 };
-export const updateCourseError  = (payload) => {
+const updateCourseError  = (payload) => {
   return {
     type: COURSE_UPDATE_ERROR,
     payload
   };
 };
-export const updateCourse       = (courseId, payload) => {
+export const updateCourse= (courseId, payload) => {
   return (dispatch) => {
 
     dispatch(updateCourseStart({courseId}));
@@ -217,24 +216,24 @@ export const updateCourse       = (courseId, payload) => {
   };
 };
 
-export const deleteCourseStart  = ()        => {
+const deleteCourseStart  = ()        => {
   return {
     type: COURSE_DELETE_START
   };
 };
-export const deleteCourseSuccess= (payload) => {
+const deleteCourseSuccess= (payload) => {
   return {
     type: COURSE_DELETE_SUCCESS,
     payload
   };
 };
-export const deleteCourseError  = (payload) => {
+const deleteCourseError  = (payload) => {
   return {
     type: COURSE_DELETE_ERROR,
     payload
   };
 };
-export const deleteCourse       = (payload) => {
+export const deleteCourse= (payload) => {
   return {
     type: COURSE_DELETE,
     payload
@@ -243,25 +242,25 @@ export const deleteCourse       = (payload) => {
 
 
 
-export const createModuleStart  = (payload) => {
+const createModuleStart  = (payload) => {
   return {
     type: MODULE_CREATE_START,
     payload
   };
 };
-export const createModuleSuccess= (payload) => {
+const createModuleSuccess= (payload) => {
   return {
     type: MODULE_CREATE_SUCCESS,
     payload
   };
 };
-export const createModuleError  = (payload) => {
+const createModuleError  = (payload) => {
   return {
     type: MODULE_CREATE_ERROR,
     payload
   };
 };
-export const createModule       = (courseId, payload) => {
+export const createModule= (courseId, payload) => {
   return (dispatch) => {
 
     dispatch(createModuleStart({courseId}));
@@ -277,25 +276,25 @@ export const createModule       = (courseId, payload) => {
   };
 };
 
-export const fetchModuleStart  = (payload) => {
+const fetchModuleStart  = (payload) => {
   return {
     type: MODULE_FETCH_START,
     payload
   };
 };
-export const fetchModuleSuccess= (payload) => {
+const fetchModuleSuccess= (payload) => {
   return {
     type: MODULE_FETCH_SUCCESS,
     payload
   };
 };
-export const fetchModuleError  = (payload) => {
+const fetchModuleError  = (payload) => {
   return {
     type: MODULE_FETCH_ERROR,
     payload
   };
 };
-export const fetchModule       = (payload) => {
+export const fetchModule= (payload) => {
   return (dispatch) => {
     dispatch(fetchModuleStart(payload));
 
@@ -311,25 +310,25 @@ export const fetchModule       = (payload) => {
   };
 };
 
-export const fetchModulesStart  = (payload) => {
+const fetchModulesStart  = (payload) => {
   return {
     type: MODULES_FETCH_START,
     payload
   };
 };
-export const fetchModulesSuccess= (payload) => {
+const fetchModulesSuccess= (payload) => {
   return {
     type: MODULES_FETCH_SUCCESS,
     payload
   };
 };
-export const fetchModulesError  = (payload) => {
+const fetchModulesError  = (payload) => {
   return {
     type: MODULES_FETCH_ERROR,
     payload
   };
 };
-export const fetchModules       = (courseId) => {
+export const fetchModules= (courseId) => {
   return (dispatch) => {
 
     dispatch(fetchModulesStart({courseId}));
@@ -348,7 +347,7 @@ export const fetchModules       = (courseId) => {
   };
 };
 
-export const updateModuleStart  = (courseId, moduleId) => {
+const updateModuleStart  = (courseId, moduleId) => {
   return {
     type: MODULE_UPDATE_START,
     payload : {
@@ -357,7 +356,7 @@ export const updateModuleStart  = (courseId, moduleId) => {
     }
   };
 };
-export const updateModuleError  = (courseId, moduleId, payload) => {
+const updateModuleError  = (courseId, moduleId, payload) => {
   payload.courseId = courseId;
   payload.moduleId = moduleId;
   return {
@@ -365,7 +364,7 @@ export const updateModuleError  = (courseId, moduleId, payload) => {
     payload
   };
 };
-export const updateModuleSuccess= (courseId, moduleId, payload) => {
+const updateModuleSuccess= (courseId, moduleId, payload) => {
   payload.courseId = courseId;
   payload.moduleId = moduleId;
   return {
@@ -373,7 +372,7 @@ export const updateModuleSuccess= (courseId, moduleId, payload) => {
     payload
   };
 };
-export const updateModule       = (courseId, moduleId, payload) => {
+export const updateModule= (courseId, moduleId, payload) => {
   return (dispatch) => {
 
     dispatch(updateModuleStart(courseId, moduleId));
@@ -389,29 +388,27 @@ export const updateModule       = (courseId, moduleId, payload) => {
   };
 };
 
-export const deleteModuleStart  = (payload) => {
+const deleteModuleStart  = (payload) => {
   return {
     type: MODULE_DELETE_START,
     payload
   };
 };
-export const deleteModuleSuccess= (payload) => {
+const deleteModuleSuccess= (payload) => {
   return {
     type: MODULE_DELETE_SUCCESS,
     payload
   };
 };
-export const deleteModuleError  = (payload) => {
+const deleteModuleError  = (payload) => {
   return {
     type: MODULE_DELETE_ERROR,
     payload
   };
 };
-export const deleteModule       = (payload) => {
+export const deleteModule= (payload) => {
   return {
     type: MODULE_DELETE,
     payload
   };
 };
-
-
