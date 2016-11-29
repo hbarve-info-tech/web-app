@@ -1,6 +1,9 @@
 "use strict";
 import _ from "lodash";
 import { ELEMENT_FETCH_START, ELEMENT_FETCH_SUCCESS, ELEMENT_FETCH_ERROR, ELEMENT_ADD, ELEMENT_UPDATE } from '../actions/elements';
+
+import { readLocalStore } from "../actions/user";
+
 let initialElementState = {
   isFetching  : false,
   isFetched   : false,
@@ -9,7 +12,7 @@ let initialElementState = {
   message     : '',
   lastUpdated : Date.now()
 };
-let initialState = {
+let initialState        = {
   array       : [],
   isFetching  : false,
   isFetched   : false,
@@ -19,6 +22,15 @@ let initialState = {
   lastUpdated : Date.now()
 };
 
+if(readLocalStore("user") !== null) {
+  initialState = {
+    ...initialState,
+    array: [{
+      ...initialElementState,
+      ...readLocalStore("user")
+    }]
+  };
+}
 
 const elementReducer  = (state = initialElementState, action) => {
   switch (action.type) {
@@ -60,10 +72,14 @@ const elementsReducer = (state = initialState, action) => {
   switch (action.type) {
     case ELEMENT_FETCH_START   : {
       let { username, id } = action.payload;
+      let index = -1;
 
-      let index = state.array.findIndex(element => {
-        return element.username == username;
-      });
+      if(username) {
+        index = state.array.findIndex(element => element.username == username);
+      }
+      else if(id) {
+        index = state.array.findIndex(element => element.id == id);
+      }
 
       return {
         ...state,
@@ -76,8 +92,14 @@ const elementsReducer = (state = initialState, action) => {
     }
     case ELEMENT_FETCH_ERROR   : {
       let { username, id } = action.payload;
+      let index = -1;
 
-      let index = state.array.findIndex(element => element.username == username);
+      if(username) {
+        index = state.array.findIndex(element => element.username == username);
+      }
+      else if(id) {
+        index = state.array.findIndex(element => element.id == id);
+      }
 
       return {
         ...state,
@@ -93,9 +115,16 @@ const elementsReducer = (state = initialState, action) => {
     }
     case ELEMENT_FETCH_SUCCESS : {
       let { array } = state;
-      let { username } = action.payload;
+      let { username, id } = action.payload;
+      let index = -1;
 
-      let index = state.array.findIndex(e => e.username === username);
+      if(username) {
+        index = state.array.findIndex(element => element.username == username);
+      }
+      else if(id) {
+        index = state.array.findIndex(element => element.id == id);
+      }
+
 
       return {
         ...state,
