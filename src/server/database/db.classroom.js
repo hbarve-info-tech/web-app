@@ -5,7 +5,7 @@ import db, { ELEMENTS, CIRCLE_COURSES } from "./setup";
 export const getClassroomCourses = ({id, degree, semester, next}, callback) => {
   let query = db.createQuery(CIRCLE_COURSES)
     .filter('circleId', '=', db.key([ELEMENTS, id]))
-    .limit(50);
+    .limit(10);
 
   if(semester) {
     query.filter('semester', '=', semester.toString());
@@ -17,7 +17,7 @@ export const getClassroomCourses = ({id, degree, semester, next}, callback) => {
     query.start(next);
   }
 
-  db.runQuery(query, (err, courses, info) => {
+  db.runQuery(query, (err, classroomCourses, info) => {
     if(err) {
       console.error(err);
 
@@ -27,22 +27,40 @@ export const getClassroomCourses = ({id, degree, semester, next}, callback) => {
       });
     }
 
-    courses = courses.map(course => ({
-      ...course,
-      circleId: course.circleId.id,
-      courseId: course.courseId.id
-    }));
+    let keys = classroomCourses.map(course => course.courseId);
+    db.get(keys, (err, courses) => {
+      if(err) {
+        console.error(err);
 
-    let result  = {
-      statusCode: 200,
-      message   : 'Success',
-      payload   : courses
-    };
+        return callback({
+          statusCode: 500,
+          error     : 'Server Error.'
+        });
+      }
 
-    if (info.moreResults !== db.NO_MORE_RESULTS) {
-      result.next = info.endCursor;
-    }
+      courses = courses.map(course => {
+          let course2 = classroomCourses.find(c => c.courseId.id === course.courseId.id);
 
-    return callback(result);
+          return {
+            ...course,
+            ...course2,
+            circleId: course2.circleId.id,
+            courseId: course.courseId.id,
+            authorId: course.authorId.id,
+          };
+        });
+
+      let result  = {
+        statusCode: 200,
+        message   : 'Success',
+        payload   : courses
+      };
+
+      if (info.moreResults !== db.NO_MORE_RESULTS) {
+        result.next = info.endCursor;
+      }
+
+      return callback(result);
+    });
   });
 };
