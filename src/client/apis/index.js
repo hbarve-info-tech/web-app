@@ -363,3 +363,28 @@ export const deleteArticle  = (articleId, callback) => {
     .then(response => response.json())
     .then(json     => callback(json));
 };
+
+export const getClassroomCourses = ({id, degree, semester, next}, callback) => {
+  let url = `/api/classroom/${id}/courses`;//?${semester ? `semester=${semester}` : ``}&${degree ? `degree=${degree}`: ``}`;
+
+  if(degree) {
+
+  }
+  if(semester) {
+
+  }
+  if(next) {
+
+  }
+
+  fetch(url, {
+    method: 'GET',
+    headers: {
+      'Accept'       : 'application/json',
+      'Content-Type' : 'application/json',
+      'Authorization': getToken()
+    }
+  })
+    .then(response => response.json())
+    .then(json     => callback(json));
+};
