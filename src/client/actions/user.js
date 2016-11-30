@@ -215,7 +215,6 @@ export const fetchUser = (payload) => {
   return (dispatch) => {
 
     dispatch(fetchUserStart());
-    dispatch(fetchElementStart());
 
     fetch('/api/users/' + getUserId(), {
       method: 'GET',
@@ -230,11 +229,9 @@ export const fetchUser = (payload) => {
         (json) => {
           if(json.statusCode === 200) {
             dispatch(fetchUserSuccess(json.payload));
-            dispatch(fetchElementSuccess(json.payload));
           }
           else if(json.statusCode >= 400) {
             dispatch(fetchUserError(json));
-            dispatch(fetchElementError(json));
           }
         }
       );
