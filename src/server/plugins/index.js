@@ -3,9 +3,6 @@
  * Plugins may be build-in or made by our developers.
  */
 'use strict';
-const NODE_ENV = process.env.NODE_ENV;
-const DEV_ENV  = process.env.DEV_ENV;
-
 const plugins = [];
 
 //For serving Static file/folder to client.
@@ -94,13 +91,5 @@ plugins.push({
   register: require('./courses'),
   options : {}
 });
-
-//For development environment it plugin is attached.
-if(NODE_ENV === 'development' && DEV_ENV === "client") {
-  plugins.push({
-    register: require('./development'),
-    options : {}
-  });
-}
 
 export default plugins;
