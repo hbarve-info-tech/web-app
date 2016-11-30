@@ -122,24 +122,24 @@ export const signUp = (newUser) => {
 };
 
 
-export const signInStart   = ()        => {
+const signInStart   = ()        => {
   return {
     type: USER_SIGN_IN_START
   }
 };
-export const signInSuccess = (payload) => {
+const signInSuccess = (payload) => {
   return {
     type: USER_SIGN_IN_SUCCESS,
     payload
   };
 };
-export const signInError   = (payload) => {
+const signInError   = (payload) => {
   return {
     type: USER_SIGN_IN_ERROR,
     payload
   };
 };
-export const signIn        = (payload) => {
+export const signIn = (payload) => {
 
   return (dispatch) => {
 
@@ -169,22 +169,22 @@ export const signIn        = (payload) => {
 
 
 
-export const signOutStart   = () => {
+const signOutStart   = () => {
   return {
     type: USER_SIGN_OUT_START
   };
 };
-export const signOutSuccess = () => {
+const signOutSuccess = () => {
   return {
     type: USER_SIGN_OUT_SUCCESS
   };
 };
-export const signOutError   = () => {
+const signOutError   = () => {
   return {
     type: USER_SIGN_OUT_ERROR
   };
 };
-export const signOut        = () => {
+export const signOut = () => {
   return (dispatch) => {
     dispatch({
       type: USER_SIGN_OUT
@@ -194,28 +194,27 @@ export const signOut        = () => {
 
 
 
-export const fetchUserStart   = ()        => {
+const fetchUserStart   = ()        => {
   return {
     type: USER_FETCH_START
   };
 };
-export const fetchUserSuccess = (payload) => {
+const fetchUserSuccess = (payload) => {
   return {
     type: USER_FETCH_SUCCESS,
     payload
   };
 };
-export const fetchUserError   = (payload) => {
+const fetchUserError   = (payload) => {
   return {
     type: USER_FETCH_ERROR,
     payload
   };
 };
-export const fetchUser        = (payload) => {
+export const fetchUser = (payload) => {
   return (dispatch) => {
 
     dispatch(fetchUserStart());
-    dispatch(fetchElementStart());
 
     fetch('/api/users/' + getUserId(), {
       method: 'GET',
@@ -230,11 +229,9 @@ export const fetchUser        = (payload) => {
         (json) => {
           if(json.statusCode === 200) {
             dispatch(fetchUserSuccess(json.payload));
-            dispatch(fetchElementSuccess(json.payload));
           }
           else if(json.statusCode >= 400) {
             dispatch(fetchUserError(json));
-            dispatch(fetchElementError(json));
           }
         }
       );
@@ -243,24 +240,24 @@ export const fetchUser        = (payload) => {
 
 
 
-export const updateUserStart   = ()        => {
+const updateUserStart   = ()        => {
   return {
     type: USER_UPDATE_START
   };
 };
-export const updateUserSuccess = (payload) => {
+const updateUserSuccess = (payload) => {
   return {
     type: USER_UPDATE_SUCCESS,
     payload
   };
 };
-export const updateUserError   = (payload) => {
+const updateUserError   = (payload) => {
   return {
     type: USER_UPDATE_ERROR,
     payload
   }
 };
-export const updateUser        = (payload) => {
+export const updateUser = (payload) => {
   return (dispatch) => {
 
     dispatch(updateUserStart());

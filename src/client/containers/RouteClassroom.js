@@ -14,34 +14,20 @@ import Timeline    from "../components/Timeline";
 class RouteClassroom extends Component {
   constructor (props) {
     super(props);
+    this.state = {};
   };
-  count = 0;
-
-  configureClassroom({elements, routeParams}) {
-    elements     = elements.array;
-    let { username } = routeParams;
-
-    let element = _.find(elements, (e) => e.username == username);
-    this.setState({element});
-
-    if(element && !this.count) {
-      this.props.fetchCourses(element.id);
-      this.count = ++this.count;
-    }
-  }
-  componentWillMount () {
-    this.configureClassroom(this.props);
-  }
-  componentWillReceiveProps (nextProps) {
-    this.configureClassroom(nextProps);
-  }
 
   render () {
-    let { element } = this.state;
+    let { username } = this.props.routeParams;
+    let element  = this.props.elements.array.find(element => element.username === username);
     let { user } = this.props;
-    let posts = [];
-    if(element) {
-      posts = _.filter(this.props.courses.array, (e) => e.authorId == element.id);
+    let posts    = [];
+
+    if(element.elementType === "user") {
+      posts = this.props.courses.array.filter(course => course.authorId == element.id);
+    }
+    else {
+      posts = this.props.courses.array.filter(course => course.circleId == element.id);
     }
 
     return (

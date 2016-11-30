@@ -12,9 +12,10 @@ export const ELEMENT_FETCH_ERROR   = 'ELEMENT_FETCH_ERROR';
 
 import * as api from "../apis";
 
-export const fetchElementStart   = ()        => {
+export const fetchElementStart   = (payload) => {
   return {
-    type: ELEMENT_FETCH_START
+    type: ELEMENT_FETCH_START,
+    payload
   };
 };
 export const fetchElementSuccess = (payload) => {
@@ -32,7 +33,7 @@ export const fetchElementError   = (payload) => {
 export const fetchElement        = (payload) => {
   return (dispatch) => {
 
-    dispatch(fetchElementStart());
+    dispatch(fetchElementStart(payload));
 
     api.getElement(payload, (json) => {
       if(json.statusCode === 200) {

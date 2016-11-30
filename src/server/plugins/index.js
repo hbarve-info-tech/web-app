@@ -92,4 +92,9 @@ plugins.push({
   options : {}
 });
 
+plugins.push({
+  register: require('./classrooms'),
+  options : {}
+});
+
 export default plugins;
