@@ -27,7 +27,10 @@ if(readLocalStore("user") !== null) {
     ...initialState,
     array: [{
       ...initialElementState,
-      ...readLocalStore("user")
+      ...readLocalStore("user"),
+      elementType: "user",
+      isFetched  : true,
+      lastUpdated: Date.now()
     }]
   };
 }
