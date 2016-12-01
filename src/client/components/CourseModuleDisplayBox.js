@@ -27,12 +27,13 @@ export default class CourseModuleDisplayBox extends Component {
   };
 
   configureModule(moduleId) {
-    let module = _.find(this.props.modules, (module, index) => module.moduleId == moduleId);
+    let module = this.props.modules.find(module => module.moduleId == moduleId);
 
     let moduleData = module.moduleData;
+    let keys = Object.keys(moduleData);
     this.setState({
       module: module,
-      editorState: (moduleData !== undefined) ? EditorState.createWithContent(convertFromRaw(moduleData)) : EditorState.createEmpty()
+      editorState: (keys.length !== 0) ? EditorState.createWithContent(convertFromRaw(moduleData)) : EditorState.createEmpty()
     });
   }
 

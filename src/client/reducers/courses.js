@@ -2,7 +2,6 @@
  * Created by himank on 6/8/16.
  */
 "use strict";
-import _ from "lodash";
 import {
   COURSE_CREATE, COURSE_CREATE_START, COURSE_CREATE_ERROR, COURSE_CREATE_SUCCESS,
   COURSES_FETCH, COURSES_FETCH_START, COURSES_FETCH_ERROR, COURSES_FETCH_SUCCESS,
@@ -18,10 +17,10 @@ import {
 } from '../actions/courses';
 
 let initialModuleState  = {
-  courseId  : '',
-  moduleId  : '',
+  courseId  : -1,
+  moduleId  : -1,
   moduleName: '',
-  moduleData: '',
+  moduleData: {},
 
   isCreating  : false,
   isUpdating  : false,
@@ -33,14 +32,13 @@ let initialModuleState  = {
   isFetched   : false,
   isDeleted   : false,
 
-  statusCode  : 200,
   isError     : false,
   error       : '',
   message     : '',
   lastUpdated : Date.now()
 };
 let initialCourseState  = {
-  courseId    : '',
+  courseId    : -1,
   courseName  : '',
   description : '',
   level       : 1,
@@ -57,7 +55,6 @@ let initialCourseState  = {
   isFetched   : false,
   isDeleted   : false,
 
-  statusCode  : 200,
   isError     : false,
   error       : '',
   message     : '',
@@ -76,7 +73,6 @@ let initialCoursesState = {
   isFetched   : false,
   isDeleted   : false,
 
-  statusCode  : 200,
   isError     : false,
   error       : '',
   message     : '',
@@ -86,476 +82,801 @@ let initialCoursesState = {
 
 const moduleReducer = (state = initialModuleState, action) => {
   switch (action.type) {
-    case MODULE_CREATE : {
+    case MODULE_CREATE_SUCCESS: {
+      return {
+        ...state,
+        ...action.payload,
 
-      return Object.assign(
-        {},
-        state,
-        action.payload,
-        {
-          isCreating  : false,
-          isUpdating  : false,
-          isFetching  : false,
-          isDeleting  : false,
+        isCreating  : false,
+        isUpdating  : false,
+        isFetching  : false,
+        isDeleting  : false,
 
-          isCreated   : false,
-          isUpdated   : false,
-          isFetched   : false,
-          isDeleted   : false,
+        isCreated   : true,
+        isUpdated   : false,
+        isFetched   : false,
+        isDeleted   : false,
 
-          isError     : false,
-          error       : '',
-          message     : '',
-          lastUpdated : Date.now()
-        }
-      );
+        isError     : false,
+        error       : '',
+        message     : '',
+        lastUpdated : Date.now()
+      };
     }
-    case MODULE_FETCH  : {
 
-      return Object.assign(
-        {},
-        state,
-        action.payload,
-        {
-          isCreating  : false,
-          isUpdating  : false,
-          isFetching  : false,
-          isDeleting  : false,
+    case MODULE_FETCH_START: {
+      return {
+        ...state,
+        isCreating  : false,
+        isUpdating  : false,
+        isFetching  : true,
+        isDeleting  : false,
 
-          isCreated   : false,
-          isUpdated   : false,
-          isFetched   : false,
-          isDeleted   : false,
+        isCreated   : false,
+        isUpdated   : false,
+        isFetched   : false,
+        isDeleted   : false,
 
-          isError     : false,
-          error       : '',
-          message     : '',
-          lastUpdated : Date.now()
-        }
-      );
+        isError     : false,
+        error       : '',
+        message     : '',
+        lastUpdated : Date.now()
+      };
     }
-    case MODULE_UPDATE : {
+    case MODULE_FETCH_ERROR: {
+      return {
+        ...state,
+        isCreating  : false,
+        isUpdating  : false,
+        isFetching  : false,
+        isDeleting  : false,
 
-      return Object.assign(
-        {},
-        state,
-        action.payload,
-        {
-          isCreating  : false,
-          isUpdating  : false,
-          isFetching  : false,
-          isDeleting  : false,
+        isCreated   : false,
+        isUpdated   : false,
+        isFetched   : false,
+        isDeleted   : false,
 
-          isCreated   : false,
-          isUpdated   : false,
-          isFetched   : false,
-          isDeleted   : false,
-
-          isError     : false,
-          error       : '',
-          message     : '',
-          lastUpdated : Date.now()
-        }
-      );
+        isError     : true,
+        error       : action.payload.error,
+        message     : action.payload.message,
+        lastUpdated : Date.now()
+      };
     }
-    case MODULE_DELETE : {
+    case MODULE_FETCH_SUCCESS: {
+      return {
+        ...state,
+        ...action.payload,
 
+        isCreating  : false,
+        isUpdating  : false,
+        isFetching  : false,
+        isDeleting  : false,
+
+        isCreated   : false,
+        isUpdated   : false,
+        isFetched   : true,
+        isDeleted   : false,
+
+        isError     : false,
+        error       : '',
+        message     : '',
+        lastUpdated : Date.now()
+      };
+    }
+
+    case MODULE_UPDATE_START: {
+      return {
+        ...state,
+        isCreating  : false,
+        isUpdating  : true,
+        isFetching  : false,
+        isDeleting  : false,
+
+        isCreated   : false,
+        isUpdated   : false,
+        isFetched   : false,
+        isDeleted   : false,
+
+        isError     : false,
+        error       : '',
+        message     : '',
+        lastUpdated : Date.now()
+      };
+    }
+    case MODULE_UPDATE_ERROR: {
+      return {
+        ...state,
+        isCreating  : false,
+        isUpdating  : false,
+        isFetching  : false,
+        isDeleting  : false,
+
+        isCreated   : false,
+        isUpdated   : false,
+        isFetched   : false,
+        isDeleted   : false,
+
+        isError     : true,
+        error       : action.payload.error,
+        message     : action.payload.message,
+        lastUpdated : Date.now()
+      };
+    }
+    case MODULE_UPDATE_SUCCESS: {
+      return {
+        ...state,
+        ...action.payload,
+
+        isCreating  : false,
+        isUpdating  : false,
+        isFetching  : false,
+        isDeleting  : false,
+
+        isCreated   : false,
+        isUpdated   : true,
+        isFetched   : false,
+        isDeleted   : false,
+
+        isError     : false,
+        error       : '',
+        message     : '',
+        lastUpdated : Date.now()
+      };
+    }
+
+    case MODULE_DELETE_START: {
+      return {
+        ...state,
+        isCreating  : false,
+        isUpdating  : false,
+        isFetching  : false,
+        isDeleting  : true,
+
+        isCreated   : false,
+        isUpdated   : false,
+        isFetched   : false,
+        isDeleted   : false,
+
+        isError     : false,
+        error       : '',
+        message     : '',
+        lastUpdated : Date.now()
+      };
+    }
+    case MODULE_DELETE_ERROR: {
+      return {
+        ...state,
+        isCreating  : false,
+        isUpdating  : false,
+        isFetching  : true,
+        isDeleting  : false,
+
+        isCreated   : false,
+        isUpdated   : false,
+        isFetched   : false,
+        isDeleted   : false,
+
+        isError     : true,
+        error       : action.payload.error,
+        message     : action.payload.message,
+        lastUpdated : Date.now()
+      };
+    }
+
+    default:
       return state;
-    }
   }
 };
 
 const courseReducer = (state = initialCourseState, action) => {
   switch (action.type) {
-    case COURSE_CREATE : {
+    case COURSE_CREATE_SUCCESS: {
+      return {
+        ...state,
+        ...action.payload,
 
-      return Object.assign(
-        {},
-        state,
-        action.payload,
-        {
-          isFetching  : false,
-          isFetched   : true,
-          isError     : false,
-          error       : '',
-          message     : '',
-          lastUpdated : Date.now()
-        }
-      );
+        isCreating  : false,
+        isUpdating  : false,
+        isFetching  : false,
+        isDeleting  : false,
+
+        isCreated   : true,
+        isUpdated   : false,
+        isFetched   : false,
+        isDeleted   : false,
+
+        isError     : false,
+        error       : '',
+        message     : '',
+        lastUpdated : Date.now()
+      };
     }
-    case COURSE_FETCH_START : {
 
-      return Object.assign(
-        {},
-        state,
-        action.payload,
-        {
-          isFetching  : true,
-          isFetched   : false,
-          isError     : false,
+    case COURSE_FETCH_START: {
+      return {
+        ...state,
+        ...action.payload,
 
-          error       : '',
-          message     : '',
+        isCreating: false,
+        isUpdating: false,
+        isFetching: true,
+        isDeleting: false,
 
-          lastUpdated : Date.now()
-        }
-      );
+        isCreated: false,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+
+        isError     : false,
+        error       : '',
+        message     : '',
+        lastUpdated : Date.now()
+      };
     }
-    case COURSE_FETCH_ERROR : {
+    case COURSE_FETCH_ERROR: {
+      return {
+        ...state,
 
-      return Object.assign(
-        {},
-        state,
-        {
-          isFetching  : false,
-          isFetched   : false,
+        isCreating: false,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
 
-          isError     : true,
-          error       : action.error,
-          message     : action.message,
-          lastUpdated : Date.now()
-        }
-      );
+        isCreated: false,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+
+        isError: true,
+        error: action.error,
+        message: action.message,
+        lastUpdated: Date.now()
+      };
     }
-    case COURSE_FETCH_SUCCESS : {
+    case COURSE_FETCH_SUCCESS: {
+      return {
+        ...state,
+        ...action.payload,
 
-      return Object.assign(
-        {},
-        state,
-        action.payload,
-        {
-          isFetching  : false,
-          isFetched   : true,
-          isError     : false,
+        isCreating: false,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
 
-          error       : '',
-          message     : '',
+        isCreated: false,
+        isUpdated: false,
+        isFetched: true,
+        isDeleted: false,
 
-          lastUpdated : Date.now()
-        }
-      );
+        isError: false,
+        error: '',
+        message: '',
+        lastUpdated: Date.now()
+      };
     }
-    case COURSE_FETCH  : {
 
-      return Object.assign(
-        {},
-        state,
-        action.payload,
-        {
-          isFetching  : true,
-          isFetched   : false,
-          isError     : false,
-          error       : '',
-          message     : '',
-          lastUpdated : Date.now()
-        }
-      );
+    case COURSE_UPDATE_START: {
+      return {
+        ...state,
+        ...action.payload,
+
+        isCreating  : false,
+        isUpdating  : true,
+        isFetching  : false,
+        isDeleting  : false,
+
+        isCreated   : false,
+        isUpdated   : false,
+        isFetched   : false,
+        isDeleted   : false,
+
+        isError     : false,
+        error       : '',
+        message     : '',
+        lastUpdated : Date.now()
+      };
     }
-    case COURSE_UPDATE : {
+    case COURSE_UPDATE_ERROR: {
+      return {
+        ...state,
 
-      return Object.assign(
-        {},
-        state,
-        action.payload,
-        {
-          isCreating  : false,
-          isUpdating  : false,
-          isFetching  : false,
-          isDeleting  : false,
+        isCreating  : false,
+        isUpdating  : false,
+        isFetching  : false,
+        isDeleting  : false,
 
-          isCreated   : false,
-          isUpdated   : true,
-          isFetched   : false,
-          isDeleted   : false,
+        isCreated   : false,
+        isUpdated   : false,
+        isFetched   : false,
+        isDeleted   : false,
 
-          isError     : false,
-          error       : '',
-          message     : '',
-          lastUpdated : Date.now()
-        }
-      );
+        isError     : true,
+        error       : action.payload.error,
+        message     : action.payload.message,
+        lastUpdated : Date.now()
+      };
     }
-    case COURSE_DELETE : {
+    case COURSE_UPDATE_SUCCESS: {
+      return {
+        ...state,
+        ...action.payload,
 
+        isCreating  : false,
+        isUpdating  : false,
+        isFetching  : false,
+        isDeleting  : false,
+
+        isCreated   : false,
+        isUpdated   : true,
+        isFetched   : false,
+        isDeleted   : false,
+
+        isError     : false,
+        error       : '',
+        message     : '',
+        lastUpdated : Date.now()
+      };
+    }
+
+    case MODULE_CREATE_START: {
+      return {
+        ...state,
+
+        isCreating  : true,
+        isUpdating  : false,
+        isFetching  : false,
+        isDeleting  : false,
+
+        isCreated   : false,
+        isUpdated   : false,
+        isFetched   : false,
+        isDeleted   : false,
+
+        isError     : false,
+        error       : '',
+        message     : '',
+        lastUpdated : Date.now()
+      };
+    }
+    case MODULE_CREATE_ERROR: {
+      return {
+        ...state,
+
+        isCreating  : false,
+        isUpdating  : false,
+        isFetching  : false,
+        isDeleting  : false,
+
+        isCreated   : false,
+        isUpdated   : false,
+        isFetched   : false,
+        isDeleted   : false,
+
+        isError     : true,
+        error       : action.payload.error,
+        message     : action.payload.message,
+        lastUpdated : Date.now()
+      };
+    }
+    case MODULE_CREATE_SUCCESS: {
+      return {
+        ...state,
+        modules: [
+          ...state.modules,
+          moduleReducer(undefined, action)
+        ],
+        isCreating  : false,
+        isUpdating  : false,
+        isFetching  : false,
+        isDeleting  : false,
+
+        isCreated   : true,
+        isUpdated   : false,
+        isFetched   : false,
+        isDeleted   : false,
+
+        isError     : false,
+        error       : '',
+        message     : '',
+        lastUpdated : Date.now()
+      };
+    }
+
+    case MODULES_FETCH_START: {
+      return {
+        ...state,
+        isCreating: false,
+        isUpdating: false,
+        isFetching: true,
+        isDeleting: false,
+
+        isCreated: false,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+
+        isError    : false,
+        error      : '',
+        message    : '',
+        lastUpdated: Date.now()
+      };
+    }
+    case MODULES_FETCH_ERROR: {
+      return {
+        ...state,
+        isCreating: false,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
+
+        isCreated: false,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+
+        isError    : true,
+        error      : action.payload.error,
+        message    : action.payload.message,
+        lastUpdated: Date.now()
+      };
+    }
+    case MODULES_FETCH_SUCCESS: {
+      return {
+        ...state,
+        modules: [
+          ...state.modules,
+          ...action.payload.modules.map(module => moduleReducer(undefined, {type: MODULE_FETCH_SUCCESS, payload: module}))
+        ],
+        isCreating  : false,
+        isUpdating  : false,
+        isFetching  : false,
+        isDeleting  : false,
+
+        isCreated   : false,
+        isUpdated   : false,
+        isFetched   : true,
+        isDeleted   : false,
+
+        isError     : false,
+        error       : '',
+        message     : '',
+        lastUpdated : Date.now()
+      };
+    }
+
+    case MODULE_FETCH_START: {
+      let index = state.modules.findIndex(module => module.moduleId == action.payload.moduleId);
+
+      return {
+        ...state,
+        modules: [
+          ...state.modules.slice(0, index),
+          moduleReducer(state.modules[index], action),
+          ...state.modules.slice(index + 1, state.modules.length)
+        ],
+        lastUpdated : Date.now()
+      };
+    }
+    case MODULE_FETCH_ERROR: {
+      let index = state.modules.findIndex(module => module.moduleId == action.payload.moduleId);
+
+      return {
+        ...state,
+        modules: [
+          ...state.modules.slice(0, index),
+          moduleReducer(state.modules[index], action),
+          ...state.modules.slice(index + 1, state.modules.length)
+        ],
+        lastUpdated : Date.now()
+      };
+    }
+    case MODULE_FETCH_SUCCESS: {
+      let index = state.modules.findIndex(module => module.moduleId == action.payload.moduleId);
+
+      return {
+        ...state,
+        modules: [
+          ...state.modules.slice(0, index),
+          moduleReducer(state.modules[index], action),
+          ...state.modules.slice(index + 1, state.modules.length)
+        ],
+        lastUpdated : Date.now()
+      };
+    }
+
+    case MODULE_UPDATE_START: {
+      let index = state.modules.findIndex(module => module.moduleId == action.payload.moduleId);
+
+      return {
+        ...state,
+        modules: [
+          ...state.modules.slice(0, index),
+          moduleReducer(state.modules[index], action),
+          ...state.modules.slice(index + 1, state.modules.length)
+        ],
+        lastUpdated : Date.now()
+      };
+    }
+    case MODULE_UPDATE_ERROR: {
+      let index = state.modules.findIndex(module => module.moduleId == action.payload.moduleId);
+
+      return {
+        ...state,
+        modules: [
+          ...state.modules.slice(0, index),
+          moduleReducer(state.modules[index], action),
+          ...state.modules.slice(index + 1, state.modules.length)
+        ],
+        lastUpdated : Date.now()
+      };
+    }
+    case MODULE_UPDATE_SUCCESS: {
+      let index = state.modules.findIndex(module => module.moduleId == action.payload.moduleId);
+
+      return {
+        ...state,
+        modules: [
+          ...state.modules.slice(0, index),
+          moduleReducer(state.modules[index], action),
+          ...state.modules.slice(index + 1, state.modules.length)
+        ],
+        lastUpdated : Date.now()
+      };
+    }
+
+    case MODULE_DELETE_START: {
+      let index = state.modules.findIndex(module => module.moduleId == action.payload.moduleId);
+
+      return {
+        ...state,
+        modules: [
+          ...state.modules.slice(0, index),
+          moduleReducer(state.modules[index], action),
+          ...state.modules.slice(index + 1, state.modules.length)
+        ],
+        lastUpdated : Date.now()
+      };
+    }
+    case MODULE_DELETE_ERROR: {
+      let index = state.modules.findIndex(module => module.moduleId == action.payload.moduleId);
+
+      return {
+        ...state,
+        modules: [
+          ...state.modules.slice(0, index),
+          moduleReducer(state.modules[index], action),
+          ...state.modules.slice(index + 1, state.modules.length)
+        ],
+        lastUpdated : Date.now()
+      };
+    }
+    case MODULE_DELETE_SUCCESS: {
+      let index = state.modules.findIndex(module => module.moduleId == action.payload.moduleId);
+
+      return {
+        ...state,
+        modules: [
+          ...state.modules.slice(0, index),
+          ...state.modules.slice(index + 1, state.modules.length)
+        ],
+        lastUpdated : Date.now()
+      };
+    }
+
+    default:
       return state;
-    }
   }
 };
 
 const coursesReducer = (state = initialCoursesState, action) => {
   switch (action.type) {
     case COURSE_CREATE_START: {
+      return {
+        ...state,
+        isCreating: true,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
 
-      return Object.assign(
-        {},
-        state,
-        {
-          isCreatingCourse: true,
-          isFetching  : true,
-          error       : '',
-          message     : '',
-          lastUpdated : Date.now()
-        }
-      );
+        isCreated: false,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+
+        isError : false,
+        error   : '',
+        message : '',
+
+        lastUpdated: Date.now()
+      };
     }
     case COURSE_CREATE_ERROR: {
+      return {
+        ...state,
+        isCreating: false,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
 
-      return Object.assign(
-        {},
-        state,
-        {
-          isCreatingCourse: false,
-          isFetching  : false,
-          isFetched   : true,
-          error       : action.payload.error,
-          message     : action.payload.message,
-          lastUpdated : Date.now()
-        }
-      );
+        isCreated: false,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+
+        isError: true,
+        error  : action.payload.error,
+        message: action.payload.message,
+
+        lastUpdated : Date.now()
+      };
     }
     case COURSE_CREATE_SUCCESS: {
-      let newCourse = courseReducer(undefined, {
-        type   : COURSE_CREATE,
-        payload: action.payload
-      });
+      return {
+        ...state,
+        array: [
+          ...array,
+          courseReducer(undefined, action)
+        ],
+        isCreating  : false,
+        isUpdating  : false,
+        isFetching  : false,
+        isDeleting  : false,
 
-      let array = state.array;
-      array.push(newCourse);
+        isCreated   : true,
+        isUpdated   : false,
+        isFetched   : false,
+        isDeleted   : false,
 
-      for(let i = 0; i < array.length; i++) {
-        for(let j = i + 1; j < array.length; j++) {
-          if(array[i].courseId === array[j].courseId) {
-            array[i] = Object.assign(
-              {},
-              array[i],
-              array[j]
-            );
-            array.splice(j, 1);
-          }
-        }
-      }
+        isError     : false,
+        error       : '',
+        message     : '',
 
-      return Object.assign(
-        {},
-        state,
-        {
-          array     : array,
-          isFetching: false,
-          isFetched : true,
-          isError   : false,
-          error     : ''
-        }
-      );
+        lastUpdated : Date.now()
+      };
     }
 
     case COURSES_FETCH_START: {
-      return Object.assign(
-        {},
-        state,
-        {
-          isFetching: true,
-          isFetched : false,
-          isError   : false,
-          error     : '',
-          lastUpdated : Date.now()
-        }
-      );
+      return {
+        ...state,
+        isCreating: false,
+        isUpdating: false,
+        isFetching: true,
+        isDeleting: false,
+
+        isCreated: false,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+
+        isError : false,
+        error   : '',
+        message : '',
+
+        lastUpdated : Date.now()
+      };
     }
     case COURSES_FETCH_ERROR: {
-      return Object.assign(
-        {},
-        state,
-        {
-          isFetching: false,
-          isFetched : true,
-          isError   : true,
-          error     : action.payload.error,
-          message   : action.payload.message,
-          lastUpdated : Date.now()
-        }
-      );
+      return {
+        ...state,
+        isCreating: false,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
+
+        isCreated: false,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+
+        isError: true,
+        error  : action.payload.error,
+        message: action.payload.message,
+
+        lastUpdated: Date.now()
+      };
     }
     case COURSES_FETCH_SUCCESS: {
-      let array = state.array;
+      action.payload = action.payload.map(course => courseReducer(undefined, {type: COURSE_FETCH_SUCCESS, payload: course}));
 
-      if(array.length === 0) {
-        action.payload.map((fetchedCourse, index1) => {
-          array.push(courseReducer(undefined, {
-            type   : COURSE_CREATE,
-            payload: fetchedCourse
-          }));
-        });
-      }
-      else {
-        array = array.concat(action.payload);
-      }
+      return {
+        ...state,
+        array: [
+          ...state.array,
+          ...action.payload
+        ],
+        isCreating  : false,
+        isUpdating  : false,
+        isFetching  : false,
+        isDeleting  : false,
 
-      for(let i = 0; i < array.length; i++) {
-        for(let j = i + 1; j < array.length; j++) {
-          if(array[i].courseId === array[j].courseId) {
-            array[i] = Object.assign(
-              {},
-              array[i],
-              array[j]
-            );
-            array.splice(j, 1);
-          }
-        }
-      }
+        isCreated   : false,
+        isUpdated   : false,
+        isFetched   : true,
+        isDeleted   : false,
 
-      return Object.assign(
-        {},
-        state,
-        {
-          array     : array,
-          isFetching: false,
-          isFetched : true,
-          isError   : false,
-          error     : '',
-          message   : '',
-          lastUpdated : Date.now()
-        }
-      );
+        isError     : false,
+        error       : '',
+        message     : '',
+
+        lastUpdated : Date.now()
+      };
     }
 
     case COURSE_FETCH_START: {
-      let newCourse = courseReducer(undefined, {
-        type   : COURSE_FETCH,
-        payload: action.payload
-      });
-
-      let array = state.array;
-      array.push(newCourse);
-
-      return Object.assign(
-        {},
-        state,
-        {
-          array       : array,
-          lastUpdated : Date.now()
-        }
-      );
+      return {
+        ...state,
+        array: [
+          ...state.array,
+          courseReducer(undefined, action)
+        ],
+        lastUpdated : Date.now()
+      };
     }
     case COURSE_FETCH_ERROR: {
-      let course = courseReducer(undefined, {
-        type   : COURSE_UPDATE,
-        payload: action.payload
-      });
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
-      let array = state.array;
-      array.push(course);
-
-      return Object.assign(
-        {},
-        state,
-        {
-          array     : array,
-          isFetching: true,
-          isFetched : false,
-          isError   : false,
-          error     : ''
-        }
-      );
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          courseReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length)
+        ],
+        lastUpdated : Date.now()
+      };
     }
     case COURSE_FETCH_SUCCESS: {
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
-      let array = state.array;
-      array.map((course, index) => {
-        if(course.courseId == action.payload.courseId) {
-          array[index] = courseReducer(course, {
-            type   : COURSE_FETCH_SUCCESS,
-            payload: action.payload
-          });
-        }
-      });
-
-      for(let i = 0; i < array.length; i++) {
-        for(let j = i + 1; j < array.length; j++) {
-          if(array[i].courseId === array[j].courseId) {
-            array[i] = Object.assign(
-              {},
-              array[i],
-              array[j]
-            );
-            array.splice(j, 1);
-          }
-        }
-      }
-
-      return Object.assign(
-        {},
-        state,
-        {
-          array       : array,
-          lastUpdated : Date.now()
-        }
-      );
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          courseReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length)
+        ],
+        lastUpdated : Date.now()
+      };
     }
 
     case COURSE_UPDATE_START: {
-      return Object.assign(
-        {},
-        state,
-        {
-          array: state.array.map((course, index) => {
-            if(course.courseId === action.payload.courseId) {
-              return Object.assign(
-                {},
-                course,
-                {
-                  isUpdating: true,
-                  lastUpdated : Date.now()
-                }
-              )
-            }
-            else {
-              return course;
-            }
-          })
-        }
-      );
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
+
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          courseReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length)
+        ],
+        lastUpdated : Date.now()
+      };
     }
     case COURSE_UPDATE_ERROR: {
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
-      return state;
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          courseReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length)
+        ],
+        lastUpdated : Date.now()
+      };
     }
     case COURSE_UPDATE_SUCCESS: {
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
-      return Object.assign(
-        {},
-        state,
-        {
-          array: state.array.map((course, index) => {
-            if(course.courseId === action.payload.courseId) {
-
-              return courseReducer(course, {
-                type   : COURSE_UPDATE,
-                payload: action.payload
-              });
-            }
-            else {
-              return course;
-            }
-          })
-        },
-        {
-          isCreating  : false,
-          isUpdating  : false,
-          isFetching  : false,
-          isDeleting  : false,
-
-          isCreated   : false,
-          isUpdated   : false,
-          isFetched   : false,
-          isDeleted   : false,
-
-          isError     : false,
-          error       : '',
-          message     : '',
-
-          lastUpdated : Date.now()
-        }
-      );
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          courseReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length)
+        ],
+        lastUpdated : Date.now()
+      };
     }
 
     case COURSE_DELETE_START: {
@@ -572,627 +893,204 @@ const coursesReducer = (state = initialCoursesState, action) => {
     }
 
 
-    case MODULE_CREATE_START  : {
+    case MODULE_CREATE_START: {
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
-      return Object.assign(
-        {},
-        state,
-        {
-          array: state.array.map((course, index) => {
-            if(course.courseId === action.payload.courseId) {
-              return Object.assign(
-                {},
-                course,
-                {
-                  isCreating  : true,
-                  isUpdating  : false,
-                  isFetching  : false,
-                  isDeleting  : false,
-
-                  isCreated   : false,
-                  isUpdated   : false,
-                  isFetched   : false,
-                  isDeleted   : false,
-
-                  isError     : false,
-                  error       : '',
-                  message     : '',
-                  lastUpdated : Date.now()
-                }
-              )
-            }
-            else {
-              return course;
-            }
-          })
-        }
-      );
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          courseReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length)
+        ],
+        lastUpdated : Date.now()
+      };
     }
-    case MODULE_CREATE_ERROR  : {
+    case MODULE_CREATE_ERROR: {
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
-      return Object.assign(
-        {},
-        state,
-        {
-          array: state.array.map((course, index) => {
-            if(course.courseId === action.payload.courseId) {
-              return Object.assign(
-                {},
-                course,
-                {
-                  isCreating  : false,
-                  isUpdating  : false,
-                  isFetching  : false,
-                  isDeleting  : false,
-
-                  isCreated   : false,
-                  isUpdated   : false,
-                  isFetched   : false,
-                  isDeleted   : false,
-
-                  isError     : true,
-                  error       : action.error,
-                  message     : action.message,
-                  lastUpdated : Date.now()
-                }
-              )
-            }
-            else {
-              return course;
-            }
-          })
-        }
-      );
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          courseReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length)
+        ],
+        lastUpdated : Date.now()
+      };
     }
     case MODULE_CREATE_SUCCESS: {
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
-      return Object.assign(
-        {},
-        state,
-        {
-          array: state.array.map((course, index) => {
-            if(course.courseId === action.payload.courseId) {
-              let modules = course.modules;
-
-              modules.push(moduleReducer(undefined, {
-                type   : MODULE_CREATE,
-                payload: action.payload
-              }));
-
-              return Object.assign(
-                {},
-                course,
-                {
-                  modules: modules
-                },
-                {
-                  isCreating  : false,
-                  isUpdating  : false,
-                  isFetching  : false,
-                  isDeleting  : false,
-
-                  isCreated   : true,
-                  isUpdated   : false,
-                  isFetched   : false,
-                  isDeleted   : false,
-
-                  isError     : false,
-                  error       : '',
-                  message     : '',
-                  lastUpdated : Date.now()
-                }
-              )
-            }
-            else {
-              return course;
-            }
-          })
-        }
-      );
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          courseReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length)
+        ],
+        lastUpdated : Date.now()
+      };
     }
 
-    case MODULES_FETCH_START : {
+    case MODULES_FETCH_START: {
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
-      return Object.assign(
-        {},
-        state,
-        {
-          array: state.array.map((course, index) => {
-            if(course.courseId === action.payload.courseId)   {
-
-              return Object.assign(
-                {},
-                course,
-                {
-                  isCreating  : false,
-                  isUpdating  : false,
-                  isFetching  : true,
-                  isDeleting  : false,
-
-                  isCreated   : false,
-                  isUpdated   : false,
-                  isFetched   : false,
-                  isDeleted   : false,
-
-                  isError     : false,
-                  error       : '',
-                  message     : '',
-                  lastUpdated : Date.now()
-                }
-              )
-            }
-            else {
-              return course;
-            }
-          })
-        }
-      );
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          courseReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length)
+        ],
+        lastUpdated : Date.now()
+      };
     }
-    case MODULES_FETCH_ERROR : {
-      return Object.assign(
-        {},
-        state,
-        {
-          array: state.array.map((course, index) => {
-            if(course.courseId === action.payload.courseId)   {
+    case MODULES_FETCH_ERROR: {
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
-              return Object.assign(
-                {},
-                course,
-                {
-                  isCreating  : false,
-                  isUpdating  : false,
-                  isFetching  : false,
-                  isDeleting  : false,
-
-                  isCreated   : false,
-                  isUpdated   : false,
-                  isFetched   : false,
-                  isDeleted   : false,
-
-                  isError     : true,
-                  error       : action.error,
-                  message     : action.message,
-                  lastUpdated : Date.now()
-                }
-              );
-            }
-            else {
-              return course;
-            }
-          })
-        }
-      );
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          courseReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length)
+        ],
+        lastUpdated : Date.now()
+      };
     }
-    case MODULES_FETCH_SUCCESS : {
-      let course = _.find(state.array, (e) => e.courseId == action.payload.courseId);
+    case MODULES_FETCH_SUCCESS: {
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
-      course.modules = action.payload.modules;
-
-
-      return Object.assign(
-        {},
-        state,
-        {array: state.array.map((e, index) => {
-            if(e.courseId == action.payload.courseId)   {
-              return course;
-            }
-            else {
-              return e;
-            }
-          })}
-      );
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          courseReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length)
+        ],
+        lastUpdated : Date.now()
+      };
     }
 
-    case MODULE_FETCH_START : {
+    case MODULE_FETCH_START: {
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
-      return Object.assign(
-        {},
-        state,
-        {
-          array: state.array.map((course, index) => {
-            if(course.courseId === action.payload.courseId)   {
-
-              return Object.assign(
-                {},
-                course,
-                {
-                  isCreating  : false,
-                  isUpdating  : false,
-                  isFetching  : true,
-                  isDeleting  : false,
-
-                  isCreated   : true,
-                  isUpdated   : false,
-                  isFetched   : false,
-                  isDeleted   : false,
-
-                  isError     : false,
-                  error       : '',
-                  message     : '',
-                  lastUpdated : Date.now()
-                }
-              )
-            }
-            else {
-              return course;
-            }
-          })
-        }
-      );
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          courseReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length)
+        ],
+        lastUpdated : Date.now()
+      };
     }
-    case MODULE_FETCH_ERROR : {
-      return Object.assign(
-        {},
-        state,
-        {
-          array: state.array.map((course, index) => {
-            if(course.courseId === action.payload.courseId)   {
+    case MODULE_FETCH_ERROR: {
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
-              return Object.assign(
-                {},
-                course,
-                {
-                  isCreating  : false,
-                  isUpdating  : false,
-                  isFetching  : false,
-                  isDeleting  : false,
-
-                  isCreated   : false,
-                  isUpdated   : false,
-                  isFetched   : false,
-                  isDeleted   : false,
-
-                  isError     : true,
-                  error       : action.error,
-                  message     : action.message,
-                  lastUpdated : Date.now()
-                }
-              );
-            }
-            else {
-              return course;
-            }
-          })
-        }
-      );
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          courseReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length)
+        ],
+        lastUpdated : Date.now()
+      };
     }
-    case MODULE_FETCH_SUCCESS : {
-      return Object.assign(
-        {},
-        state,
-        {
-          array: state.array.map((course, index) => {
-            if(course.courseId === action.payload.courseId)   {
-              let modules = course.modules;
+    case MODULE_FETCH_SUCCESS: {
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
-              if(modules.length === 0) {
-                action.payload.map((fetchedModule, index1) => {
-                  modules.push(moduleReducer(undefined, {
-                    type   : MODULE_FETCH,
-                    payload: fetchedModule
-                  }));
-                });
-              }
-              else {
-                modules = modules.concat(action.payload);
-
-                for(let i = 0; i < modules.length; i++) {
-                  for(let j = i + 1; j < modules.length; j++) {
-                    if(modules[i].courseId === modules[j].courseId) {
-                      modules.splice(j, 1);
-                    }
-                  }
-                }
-              }
-
-              return Object.assign(
-                {},
-                course,
-                {
-                  modules: modules
-                },
-                {
-                  isCreating  : false,
-                  isUpdating  : false,
-                  isFetching  : true,
-                  isDeleting  : false,
-
-                  isCreated   : false,
-                  isUpdated   : false,
-                  isFetched   : true,
-                  isDeleted   : false,
-
-                  isError     : false,
-                  error       : '',
-                  message     : '',
-                  lastUpdated : Date.now()
-                }
-              )
-            }
-            else {
-              return course;
-            }
-          })
-        }
-      );
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          courseReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length)
+        ],
+        lastUpdated : Date.now()
+      };
     }
 
-    case MODULE_UPDATE_START : {
+    case MODULE_UPDATE_START: {
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
-      return Object.assign(
-        {},
-        state,
-        {
-          array: state.array.map((course, index) => {
-            if(course.courseId === action.payload.courseId)   {
-              return Object.assign(
-                {},
-                course,
-                {
-                  modules: course.modules.map((module, index2) => {
-                    if(module.moduleId === action.payload.moduleId) {
-                      return Object.assign(
-                        {},
-                        module,
-                        {
-                          isCreating  : false,
-                          isUpdating  : true,
-                          isFetching  : false,
-                          isDeleting  : false,
-
-                          isCreated   : false,
-                          isUpdated   : false,
-                          isFetched   : false,
-                          isDeleted   : false,
-
-                          isError     : false,
-                          error       : '',
-                          message     : '',
-                          lastUpdated : Date.now()
-                        }
-                      );
-                    }
-                    else {
-                      return module;
-                    }
-                  })
-                }
-              )
-            }
-            else {
-              return course;
-            }
-          })
-        }
-      );
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          courseReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length)
+        ],
+        lastUpdated : Date.now()
+      };
     }
-    case MODULE_UPDATE_ERROR : {
+    case MODULE_UPDATE_ERROR: {
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
-      return Object.assign(
-        {},
-        state,
-        {array: state.array.map((course, index) => {
-            if(course.courseId === action.payload.courseId)   {
-              return Object.assign(
-                {},
-                course,
-                {modules: course.modules.map((module, index2) => {
-                    if(module.moduleId === action.payload.moduleId) {
-                      return Object.assign(
-                        {},
-                        module,
-                        {
-                          isCreating  : false,
-                          isUpdating  : false,
-                          isFetching  : false,
-                          isDeleting  : false,
-
-                          isCreated   : false,
-                          isUpdated   : false,
-                          isFetched   : false,
-                          isDeleted   : false,
-
-                          isError     : true,
-                          error       : action.error,
-                          message     : action.message,
-                          lastUpdated : Date.now()
-                        }
-                      );
-                    }
-                    else {
-                      return module;
-                    }
-                  })}
-              )
-            }
-            else {
-              return course;
-            }
-          })}
-      );
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          courseReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length)
+        ],
+        lastUpdated : Date.now()
+      };
     }
-    case MODULE_UPDATE_SUCCESS : {
+    case MODULE_UPDATE_SUCCESS: {
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
-      return Object.assign(
-        {},
-        state,
-        {array: state.array.map((course, index) => {
-            if(course.courseId === action.payload.courseId)   {
-              return Object.assign(
-                {},
-                course,
-                {
-                  modules: course.modules.map((module, index2) => {
-                    if(module.moduleId === action.payload.moduleId) {
-                      return Object.assign(
-                        {},
-                        module,
-                        action.payload,
-                        {
-                          isCreating  : false,
-                          isUpdating  : false,
-                          isFetching  : false,
-                          isDeleting  : false,
-
-                          isCreated   : false,
-                          isUpdated   : true,
-                          isFetched   : false,
-                          isDeleted   : false,
-
-                          isError     : false,
-                          error       : '',
-                          message     : '',
-                          lastUpdated : Date.now()
-                        }
-                      );
-                    }
-                    else {
-                      return module;
-                    }
-                  })
-                }
-              )
-            }
-            else {
-              return course;
-            }
-          })}
-      );
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          courseReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length)
+        ],
+        lastUpdated : Date.now()
+      };
     }
 
-    case MODULE_DELETE_START : {
+    case MODULE_DELETE_START: {
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
-      return Object.assign(
-        {},
-        state,
-        {
-          array: state.array.map((course, index) => {
-            if(course.courseId === action.payload.courseId)   {
-
-              return Object.assign(
-                {},
-                course,
-                {
-                  isCreating  : false,
-                  isUpdating  : false,
-                  isFetching  : true,
-                  isDeleting  : false,
-
-                  isCreated   : true,
-                  isUpdated   : false,
-                  isFetched   : false,
-                  isDeleted   : false,
-
-                  isError     : false,
-                  error       : '',
-                  message     : '',
-                  lastUpdated : Date.now()
-                }
-              )
-            }
-            else {
-              return course;
-            }
-          })
-        }
-      );
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          courseReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length)
+        ],
+        lastUpdated : Date.now()
+      };
     }
-    case MODULE_DELETE_ERROR : {
-      return Object.assign(
-        {},
-        state,
-        {
-          array: state.array.map((course, index) => {
-            if(course.courseId === action.payload.courseId)   {
+    case MODULE_DELETE_ERROR: {
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
-              return Object.assign(
-                {},
-                course,
-                {
-                  isCreating  : false,
-                  isUpdating  : false,
-                  isFetching  : false,
-                  isDeleting  : false,
-
-                  isCreated   : false,
-                  isUpdated   : false,
-                  isFetched   : false,
-                  isDeleted   : false,
-
-                  isError     : true,
-                  error       : action.error,
-                  message     : action.message,
-                  lastUpdated : Date.now()
-                }
-              );
-            }
-            else {
-              return course;
-            }
-          })
-        }
-      );
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          courseReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length)
+        ],
+        lastUpdated : Date.now()
+      };
     }
-    case MODULE_DELETE_SUCCESS : {
-      return Object.assign(
-        {},
-        state,
-        {
-          array: state.array.map((course, index) => {
-            if(course.courseId === action.payload.courseId)   {
-              let modules = course.modules;
+    case MODULE_DELETE_SUCCESS: {
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
-              if(modules.length === 0) {
-                action.payload.map((fetchedModule, index1) => {
-                  modules.push(moduleReducer(undefined, {
-                    type   : MODULE_FETCH,
-                    payload: fetchedModule
-                  }));
-                });
-              }
-              else {
-                modules = modules.concat(action.payload);
-
-                for(let i = 0; i < modules.length; i++) {
-                  for(let j = i + 1; j < modules.length; j++) {
-                    if(modules[i].courseId === modules[j].courseId) {
-                      modules.splice(j, 1);
-                    }
-                  }
-                }
-              }
-
-              return Object.assign(
-                {},
-                course,
-                {
-                  modules: modules
-                },
-                {
-                  isCreating  : false,
-                  isUpdating  : false,
-                  isFetching  : true,
-                  isDeleting  : false,
-
-                  isCreated   : false,
-                  isUpdated   : false,
-                  isFetched   : true,
-                  isDeleted   : false,
-
-                  isError     : false,
-                  error       : '',
-                  message     : '',
-                  lastUpdated : Date.now()
-                }
-              )
-            }
-            else {
-              return course;
-            }
-          })
-        }
-      );
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          courseReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length)
+        ],
+        lastUpdated : Date.now()
+      };
     }
 
     default:
