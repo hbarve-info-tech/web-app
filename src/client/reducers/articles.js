@@ -9,10 +9,10 @@ import {
 
 
 let initialArticleState  = {
-  articleId   : '',
+  articleId   : -1,
   articleName : '',
   description : '',
-  articleData : '',
+  articleData : {},
 
   isCreating  : false,
   isUpdating  : false,
@@ -51,466 +51,351 @@ let initialArticlesState = {
 
 const articleReducer = (state = initialArticleState, action) => {
   switch (action.type) {
-    case ARTICLE_CREATE : {
-
-      return Object.assign(
-        {},
-        state,
-        action.payload,
-        {
-          isFetching  : false,
-          isFetched   : true,
-          isError     : false,
-          error       : '',
-          message     : '',
-          lastUpdated : Date.now()
-        }
-      );
-    }
-    case ARTICLE_FETCH  : {
-
-      return Object.assign(
-        {},
-        state,
-        action.payload,
-        {
-          isFetching  : true,
-          isFetched   : false,
-          isError     : false,
-          error       : '',
-          message     : '',
-          lastUpdated : Date.now()
-        }
-      );
-    }
-    case ARTICLE_UPDATE : {
-
-      return Object.assign(
-        {},
-        state,
-        action.payload,
-        {
-          isCreating  : false,
-          isUpdating  : false,
-          isFetching  : false,
-          isDeleting  : false,
-
-          isCreated   : false,
-          isUpdated   : true,
-          isFetched   : false,
-          isDeleted   : false,
-
-          isError     : false,
-          error       : '',
-          message     : '',
-          lastUpdated : Date.now()
-        }
-      );
-    }
-    case ARTICLE_DELETE : {
+    case ARTICLE_CREATE_SUCCESS: {
 
       return state;
     }
+
+    case ARTICLE_FETCH_START: {
+      return {
+        ...state,
+        ...action.payload,
+
+        isCreating  : false,
+        isUpdating  : false,
+        isFetching  : true,
+        isDeleting  : false,
+
+        isCreated   : false,
+        isUpdated   : false,
+        isFetched   : true,
+        isDeleted   : false,
+
+        isError     : false,
+        error       : '',
+        message     : '',
+        lastUpdated : Date.now()
+      };
+    }
+    case ARTICLE_FETCH_ERROR: {
+      return {
+        ...state,
+
+        isCreating  : false,
+        isUpdating  : false,
+        isFetching  : false,
+        isDeleting  : false,
+
+        isCreated   : false,
+        isUpdated   : false,
+        isFetched   : false,
+        isDeleted   : false,
+
+        isError     : true,
+        error       : action.error,
+        message     : action.message,
+        lastUpdated : Date.now()
+      };
+    }
+    case ARTICLE_FETCH_SUCCESS: {
+      return {
+        ...state,
+        ...action.payload,
+
+        isCreating  : false,
+        isUpdating  : false,
+        isFetching  : false,
+        isDeleting  : false,
+
+        isCreated   : false,
+        isUpdated   : false,
+        isFetched   : true,
+        isDeleted   : false,
+
+        isError     : false,
+        error       : '',
+        message     : '',
+        lastUpdated : Date.now()
+      };
+    }
+
+    case ARTICLE_UPDATE_START: {
+      return {
+        ...state,
+        ...action.payload,
+
+        isCreating  : false,
+        isUpdating  : true,
+        isFetching  : false,
+        isDeleting  : false,
+
+        isCreated   : false,
+        isUpdated   : false,
+        isFetched   : false,
+        isDeleted   : false,
+
+        isError     : false,
+        error       : '',
+        message     : '',
+        lastUpdated : Date.now()
+      };
+    }
+    case ARTICLE_UPDATE_ERROR: {
+      return {
+        ...state,
+
+        isCreating  : false,
+        isUpdating  : false,
+        isFetching  : false,
+        isDeleting  : false,
+
+        isCreated   : false,
+        isUpdated   : false,
+        isFetched   : false,
+        isDeleted   : false,
+
+        isError     : true,
+        error       : action.payload.error,
+        message     : action.payload.message,
+        lastUpdated : Date.now()
+      };
+    }
+    case ARTICLE_UPDATE_SUCCESS: {
+      return {
+        ...state,
+        ...action.payload,
+
+        isCreating  : false,
+        isUpdating  : false,
+        isFetching  : false,
+        isDeleting  : false,
+
+        isCreated   : false,
+        isUpdated   : true,
+        isFetched   : false,
+        isDeleted   : false,
+
+        isError     : false,
+        error       : '',
+        message     : '',
+        lastUpdated : Date.now()
+      };
+    }
+
+    default:
+      return state;
   }
 };
 
 const articlesReducer = (state = initialArticlesState, action) => {
   switch (action.type) {
     case ARTICLE_CREATE_START  : {
+      return {
+        ...state,
+        isCreating  : true,
+        isUpdating  : false,
+        isFetching  : false,
+        isDeleting  : false,
 
-      return Object.assign(
-        {},
-        state,
-        {
-          isCreating  : true,
-          isUpdating  : false,
-          isFetching  : false,
-          isDeleting  : false,
+        isCreated   : false,
+        isUpdated   : false,
+        isFetched   : false,
+        isDeleted   : false,
 
-          isCreated   : false,
-          isUpdated   : false,
-          isFetched   : false,
-          isDeleted   : false,
+        isError     : false,
+        error       : '',
+        message     : '',
 
-          isError     : false,
-          error       : '',
-          message     : '',
-
-          lastUpdated : Date.now()
-        }
-      );
+        lastUpdated : Date.now()
+      };
     }
     case ARTICLE_CREATE_ERROR  : {
+      return {
+        ...state,
+        isCreating  : false,
+        isUpdating  : false,
+        isFetching  : false,
+        isDeleting  : false,
 
-      return Object.assign(
-        {},
-        state,
-        {
-          isCreating  : false,
-          isUpdating  : false,
-          isFetching  : false,
-          isDeleting  : false,
+        isCreated   : false,
+        isUpdated   : false,
+        isFetched   : false,
+        isDeleted   : false,
 
-          isCreated   : false,
-          isUpdated   : false,
-          isFetched   : false,
-          isDeleted   : false,
-
-          isError     : true,
-          error       : action.payload.error,
-          message     : action.payload.message,
-          lastUpdated : Date.now()
-        }
-      );
+        isError     : true,
+        error       : action.payload.error,
+        message     : action.payload.message,
+        lastUpdated : Date.now()
+      };
     }
     case ARTICLE_CREATE_SUCCESS: {
-      let newArticle = articleReducer(
-        undefined,
-        {
-          type   : ARTICLE_CREATE,
-          payload: action.payload
-        }
-      );
+      return {
+        ...state,
+        array : [
+          ...state.array,
+          articleReducer(undefined, {type: ARTICLE_CREATE, payload: action.payload})
+        ],
+        isCreating  : false,
+        isUpdating  : false,
+        isFetching  : false,
+        isDeleting  : false,
 
-      let array = state.array;
-      array.push(newArticle);
+        isCreated   : true,
+        isUpdated   : false,
+        isFetched   : false,
+        isDeleted   : false,
 
-      for(let i = 0; i < array.length; i++) {
-        for(let j = i + 1; j < array.length; j++) {
-          if(array[i].articleId === array[j].articleId) {
-            array[i] = Object.assign(
-              {},
-              array[i],
-              array[j]
-            );
-            array.splice(j, 1);
-          }
-        }
-      }
+        isError     : false,
+        error       : '',
+        message     : '',
 
-      return Object.assign(
-        {},
-        state,
-        {
-          array       : array,
-
-          isCreating  : false,
-          isUpdating  : false,
-          isFetching  : false,
-          isDeleting  : false,
-
-          isCreated   : true,
-          isUpdated   : false,
-          isFetched   : false,
-          isDeleted   : false,
-
-          isError     : false,
-          error       : '',
-          message     : '',
-
-          lastUpdated : Date.now()
-        }
-      );
+        lastUpdated : Date.now()
+      };
     }
 
     case ARTICLES_FETCH_START  : {
-      return Object.assign(
-        {},
-        state,
-        {
-          isCreating  : false,
-          isUpdating  : false,
-          isFetching  : true,
-          isDeleting  : false,
+      return {
+        ...state,
+        isCreating  : false,
+        isUpdating  : false,
+        isFetching  : true,
+        isDeleting  : false,
 
-          isCreated   : false,
-          isUpdated   : false,
-          isFetched   : false,
-          isDeleted   : false,
+        isCreated   : false,
+        isUpdated   : false,
+        isFetched   : false,
+        isDeleted   : false,
 
-          isError     : false,
-          error       : '',
-          message     : '',
+        isError     : false,
+        error       : '',
+        message     : '',
 
-          lastUpdated : Date.now()
-        }
-      );
+        lastUpdated : Date.now()
+      };
     }
     case ARTICLES_FETCH_ERROR  : {
-      return Object.assign(
-        {},
-        state,
-        {
-          isCreating  : false,
-          isUpdating  : false,
-          isFetching  : false,
-          isDeleting  : false,
+      return {
+        ...state,
+        isCreating  : false,
+        isUpdating  : false,
+        isFetching  : false,
+        isDeleting  : false,
 
-          isCreated   : false,
-          isUpdated   : false,
-          isFetched   : true,
-          isDeleted   : false,
+        isCreated   : false,
+        isUpdated   : false,
+        isFetched   : false,
+        isDeleted   : false,
 
-          isError     : true,
-          error       : action.payload.error,
-          message     : action.payload.message,
-          lastUpdated : Date.now()
-        }
-      );
+        isError     : true,
+        error       : action.payload.error,
+        message     : action.payload.message,
+        lastUpdated : Date.now()
+      };
     }
     case ARTICLES_FETCH_SUCCESS: {
-      let array = state.array;
+      action.payload = action.payload.map(article => {
+        return articleReducer(undefined, {type: ARTICLE_FETCH_SUCCESS, payload: article});
+      });
 
-      if(array.length === 0) {
-        action.payload.map((fetchedArticle, index) => {
-          array.push(articleReducer(
-              undefined,
-              {
-                type   : ARTICLE_CREATE,
-                payload: fetchedArticle
-              }
-            )
-          );
-        });
-      }
-      else {
-        array = array.concat(action.payload);
-      }
+      return {
+        ...state,
+        array: [
+          ...state.array,
+          ...action.payload
+        ],
+        isCreating  : false,
+        isUpdating  : false,
+        isFetching  : false,
+        isDeleting  : false,
 
-      for(let i = 0; i < array.length; i++) {
-        for(let j = i + 1; j < array.length; j++) {
-          if(array[i].articleId === array[j].articleId) {
-            array[i] = Object.assign(
-              {},
-              array[i],
-              array[j]
-            );
-            array.splice(j, 1);
-          }
-        }
-      }
+        isCreated   : false,
+        isUpdated   : false,
+        isFetched   : true,
+        isDeleted   : false,
 
-      return Object.assign(
-        {},
-        state,
-        {
-          array       : array,
+        isError     : false,
+        error       : '',
+        message     : '',
 
-          isCreating  : false,
-          isUpdating  : false,
-          isFetching  : false,
-          isDeleting  : false,
-
-          isCreated   : false,
-          isUpdated   : false,
-          isFetched   : true,
-          isDeleted   : false,
-
-          isError     : false,
-          error       : '',
-          message     : '',
-
-          lastUpdated : Date.now()
-        }
-      );
+        lastUpdated : Date.now()
+      };
     }
 
     case ARTICLE_FETCH_START  : {
-      let newArticle = articleReducer(undefined, {
-        type   : ARTICLE_FETCH,
-        payload: action.payload
-      });
-
-      let array = state.array;
-      array.push(newArticle);
-
-      for(let i = 0; i < array.length; i++) {
-        for(let j = i + 1; j < array.length; j++) {
-          if(array[i].articleId === array[j].articleId) {
-            array[i] = Object.assign(
-              {},
-              array[i],
-              array[j]
-            );
-            array.splice(j, 1);
-          }
-        }
-      }
-
-      return Object.assign(
-        {},
-        state,
-        {
-          array       : array,
-
-          isCreating  : false,
-          isUpdating  : false,
-          isFetching  : false,
-          isDeleting  : false,
-
-          isCreated   : false,
-          isUpdated   : false,
-          isFetched   : true,
-          isDeleted   : false,
-
-          isError     : false,
-          error       : '',
-          message     : '',
-
-          lastUpdated : Date.now()
-        }
-      );
+      return {
+        ...state,
+        array: [
+          ...state.array,
+          articleReducer(undefined, {type: ARTICLE_FETCH, payload: action.payload})
+        ],
+        lastUpdated : Date.now()
+      };
     }
     case ARTICLE_FETCH_ERROR  : {
-      let article = articleReducer(undefined, {
-        type   : ARTICLE_UPDATE,
-        payload: action.payload
-      });
+      let index = state.array.find(article => article.articleId == action.payload.articleId);
 
-      let array = state.array;
-      array.push(article);
-
-
-      for(let i = 0; i < array.length; i++) {
-        for(let j = i + 1; j < array.length; j++) {
-          if(array[i].articleId === array[j].articleId) {
-            array[i] = Object.assign(
-              {},
-              array[i],
-              array[j]
-            );
-            array.splice(j, 1);
-          }
-        }
-      }
-
-      return Object.assign(
-        {},
-        state,
-        {
-          array       : array,
-
-          isCreating  : false,
-          isUpdating  : false,
-          isFetching  : false,
-          isDeleting  : false,
-
-          isCreated   : false,
-          isUpdated   : false,
-          isFetched   : true,
-          isDeleted   : false,
-
-          isError     : false,
-          error       : '',
-          message     : '',
-
-          lastUpdated : Date.now()
-        }
-      );
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          articleReducer(state.array[index], {type: ARTICLE_FETCH_ERROR, payload: action.payload}),
+          ...state.array.slice(index + 1, state.array.length)
+        ],
+        lastUpdated : Date.now()
+      };
     }
     case ARTICLE_FETCH_SUCCESS: {
+      let index = state.array.find(article => article.articleId == action.payload.articleId);
 
-      let array = state.array;
-      array.map((article, index) => {
-        if(article.articleId == action.payload.articleId) {
-          array[index] = articleReducer(undefined, {
-            type   : ARTICLE_UPDATE,
-            payload: action.payload
-          });
-        }
-      });
-
-
-      for(let i = 0; i < array.length; i++) {
-        for(let j = i + 1; j < array.length; j++) {
-          if(array[i].articleId === array[j].articleId) {
-            array[i] = Object.assign(
-              {},
-              array[i],
-              array[j]
-            );
-            array.splice(j, 1);
-          }
-        }
-      }
-
-      return Object.assign(
-        {},
-        state,
-        {
-          array     : array,
-          isFetching: false,
-          isFetched : true,
-          isError   : false,
-          error     : ''
-        }
-      );
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          articleReducer(state.array[index], {type: ARTICLE_FETCH_ERROR, payload: action.payload}),
+          ...state.array.slice(index + 1, state.array.length)
+        ],
+        lastUpdated : Date.now()
+      };
     }
 
     case ARTICLE_UPDATE_START  : {
-      return Object.assign(
-        {},
-        state,
-        {
-          array: state.array.map((article, index) => {
-            if(article.articleId == action.payload.articleId) {
-              return Object.assign(
-                {},
-                article,
-                {
-                  isUpdating: true,
-                  lastUpdated : Date.now()
-                }
-              )
-            }
-            else {
-              return article;
-            }
-          })
-        }
-      );
+      let index = state.array.find(article => article.articleId == action.payload.articleId);
+
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          articleReducer(state.array[index], {type: ARTICLE_UPDATE_START, payload: action.payload}),
+          ...state.array.slice(index + 1, state.array.length)
+        ],
+        lastUpdated : Date.now()
+      };
     }
     case ARTICLE_UPDATE_ERROR  : {
+      let index = state.array.find(article => article.articleId == action.payload.articleId);
 
-      return state;
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          articleReducer(state.array[index], {type: ARTICLE_UPDATE_ERROR, payload: action.payload}),
+          ...state.array.slice(index + 1, state.array.length)
+        ],
+        lastUpdated: Date.now()
+      };
     }
     case ARTICLE_UPDATE_SUCCESS: {
+      let index = state.array.find(article => article.articleId == action.payload.articleId);
 
-      return Object.assign(
-        {},
-        state,
-        {
-          array: state.array.map((article, index) => {
-            if(article.articleId === action.payload.articleId) {
-
-              return articleReducer(article, {
-                type   : ARTICLE_UPDATE,
-                payload: action.payload
-              });
-            }
-            else {
-              return article;
-            }
-          })
-        },
-        {
-          isCreating  : false,
-          isUpdating  : false,
-          isFetching  : false,
-          isDeleting  : false,
-
-          isCreated   : false,
-          isUpdated   : false,
-          isFetched   : false,
-          isDeleted   : false,
-
-          isError     : false,
-          error       : '',
-          message     : '',
-
-          lastUpdated : Date.now()
-        }
-      );
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          articleReducer(state.array[index], {type: ARTICLE_UPDATE_SUCCESS, payload: action.payload}),
+          ...state.array.slice(index + 1, state.array.length)
+        ],
+        lastUpdated : Date.now()
+      };
     }
 
     case ARTICLE_DELETE_START  : {
