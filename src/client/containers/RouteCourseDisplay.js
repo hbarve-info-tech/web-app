@@ -10,13 +10,8 @@ import {
   EditorState, Entity,
   RichUtils, getDefaultKeyBinding,
   KeyBindingUtil } from 'draft-js';
-const {hasCommandModifier} = KeyBindingUtil;
 
-import { Grid, Row, Col,
-  Well, Panel, PanelGroup,
-  Button, Modal, Tabs,
-  Tab, FormGroup, FormControl,
-  Form, ControlLabel } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 
 import actions    from '../actions';
 
@@ -30,15 +25,13 @@ class RouteCourseDisplay extends Component {
     this.state = {};
   };
 
-
   configureState = ({courses, routeParams}) => {
-    this.setState({
-      course: _.find(courses.array, e => e.courseId == routeParams.courseId)
-    });
+    let course = courses.array.find(course => course.courseId == routeParams.courseId);
+    this.setState({course});
 
-    if(this.state.course && this.state.course.modules.length > 0) {
+    if(course && course.modules.length > 0) {
       this.setState({
-        displayModuleId: this.state.course.modules[0].moduleId
+        displayModuleId: course.modules[0].moduleId
       });
     }
   };
@@ -63,7 +56,7 @@ class RouteCourseDisplay extends Component {
 
   render () {
     let courseId = this.props.routeParams.courseId;
-    let course = _.find(this.props.courses.array, (course) => course.courseId == courseId);
+    let course = this.props.courses.array.find((course) => course.courseId == courseId);
 
     return (
       <section class="content">
