@@ -521,13 +521,11 @@ const courseReducer = (state = initialCourseState, action) => {
       };
     }
     case MODULES_FETCH_SUCCESS: {
-      action.payload = action.payload.map(module => moduleReducer(undefined, {type: action.type, payload: module}));
-
       return {
         ...state,
         modules: [
           ...state.modules,
-          ...action.payload
+          ...action.payload.modules.map(module => moduleReducer(undefined, {type: MODULE_FETCH_SUCCESS, payload: module}))
         ],
         isCreating  : false,
         isUpdating  : false,
@@ -547,7 +545,7 @@ const courseReducer = (state = initialCourseState, action) => {
     }
 
     case MODULE_FETCH_START: {
-      let index = state.modules.map(module => module.moduleId == action.payload.moduleId);
+      let index = state.modules.findIndex(module => module.moduleId == action.payload.moduleId);
 
       return {
         ...state,
@@ -560,7 +558,7 @@ const courseReducer = (state = initialCourseState, action) => {
       };
     }
     case MODULE_FETCH_ERROR: {
-      let index = state.modules.map(module => module.moduleId == action.payload.moduleId);
+      let index = state.modules.findIndex(module => module.moduleId == action.payload.moduleId);
 
       return {
         ...state,
@@ -573,7 +571,7 @@ const courseReducer = (state = initialCourseState, action) => {
       };
     }
     case MODULE_FETCH_SUCCESS: {
-      let index = state.modules.map(module => module.moduleId == action.payload.moduleId);
+      let index = state.modules.findIndex(module => module.moduleId == action.payload.moduleId);
 
       return {
         ...state,
@@ -587,7 +585,7 @@ const courseReducer = (state = initialCourseState, action) => {
     }
 
     case MODULE_UPDATE_START: {
-      let index = state.modules.map(module => module.moduleId == action.payload.moduleId);
+      let index = state.modules.findIndex(module => module.moduleId == action.payload.moduleId);
 
       return {
         ...state,
@@ -600,7 +598,7 @@ const courseReducer = (state = initialCourseState, action) => {
       };
     }
     case MODULE_UPDATE_ERROR: {
-      let index = state.modules.map(module => module.moduleId == action.payload.moduleId);
+      let index = state.modules.findIndex(module => module.moduleId == action.payload.moduleId);
 
       return {
         ...state,
@@ -613,7 +611,7 @@ const courseReducer = (state = initialCourseState, action) => {
       };
     }
     case MODULE_UPDATE_SUCCESS: {
-      let index = state.modules.map(module => module.moduleId == action.payload.moduleId);
+      let index = state.modules.findIndex(module => module.moduleId == action.payload.moduleId);
 
       return {
         ...state,
@@ -627,7 +625,7 @@ const courseReducer = (state = initialCourseState, action) => {
     }
 
     case MODULE_DELETE_START: {
-      let index = state.modules.map(module => module.moduleId == action.payload.moduleId);
+      let index = state.modules.findIndex(module => module.moduleId == action.payload.moduleId);
 
       return {
         ...state,
@@ -640,7 +638,7 @@ const courseReducer = (state = initialCourseState, action) => {
       };
     }
     case MODULE_DELETE_ERROR: {
-      let index = state.modules.map(module => module.moduleId == action.payload.moduleId);
+      let index = state.modules.findIndex(module => module.moduleId == action.payload.moduleId);
 
       return {
         ...state,
@@ -653,7 +651,7 @@ const courseReducer = (state = initialCourseState, action) => {
       };
     }
     case MODULE_DELETE_SUCCESS: {
-      let index = state.modules.map(module => module.moduleId == action.payload.moduleId);
+      let index = state.modules.findIndex(module => module.moduleId == action.payload.moduleId);
 
       return {
         ...state,
@@ -691,18 +689,6 @@ const coursesReducer = (state = initialCoursesState, action) => {
 
         lastUpdated: Date.now()
       };
-
-      return Object.assign(
-        {},
-        state,
-        {
-          isCreatingCourse: true,
-          isFetching  : true,
-          error       : '',
-          message     : '',
-          lastUpdated : Date.now()
-        }
-      );
     }
     case COURSE_CREATE_ERROR: {
       return {
@@ -729,7 +715,7 @@ const coursesReducer = (state = initialCoursesState, action) => {
         ...state,
         array: [
           ...array,
-          courseReducer(undefined, {type: COURSE_CREATE_SUCCESS, payload: action.payload})
+          courseReducer(undefined, action)
         ],
         isCreating  : false,
         isUpdating  : false,
@@ -827,7 +813,7 @@ const coursesReducer = (state = initialCoursesState, action) => {
       };
     }
     case COURSE_FETCH_ERROR: {
-      let index = state.array.map(course => course.courseId == action.payload.courseId);
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
       return {
         ...state,
@@ -840,7 +826,7 @@ const coursesReducer = (state = initialCoursesState, action) => {
       };
     }
     case COURSE_FETCH_SUCCESS: {
-      let index = state.array.map(course => course.courseId == action.payload.courseId);
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
       return {
         ...state,
@@ -854,7 +840,7 @@ const coursesReducer = (state = initialCoursesState, action) => {
     }
 
     case COURSE_UPDATE_START: {
-      let index = state.array.map(course => course.courseId == action.payload.courseId);
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
       return {
         ...state,
@@ -867,7 +853,7 @@ const coursesReducer = (state = initialCoursesState, action) => {
       };
     }
     case COURSE_UPDATE_ERROR: {
-      let index = state.array.map(course => course.courseId == action.payload.courseId);
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
       return {
         ...state,
@@ -880,7 +866,7 @@ const coursesReducer = (state = initialCoursesState, action) => {
       };
     }
     case COURSE_UPDATE_SUCCESS: {
-      let index = state.array.map(course => course.courseId == action.payload.courseId);
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
       return {
         ...state,
@@ -908,7 +894,7 @@ const coursesReducer = (state = initialCoursesState, action) => {
 
 
     case MODULE_CREATE_START: {
-      let index = state.array.map(course => course.courseId == action.payload.courseId);
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
       return {
         ...state,
@@ -921,7 +907,7 @@ const coursesReducer = (state = initialCoursesState, action) => {
       };
     }
     case MODULE_CREATE_ERROR: {
-      let index = state.array.map(course => course.courseId == action.payload.courseId);
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
       return {
         ...state,
@@ -934,7 +920,7 @@ const coursesReducer = (state = initialCoursesState, action) => {
       };
     }
     case MODULE_CREATE_SUCCESS: {
-      let index = state.array.map(course => course.courseId == action.payload.courseId);
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
       return {
         ...state,
@@ -948,7 +934,7 @@ const coursesReducer = (state = initialCoursesState, action) => {
     }
 
     case MODULES_FETCH_START: {
-      let index = state.array.map(course => course.courseId == action.payload.courseId);
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
       return {
         ...state,
@@ -961,7 +947,7 @@ const coursesReducer = (state = initialCoursesState, action) => {
       };
     }
     case MODULES_FETCH_ERROR: {
-      let index = state.array.map(course => course.courseId == action.payload.courseId);
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
       return {
         ...state,
@@ -974,7 +960,7 @@ const coursesReducer = (state = initialCoursesState, action) => {
       };
     }
     case MODULES_FETCH_SUCCESS: {
-      let index = state.array.map(course => course.courseId == action.payload.courseId);
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
       return {
         ...state,
@@ -988,7 +974,7 @@ const coursesReducer = (state = initialCoursesState, action) => {
     }
 
     case MODULE_FETCH_START: {
-      let index = state.array.map(course => course.courseId == action.payload.courseId);
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
       return {
         ...state,
@@ -1001,7 +987,7 @@ const coursesReducer = (state = initialCoursesState, action) => {
       };
     }
     case MODULE_FETCH_ERROR: {
-      let index = state.array.map(course => course.courseId == action.payload.courseId);
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
       return {
         ...state,
@@ -1014,7 +1000,7 @@ const coursesReducer = (state = initialCoursesState, action) => {
       };
     }
     case MODULE_FETCH_SUCCESS: {
-      let index = state.array.map(course => course.courseId == action.payload.courseId);
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
       return {
         ...state,
@@ -1028,7 +1014,7 @@ const coursesReducer = (state = initialCoursesState, action) => {
     }
 
     case MODULE_UPDATE_START: {
-      let index = state.array.map(course => course.courseId == action.payload.courseId);
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
       return {
         ...state,
@@ -1041,7 +1027,7 @@ const coursesReducer = (state = initialCoursesState, action) => {
       };
     }
     case MODULE_UPDATE_ERROR: {
-      let index = state.array.map(course => course.courseId == action.payload.courseId);
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
       return {
         ...state,
@@ -1054,7 +1040,7 @@ const coursesReducer = (state = initialCoursesState, action) => {
       };
     }
     case MODULE_UPDATE_SUCCESS: {
-      let index = state.array.map(course => course.courseId == action.payload.courseId);
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
       return {
         ...state,
@@ -1068,7 +1054,7 @@ const coursesReducer = (state = initialCoursesState, action) => {
     }
 
     case MODULE_DELETE_START: {
-      let index = state.array.map(course => course.courseId == action.payload.courseId);
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
       return {
         ...state,
@@ -1081,7 +1067,7 @@ const coursesReducer = (state = initialCoursesState, action) => {
       };
     }
     case MODULE_DELETE_ERROR: {
-      let index = state.array.map(course => course.courseId == action.payload.courseId);
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
       return {
         ...state,
@@ -1094,7 +1080,7 @@ const coursesReducer = (state = initialCoursesState, action) => {
       };
     }
     case MODULE_DELETE_SUCCESS: {
-      let index = state.array.map(course => course.courseId == action.payload.courseId);
+      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
 
       return {
         ...state,
