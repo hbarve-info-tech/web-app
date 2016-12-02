@@ -1,1 +1,7 @@
 .idea
+/node_modules/
+/npm-debug.log
+/dist/
+/test/fixtures/awesome_log
+/backup/
+/public/
