@@ -57,7 +57,7 @@ export const createArticle= (payload) => {
     api.createArticle(payload, (json) => {
       if(json.statusCode === 201) {
         dispatch(createArticleSuccess(json.payload));
-        browserHistory.push('/articles/' + json.payload.articleId);
+        browserHistory.push(`/articles/${json.payload.articleId}/edit`);
       }
       else if(json.statusCode >= 400) {
         dispatch(createArticleError(json));
