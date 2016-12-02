@@ -16,6 +16,8 @@ import {
   MODULE_DELETE, MODULE_DELETE_START, MODULE_DELETE_ERROR, MODULE_DELETE_SUCCESS
 } from '../actions/courses';
 
+import _ from "lodash";
+
 let initialModuleState  = {
   courseId  : -1,
   moduleId  : -1,
@@ -521,12 +523,17 @@ const courseReducer = (state = initialCourseState, action) => {
       };
     }
     case MODULES_FETCH_SUCCESS: {
+      let modules = [
+        ...state.modules,
+        ...action.payload.modules.map(module => moduleReducer(undefined, {type: MODULE_FETCH_SUCCESS, payload: module}))
+      ];
+
+      modules = modules.map(module => ({...module, moduleId: parseInt(module.moduleId), courseId: parseInt(module.courseId)}));
+      modules = _.uniqBy(modules, 'moduleId');
+
       return {
         ...state,
-        modules: [
-          ...state.modules,
-          ...action.payload.modules.map(module => moduleReducer(undefined, {type: MODULE_FETCH_SUCCESS, payload: module}))
-        ],
+        modules,
         isCreating  : false,
         isUpdating  : false,
         isFetching  : false,
@@ -778,12 +785,16 @@ const coursesReducer = (state = initialCoursesState, action) => {
     case COURSES_FETCH_SUCCESS: {
       action.payload = action.payload.map(course => courseReducer(undefined, {type: COURSE_FETCH_SUCCESS, payload: course}));
 
+      let array = [
+        ...state.array,
+        ...action.payload
+      ];
+      array = array.map(course => ({...course, courseId: parseInt(course.courseId)}));
+      array = _.uniqBy(array, 'courseId');
+
       return {
         ...state,
-        array: [
-          ...state.array,
-          ...action.payload
-        ],
+        array,
         isCreating  : false,
         isUpdating  : false,
         isFetching  : false,
