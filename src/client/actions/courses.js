@@ -92,7 +92,7 @@ export const createCourse= (payload) => {
         (json) => {
           if(json.statusCode === 201) {
             dispatch(createCourseSuccess(json.payload));
-            browserHistory.push('/courses/' + json.payload.courseId);
+            browserHistory.push(`/courses/${json.payload.courseId}/edit`);
           }
           else if(json.statusCode >= 400) {
             dispatch(createCourseError(json));
