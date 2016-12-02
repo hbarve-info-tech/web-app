@@ -9,17 +9,17 @@ import _ from "lodash";
 
 import actions from '../actions';
 
-import RouteLayout         from "./RouteLayout";
-import RouteLandingPage    from "./RouteLandingPage";
-import RouteHome           from "./RouteHome";
-import RouteElement        from "./RouteElement";
-import RouteArticleDisplay from "./RouteArticleDisplay";
-import RouteArticleEdit    from "./RouteArticleEdit";
-import RouteCourseDisplay  from "./RouteCourseDisplay";
-import RouteCourseEdit     from "./RouteCourseEdit";
-import RouteClassroom      from "./RouteClassroom";
+import Layout         from "../Routes/Layout";
+import LandingPage    from "../Routes/LandingPage";
+import Home           from "../Routes/Home";
+import Element        from "../Routes/Element";
+import ArticleDisplay from "../Routes/ArticleDisplay";
+import ArticleEdit    from "../Routes/ArticleEdit";
+import CourseDisplay  from "../Routes/CourseDisplay";
+import CourseEdit     from "../Routes/CourseEdit";
+import Classroom      from "../Routes/Classroom";
 
-import ErrorPage           from "../components/ErrorPage";
+import ErrorPage      from "../components/ErrorPage";
 
 
 class App extends Component {
@@ -73,7 +73,7 @@ class App extends Component {
 
       if(article && article.isFetched) {
         clearInterval(wait);
-        return callback(null, RouteArticleDisplay);
+        return callback(null, ArticleDisplay);
       }
       if(article && article.isError) {
         clearInterval(wait);
@@ -109,7 +109,7 @@ class App extends Component {
 
       if(article && article.isFetched) {
         clearInterval(wait);
-        return callback(null, RouteArticleEdit);
+        return callback(null, ArticleEdit);
       }
       if(article && article.isError) {
         clearInterval(wait);
@@ -148,7 +148,7 @@ class App extends Component {
           fetchClassroomCourses({id: element.id});
         }
 
-        return callback(null, RouteClassroom);
+        return callback(null, Classroom);
       }
       if(element && element.isError) {
         clearInterval(wait);
@@ -172,7 +172,7 @@ class App extends Component {
 
       if(course.isFetched) {
         clearInterval(wait);
-        callback(null, RouteCourseDisplay);
+        callback(null, CourseDisplay);
       }
       if(course.isError) {
         clearInterval(wait);
@@ -192,7 +192,7 @@ class App extends Component {
 
     if(course) {
       if(this.props.user.id == course.authorId) {
-        return callback(null, RouteCourseEdit);
+        return callback(null, CourseEdit);
       }
 
       return callback(null, ErrorPage({
@@ -216,7 +216,7 @@ class App extends Component {
             }));
           }
 
-          return callback(null, RouteCourseEdit);
+          return callback(null, CourseEdit);
         }
         if(course.isError) {
           clearInterval(wait);
@@ -233,13 +233,13 @@ class App extends Component {
   render () {
     return (
       <Router history={browserHistory}>
-        <Route path="/" component={RouteLayout}>
+        <Route path="/" component={Layout}>
           <IndexRoute getComponent={(nextState, callback) => {
             if(this.props.user.isSignedIn) {
-              return callback(null, RouteHome);
+              return callback(null, Home);
             }
             else {
-              return callback(null, RouteLandingPage);
+              return callback(null, LandingPage);
             }
           }}/>
 
@@ -264,7 +264,7 @@ class App extends Component {
 
           <Route
             path     =":username"
-            component={RouteElement}
+            component={Element}
             onEnter  ={this.onEnterElement.bind(this)}
           />
           <Route
