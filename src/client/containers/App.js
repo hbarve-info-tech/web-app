@@ -27,31 +27,36 @@ class App extends Component {
     super(props);
   }
 
-  onEnterElement(nextState, replace, callback) {
-    let username = nextState.params.username;
-    let elements = this.props.elements;
+  getComponentElement(nextState, callback) {
+    let { username }     = nextState.params;
+    let { fetchElement } = this.props;
 
-    if(username === this.props.user.username) {
-      if(!this.props.user.isFetched) {
-        this.props.fetchUser();
-      }
-      return callback();
+    if(this.props.elements.array.length === 0) {
+      fetchElement({username});
     }
-    else if(elements.array.length === 0) {
-      this.props.fetchElement({username});
 
-      return callback();
-    }
-    elements.array.map((element, index) => {
-      if(element.username === username) {
-        return callback();
+    let count = 0;
+    let wait = setInterval(() => {
+      let element = this.props.elements.array.find(element => element.username == username);
+
+      if(!element) {
+        fetchElement({username});
       }
 
-      if(elements.array.length === index + 1) {
-        this.props.fetchElement({username});
-        return callback();
+      if(element && element.isFetched) {
+        clearInterval(wait);
+        return callback(null, Element);
       }
-    });
+      if(element && element.isError) {
+        clearInterval(wait);
+        return callback(null, props => <ErrorPage />);
+      }
+      if(++count > 100) {
+        clearInterval(wait);
+        return callback(null, props => <ErrorPage statusCode="400"
+                                                  messageHeading='Server is taking too long to respond.'/>);
+      }
+    }, 200);
   }
 
   getComponentArticleDisplay(nextState, callback) {
@@ -263,10 +268,10 @@ class App extends Component {
           />
 
           <Route
-            path     =":username"
-            component={Element}
-            onEnter  ={this.onEnterElement.bind(this)}
+            path        =":username"
+            getComponent={this.getComponentElement.bind(this)}
           />
+
           <Route
             path        =":username/classroom"
             getComponent={this.getComponentClassroom.bind(this)}
