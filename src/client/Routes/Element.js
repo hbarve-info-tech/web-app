@@ -15,20 +15,17 @@ class Element extends Component {
     super(props);
     this.state = {};
   };
-  count = 0;
 
   configureElement({elements, routeParams}) {
     let { username } = routeParams;
     let element      = elements.array.find((element) => element.username == username);
     this.setState({element});
-
-    if(element && !this.count) {
-      this.props.fetchArticles(element.id);
-      this.count = ++this.count;
-    }
   }
   componentWillMount () {
     this.configureElement(this.props);
+    let { username } = this.props.routeParams;
+    let element      = this.props.elements.array.find((element) => element.username == username);
+    this.props.fetchArticles(element.id);
   }
   componentWillReceiveProps (nextProps) {
     this.configureElement(nextProps);
