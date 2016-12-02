@@ -108,6 +108,42 @@ class App extends Component {
 
   }
 
+  getComponentArticleEdit(nextState, callback) {
+    if(!this.props.user.isSignedIn) {
+      browserHistory.push('/');
+    }
+
+    let { articleId }    = nextState.params;
+    let { fetchArticle } = this.props;
+    articleId = parseInt(articleId);
+
+    if(this.props.articles.array.length === 0) {
+      fetchArticle({articleId});
+    }
+
+    let count = 0;
+    let wait = setInterval(() => {
+      let article = this.props.articles.array.find(article => article.articleId == articleId);
+
+      if(!article) {
+        fetchArticle({articleId});
+      }
+
+      if(article && article.isFetched) {
+        clearInterval(wait);
+        return callback(null, RouteArticleEdit);
+      }
+      if(article && article.isError) {
+        clearInterval(wait);
+        return callback(null, props => <ErrorPage />);
+      }
+      if(++count > 100) {
+        clearInterval(wait);
+        return callback(null, props => <ErrorPage statusCode="400"
+                                                  messageHeading='Server is taking too long to respond.'/>);
+      }
+    }, 200);
+  }
   getComponentClassroom(nextState, callback) {
     let { username }        = nextState.params;
     let { fetchElement, fetchCourses, fetchClassroomCourses } = this.props;
@@ -235,8 +271,7 @@ class App extends Component {
 
           <Route
             path     ="articles/:articleId/edit"
-            component={RouteArticleEdit}
-            onEnter  ={this.onEnterArticleEdit.bind(this)}
+            getComponent={this.getComponentArticleEdit.bind(this)}
           />
 
           <Route

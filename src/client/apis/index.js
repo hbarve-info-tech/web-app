@@ -319,7 +319,7 @@ export const createArticle  = (payload, callback) => {
 };
 
 export const getArticle     = (articleId, callback) => {
-  let url = '/api/articles/' + articleId;
+  let url = `/api/articles/${articleId}`;
 
   fetch(url, {
     method: 'GET',
@@ -334,7 +334,7 @@ export const getArticle     = (articleId, callback) => {
 };
 
 export const updateArticle  = (articleId, payload, callback) => {
-  let url = '/api/elements/'+ getUserId() +'/articles/' + articleId;
+  let url = `/api/elements/${getUserId()}/articles/${articleId}`;
 
   fetch(url, {
     method: 'PUT',

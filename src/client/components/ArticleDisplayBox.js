@@ -1,6 +1,7 @@
 "use strict";
 import React, { Component, PropTypes }  from "react";
 import { Link }  from "react-router";
+import { Button, Form, FormControl, FormGroup, ControlLabel, HelpBlock } from "react-bootstrap";
 
 import {
   EditorState,
@@ -25,7 +26,7 @@ export default class ArticleDisplayBox extends Component {
     let { articleData } = article;
     let editorState = EditorState.createEmpty();
 
-    if(articleData !== undefined && articleData.length !== 0) {
+    if(Object.keys(articleData).length !== 0) {
       editorState = EditorState.createWithContent(convertFromRaw(articleData));
     }
 
@@ -58,19 +59,21 @@ export default class ArticleDisplayBox extends Component {
     );
   }
 
+  getValidationCourseName () {
+
+  }
+
   render() {
     const { editorState, readOnly } = this.state;
 
     let editButton =  (
       <div class="box-tools pull-right">
-        <button
-          type="button"
-          class="btn btn-box-tool"
-          data-widget="collapse"
+        <Button
+          bsStyle="link"
           onClick={this.onClickEdit.bind(this)}
         >
-          <i class="fa fa-pencil-square-o" aria-hidden="true"/>
-        </button>
+          Edit
+        </Button>
       </div>
     );
     let saveButton =  (
@@ -86,11 +89,31 @@ export default class ArticleDisplayBox extends Component {
       </div>
     );
 
+
+
     return (
       <div class="box box-primary">
         <div class="box-header with-border">
-          <h3 class="box-title">{this.state.article.articleName}</h3>
+          <h3 class="box-title">
+            {this.state.article.articleName}
+          </h3>
           {this.props.user.id === this.props.article.authorId ? !this.state.readOnly ? saveButton : editButton : ''}
+        </div>
+        <div class="box-body no-padding">
+          <Form>
+            <FormGroup
+              controlId="courseName"
+              validationState={this.getValidationCourseName()}
+            >
+              <FormControl
+                type="text"
+                value={this.state.article.articleName}
+                placeholder="Enter text"
+                onChange={this.handleChange}
+              />
+              <FormControl.Feedback />
+            </FormGroup>
+          </Form>
         </div>
         <div class="box-body no-padding">
           {this.state.article.description ?

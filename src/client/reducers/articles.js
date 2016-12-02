@@ -68,7 +68,7 @@ const articleReducer = (state = initialArticleState, action) => {
 
         isCreated   : false,
         isUpdated   : false,
-        isFetched   : true,
+        isFetched   : false,
         isDeleted   : false,
 
         isError     : false,
@@ -326,32 +326,32 @@ const articlesReducer = (state = initialArticlesState, action) => {
         ...state,
         array: [
           ...state.array,
-          articleReducer(undefined, {type: ARTICLE_FETCH, payload: action.payload})
+          articleReducer(undefined, action)
         ],
         lastUpdated : Date.now()
       };
     }
     case ARTICLE_FETCH_ERROR  : {
-      let index = state.array.find(article => article.articleId == action.payload.articleId);
+      let index = state.array.findIndex(article => article.articleId == action.payload.articleId);
 
       return {
         ...state,
         array: [
           ...state.array.slice(0, index),
-          articleReducer(state.array[index], {type: ARTICLE_FETCH_ERROR, payload: action.payload}),
+          articleReducer(state.array[index], action),
           ...state.array.slice(index + 1, state.array.length)
         ],
         lastUpdated : Date.now()
       };
     }
     case ARTICLE_FETCH_SUCCESS: {
-      let index = state.array.find(article => article.articleId == action.payload.articleId);
+      let index = state.array.findIndex(article => article.articleId == action.payload.articleId);
 
       return {
         ...state,
         array: [
           ...state.array.slice(0, index),
-          articleReducer(state.array[index], {type: ARTICLE_FETCH_ERROR, payload: action.payload}),
+          articleReducer(state.array[index], action),
           ...state.array.slice(index + 1, state.array.length)
         ],
         lastUpdated : Date.now()
@@ -359,33 +359,33 @@ const articlesReducer = (state = initialArticlesState, action) => {
     }
 
     case ARTICLE_UPDATE_START  : {
-      let index = state.array.find(article => article.articleId == action.payload.articleId);
+      let index = state.array.findIndex(article => article.articleId == action.payload.articleId);
 
       return {
         ...state,
         array: [
           ...state.array.slice(0, index),
-          articleReducer(state.array[index], {type: ARTICLE_UPDATE_START, payload: action.payload}),
+          articleReducer(state.array[index], action),
           ...state.array.slice(index + 1, state.array.length)
         ],
         lastUpdated : Date.now()
       };
     }
     case ARTICLE_UPDATE_ERROR  : {
-      let index = state.array.find(article => article.articleId == action.payload.articleId);
+      let index = state.array.findIndex(article => article.articleId == action.payload.articleId);
 
       return {
         ...state,
         array: [
           ...state.array.slice(0, index),
-          articleReducer(state.array[index], {type: ARTICLE_UPDATE_ERROR, payload: action.payload}),
+          articleReducer(state.array[index], action),
           ...state.array.slice(index + 1, state.array.length)
         ],
         lastUpdated: Date.now()
       };
     }
     case ARTICLE_UPDATE_SUCCESS: {
-      let index = state.array.find(article => article.articleId == action.payload.articleId);
+      let index = state.array.findIndex(article => article.articleId == action.payload.articleId);
 
       return {
         ...state,
