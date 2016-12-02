@@ -3,64 +3,75 @@ import React, { Component, PropTypes }  from "react";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import 'medium-draft/lib/index.css';
 import {
-  convertToRaw, CompositeDecorator,
-  ContentState, Editor,
-  EditorState, Entity,
-  RichUtils, getDefaultKeyBinding,
-  KeyBindingUtil } from 'draft-js';
-const {hasCommandModifier} = KeyBindingUtil;
+  createEditorState,
+  Editor,
+} from 'medium-draft';
 
 import { Row, Col } from "react-bootstrap";
 
 import actions from '../actions';
 
-import ArticleDisplay from '../components/ArticleDisplay';
-
-
-class Article extends Component {
+class RouteArticleDisplay extends Component {
   constructor (props) {
     super(props);
+    this.state = {
+      editorState  : createEditorState(),
+      editorEnabled: false,
+      placeholder  : 'This article is empty...',
+    };
+    this.onChange = (editorState) => this.setState({editorState});
   };
 
-  configureState = (articleId) => {
-    let articles = this.props.articles;
+  configureState = ({articles, routeParams}) => {
+    let { articleId } = routeParams;
+    let article = articles.array.find(article => article.articleId == articleId);
 
-    articles.array.map((article, index) => {
-      if(article.articleId == articleId) {
-        this.setState({article});
-      }
+    this.setState({
+      article,
+      editorState: (Object.keys(article.articleData).length != 0 ? createEditorState(article.articleData) : createEditorState())
     });
   };
-
   componentWillMount () {
-    let articleId = this.props.routeParams.articleId;
-    this.configureState(articleId);
+    this.configureState(this.props);
   }
-
   componentWillReceiveProps (nextProps) {
-    this.configureState(nextProps.routeParams.articleId);
+    this.configureState(nextProps);
   }
 
   render () {
-    let articleId = this.props.routeParams.articleId;
-    let article = {};
-
-    this.props.articles.array.map((value, index) => {
-      if(value.articleId == articleId) {
-        article = value;
-      }
-    });
+    let { article, editorState, editorEnabled } = this.state;
 
     return (
       <section class="content">
         <Row>
           <Col xs={12} sm={9} md={9} lg={9}>
-            <ArticleDisplay
-              user          ={this.props.user}
-              article       ={article}
-              updateArticle ={this.props.updateArticle}
-            />
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">{article.articleName}</h3>
+              </div>
+              <div class="box-body no-padding">
+                {article.description ?
+                  (
+                    <div class="mailbox-read-info">
+                      <small>
+                        {article.description}
+                        {/*<span class="mailbox-read-time pull-right">15 Feb. 2016 11:03 PM</span>*/}
+                      </small>
+                    </div>
+                  ) : null
+                }
+
+                <div class="mailbox-read-message">
+                  <Editor
+                    editorState  ={editorState}
+                    editorEnabled={editorEnabled}
+                    onChange     ={this.onChange}
+                  />
+                </div>
+              </div>
+            </div>
           </Col>
           <Col xs={12} sm={3} md={3} lg={3}>
 
@@ -71,19 +82,7 @@ class Article extends Component {
   };
 }
 
+const mapStateToProps    = (state)    => state;
+const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 
-function mapStateToProps(state) {
-  return state;
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(
-    actions,
-    dispatch
-  );
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Article);
+export default connect(mapStateToProps, mapDispatchToProps)(RouteArticleDisplay);
