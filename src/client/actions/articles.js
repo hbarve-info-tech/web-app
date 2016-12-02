@@ -57,7 +57,7 @@ export const createArticle= (payload) => {
     api.createArticle(payload, (json) => {
       if(json.statusCode === 201) {
         dispatch(createArticleSuccess(json.payload));
-        browserHistory.push('/articles/' + json.payload.articleId);
+        browserHistory.push(`/articles/${json.payload.articleId}/edit`);
       }
       else if(json.statusCode >= 400) {
         dispatch(createArticleError(json));
@@ -89,25 +89,14 @@ export const fetchArticle= (payload) => {
 
     dispatch(fetchArticleStart(payload));
 
-    fetch('/api/articles/' + payload.articleId, {
-      method: 'GET',
-      headers: {
-        'Accept'       : 'application/json',
-        'Content-Type' : 'application/json',
-        'Authorization': api.getToken()
+    api.getArticle(payload.articleId, (json) => {
+      if(json.statusCode === 200) {
+        dispatch(fetchArticleSuccess(json.payload));
       }
-    })
-      .then(response => response.json())
-      .then(
-        (json) => {
-          if(json.statusCode === 200) {
-            dispatch(fetchArticleSuccess(json.payload));
-          }
-          else if(json.statusCode >= 400) {
-            dispatch(fetchArticleError(json));
-          }
-        }
-      );
+      else if(json.statusCode >= 400) {
+        dispatch(fetchArticleError(json));
+      }
+    });
   };
 };
 

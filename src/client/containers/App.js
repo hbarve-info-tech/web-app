@@ -9,17 +9,17 @@ import _ from "lodash";
 
 import actions from '../actions';
 
-import RouteLayout         from "./RouteLayout";
-import RouteLandingPage    from "./RouteLandingPage";
-import RouteHome           from "./RouteHome";
-import RouteElement        from "./RouteElement";
-import RouteArticleDisplay from "./RouteArticleDisplay";
-import RouteArticleEdit    from "./RouteArticleEdit";
-import RouteCourseDisplay  from "./RouteCourseDisplay";
-import RouteCourseEdit     from "./RouteCourseEdit";
-import RouteClassroom      from "./RouteClassroom";
+import Layout         from "../Routes/Layout";
+import LandingPage    from "../Routes/LandingPage";
+import Home           from "../Routes/Home";
+import Element        from "../Routes/Element";
+import ArticleDisplay from "../Routes/ArticleDisplay";
+import ArticleEdit    from "../Routes/ArticleEdit";
+import CourseDisplay  from "../Routes/CourseDisplay";
+import CourseEdit     from "../Routes/CourseEdit";
+import Classroom      from "../Routes/Classroom";
 
-import ErrorPage           from "../components/ErrorPage";
+import ErrorPage      from "../components/ErrorPage";
 
 
 class App extends Component {
@@ -53,59 +53,74 @@ class App extends Component {
       }
     });
   }
-  onEnterArticle(nextState, replace, callback) {
-    let articleId = nextState.params.articleId;
+
+  getComponentArticleDisplay(nextState, callback) {
+    let { articleId }    = nextState.params;
+    let { fetchArticle } = this.props;
+    articleId = parseInt(articleId);
 
     if(this.props.articles.array.length === 0) {
-      this.props.fetchArticle({
-        articleId
-      });
-
-      return callback();
+      fetchArticle({articleId});
     }
 
-    this.props.articles.array.map((article, index) => {
-      if(article.articleId === articleId) {
-        return callback();
+    let count = 0;
+    let wait = setInterval(() => {
+      let article = this.props.articles.array.find(article => article.articleId == articleId);
+
+      if(!article) {
+        fetchArticle({articleId});
       }
 
-      if(this.props.articles.array.length === index + 1) {
-        this.props.fetchArticle({
-          articleId
-        });
-
-        return callback();
+      if(article && article.isFetched) {
+        clearInterval(wait);
+        return callback(null, ArticleDisplay);
       }
-
-    });
-
+      if(article && article.isError) {
+        clearInterval(wait);
+        return callback(null, props => <ErrorPage />);
+      }
+      if(++count > 100) {
+        clearInterval(wait);
+        return callback(null, props => <ErrorPage statusCode="400"
+                                                  messageHeading='Server is taking too long to respond.'/>);
+      }
+    }, 200);
   }
-  onEnterArticleEdit(nextState, replace, callback) {
-    let articleId = nextState.params.articleId;
-
-    if(this.props.articles.array.length === 0) {
-      this.props.fetchArticle({
-        articleId
-      });
-
-      return callback();
+  getComponentArticleEdit(nextState, callback) {
+    if(!this.props.user.isSignedIn) {
+      browserHistory.push('/');
     }
 
-    this.props.articles.array.map((article, index) => {
-      if(article.articleId === articleId) {
-        return callback();
+    let { articleId }    = nextState.params;
+    let { fetchArticle } = this.props;
+    articleId = parseInt(articleId);
+
+    if(this.props.articles.array.length === 0) {
+      fetchArticle({articleId});
+    }
+
+    let count = 0;
+    let wait = setInterval(() => {
+      let article = this.props.articles.array.find(article => article.articleId == articleId);
+
+      if(!article) {
+        fetchArticle({articleId});
       }
 
-      if(this.props.articles.array.length === index + 1) {
-        this.props.fetchArticle({
-          articleId
-        });
-
-        return callback();
+      if(article && article.isFetched) {
+        clearInterval(wait);
+        return callback(null, ArticleEdit);
       }
-
-    });
-
+      if(article && article.isError) {
+        clearInterval(wait);
+        return callback(null, props => <ErrorPage />);
+      }
+      if(++count > 100) {
+        clearInterval(wait);
+        return callback(null, props => <ErrorPage statusCode="400"
+                                                  messageHeading='Server is taking too long to respond.'/>);
+      }
+    }, 200);
   }
 
   getComponentClassroom(nextState, callback) {
@@ -133,7 +148,7 @@ class App extends Component {
           fetchClassroomCourses({id: element.id});
         }
 
-        return callback(null, RouteClassroom);
+        return callback(null, Classroom);
       }
       if(element && element.isError) {
         clearInterval(wait);
@@ -146,6 +161,7 @@ class App extends Component {
       }
     }, 200);
   }
+
   getComponentCourseDisplay(nextState, callback) {
     let courseId = nextState.params.courseId;
     this.props.fetchCourse({courseId});
@@ -156,7 +172,7 @@ class App extends Component {
 
       if(course.isFetched) {
         clearInterval(wait);
-        callback(null, RouteCourseDisplay);
+        callback(null, CourseDisplay);
       }
       if(course.isError) {
         clearInterval(wait);
@@ -176,7 +192,7 @@ class App extends Component {
 
     if(course) {
       if(this.props.user.id == course.authorId) {
-        return callback(null, RouteCourseEdit);
+        return callback(null, CourseEdit);
       }
 
       return callback(null, ErrorPage({
@@ -200,7 +216,7 @@ class App extends Component {
             }));
           }
 
-          return callback(null, RouteCourseEdit);
+          return callback(null, CourseEdit);
         }
         if(course.isError) {
           clearInterval(wait);
@@ -217,26 +233,24 @@ class App extends Component {
   render () {
     return (
       <Router history={browserHistory}>
-        <Route path="/" component={RouteLayout}>
+        <Route path="/" component={Layout}>
           <IndexRoute getComponent={(nextState, callback) => {
             if(this.props.user.isSignedIn) {
-              callback(null, RouteHome);
+              return callback(null, Home);
             }
             else {
-              callback(null, RouteLandingPage);
+              return callback(null, LandingPage);
             }
           }}/>
 
           <Route
-            path     ="articles/:articleId"
-            component={RouteArticleDisplay}
-            onEnter  ={this.onEnterArticle.bind(this)}
+            path        ="articles/:articleId"
+            getComponent={this.getComponentArticleDisplay.bind(this)}
           />
 
           <Route
             path     ="articles/:articleId/edit"
-            component={RouteArticleEdit}
-            onEnter  ={this.onEnterArticleEdit.bind(this)}
+            getComponent={this.getComponentArticleEdit.bind(this)}
           />
 
           <Route
@@ -250,7 +264,7 @@ class App extends Component {
 
           <Route
             path     =":username"
-            component={RouteElement}
+            component={Element}
             onEnter  ={this.onEnterElement.bind(this)}
           />
           <Route
@@ -263,19 +277,7 @@ class App extends Component {
   };
 }
 
+const mapStateToProps    = (state)    => state;
+const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 
-function mapStateToProps(state) {
-  return state;
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(
-    actions,
-    dispatch
-  );
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
