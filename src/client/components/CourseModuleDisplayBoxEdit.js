@@ -31,7 +31,7 @@ export default class CourseModuleDisplayBoxEdit extends Component {
     let moduleData = module.moduleData;
     this.setState({
       module: module,
-      editorState: (moduleData !== undefined) ? EditorState.createWithContent(convertFromRaw(moduleData)) : EditorState.createEmpty(),
+      editorState: (Object.keys(moduleData).length !== 0) ? EditorState.createWithContent(convertFromRaw(moduleData)) : EditorState.createEmpty(),
       editorEnabled: false
     });
   }

@@ -18,27 +18,24 @@ class RouteCourseEdit extends Component {
     this.state = {};
   };
 
-  configureState = (courseId) => {
-    let courses = this.props.courses;
-    this.setState({
-      course: _.find(courses.array, (course) => course.courseId == courseId)
-    });
+  configureState = ({routeParams, courses}) => {
+    let { courseId } = routeParams;
+    let course = courses.array.find(course => course.courseId == courseId);
+    this.setState({course});
 
-    if(this.state.course && this.state.course.modules.length > 0) {
+    if(course && course.modules.length > 0) {
       this.setState({
-        displayModuleId: this.state.course.modules[0].moduleId
+        displayModuleId: course.modules[0].moduleId
       });
     }
   };
 
   componentWillMount () {
-    let courseId = this.props.routeParams.courseId;
-    this.configureState(courseId);
-
-    this.props.fetchModules(courseId);
+    this.configureState(this.props);
+    this.props.fetchModules(this.props.routeParams.courseId);
   }
   componentWillReceiveProps (nextProps) {
-    this.configureState(nextProps.routeParams.courseId);
+    this.configureState(nextProps);
   }
 
   onSelectModule = (moduleId) => {
