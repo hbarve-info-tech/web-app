@@ -1,8 +1,4 @@
 "use strict";
-/**
- * Created by himank on 2/8/16.
- */
-
 import { token } from "../../config";
 
 export const register = (server, options, next) => {
@@ -23,8 +19,6 @@ export const register = (server, options, next) => {
   server.auth.strategy('user',     'jwt', {
     key          : token.key,
     validateFunc : function (decoded, request, callback) {
-      request.mayash = {};
-      request.mayash.user = decoded;
       return callback(null, true);
     }
   });
