@@ -270,6 +270,13 @@ class App extends Component {
           <Route
             path        =":username"
             getComponent={this.getComponentElement.bind(this)}
+            onEnter     ={(nextState, replace, callback) => {
+              let { username } = nextState.params;
+              if(username.toLowerCase() == username) {
+                return callback();
+              }
+              browserHistory.replace(username.toLowerCase());
+            }}
           />
 
           <Route
