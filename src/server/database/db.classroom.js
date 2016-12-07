@@ -27,6 +27,14 @@ export const getClassroomCourses = ({id, degree, semester, next}, callback) => {
       });
     }
 
+    if(classroomCourses.length === 0) {
+      return callback({
+        statusCode: 404,
+        error     : 'Course Not Found',
+        message   : 'No Courses Available for this classroom'
+      });
+    }
+
     let keys = classroomCourses.map(course => course.courseId);
     db.get(keys, (err, courses) => {
       if(err) {
@@ -34,7 +42,8 @@ export const getClassroomCourses = ({id, degree, semester, next}, callback) => {
 
         return callback({
           statusCode: 500,
-          error     : 'Server Error.'
+          error     : 'Server Error.',
+          message   : 'Server Error.'
         });
       }
 
