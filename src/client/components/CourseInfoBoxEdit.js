@@ -2,7 +2,7 @@
 import React, { Component, PropTypes }  from "react";
 import { Col, Button, FormGroup, FormControl, Form, ControlLabel } from "react-bootstrap";
 
-export default class CourseInfoBox extends Component {
+export default class CourseInfoBoxEdit extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -128,9 +128,10 @@ export default class CourseInfoBox extends Component {
             <FormGroup>
               <Col xs={12} style={{textAlign: 'right'}}>
                 <Button
-                  bsStyle="primary"
-                  bsSize ="small"
+                  bsStyle ="primary"
+                  bsSize  ="small"
                   disabled={!this.state.enabled}
+                  onClick ={this.onSave.bind(this)}
                 >
                   Save
                 </Button>
