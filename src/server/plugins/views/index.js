@@ -7,6 +7,13 @@ let template = ({
   return (`<!DOCTYPE html>
 <html lang="en">
 <head>
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-7913833609955757",
+      enable_page_level_ads: true
+    });
+  </script>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>${title}</title>
