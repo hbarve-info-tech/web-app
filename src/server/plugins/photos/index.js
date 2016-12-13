@@ -13,7 +13,7 @@ const bucket = gcs.bucket(BUCKET_NAME);
 const getImage    = {
   auth    : {
     mode       : 'required',
-    strategies : ['ReadTrafficCheck', 'user']
+    strategies : ['visitor']
   },
   validate: {
     params : Joi.object({
@@ -88,7 +88,7 @@ const uploadImage = {
 
         return reply({
           statusCode: 500,
-          error     : 'Server error.'
+          error     : 'Server error.1'
         });
       }
 
@@ -111,7 +111,7 @@ const uploadImage = {
 
           return reply({
             statusCode: 500,
-            error     : 'Server error.'
+            error     : 'Server error.2'
           });
         }
 
@@ -122,13 +122,13 @@ const uploadImage = {
           }
         };
 
-        bucket.upload(request.payload.image.path, option, (err, newFile) => {
+        bucket.upload(request.payload.path, option, (err, newFile) => {
           if(err) {
             console.log(err);
 
             return reply({
               statusCode: 500,
-              error     : 'Server error.'
+              error     : 'Server error.3'
             });
           }
 
