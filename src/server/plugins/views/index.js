@@ -49,9 +49,13 @@ let template = ({
 export const register = (server, options, next) => {
 
   server.route([
-    {method: 'GET', path:'/{url*}',              handler: (request, reply) => reply(template())},
+    {method: 'GET', path:'/',                     handler: (request, reply) => reply(template())},
+    {method: 'GET', path:'/{username}',           handler: (request, reply) => reply(template())},
+    {method: 'GET', path:'/{username}/classroom', handler: (request, reply) => reply(template())},
+    {method: 'GET', path:'/articles/{articleId}', handler: (request, reply) => reply(template())},
+    {method: 'GET', path:'/courses/{courseId}',   handler: (request, reply) => reply(template())},
+    // {method: 'GET', path:'/{url*}',               handler: (request, reply) => reply(template())},
 
-    {method: 'GET', path:'/node_modules/{url*}', handler: {directory: {path: 'node_modules'}}},
     {method: 'GET', path:'/public/{url*}',       handler: {directory: {path: 'public'}}},
 
     {method: 'GET', path:'/bundle.js',           handler: (request, reply) => reply.file('./public/bundle.js')},
