@@ -97,4 +97,9 @@ plugins.push({
   options : {}
 });
 
+plugins.push({
+  register: require('./photos'),
+  options : {}
+});
+
 export default plugins;

@@ -1,10 +1,4 @@
-/**
- * Created by himank on 1/8/16.
- *
- * This file covers all the input validation with Joi.js
- * and it will export all variable further.
- */
-
+'use strict';
 import Joi from "joi";
 
 export const id       = Joi.number().integer();
@@ -41,5 +35,7 @@ export const articleId   = Joi.number().integer();
 export const articleName = Joi.string().min(3).max(148);
 export const articleUrl  = Joi.string().regex(/[a-zA-Z0-9-]+/);
 export const articleData = Joi.object();
+
+export const imageId     = Joi.number().integer();
 
 //Cover rest all the things here.

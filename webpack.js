@@ -22,7 +22,7 @@ const options = {
     "*": "http://localhost:5000"
   },
   quiet: false,
-  noInfo: false,
+  noInfo: true,
   // lazy: true,
   filename: "bundle.js",
   watchOptions: {
@@ -32,7 +32,20 @@ const options = {
   publicPath: "/",
   headers: { "X-Custom-Header": "yes" },
   stats: {
-    colors: true
+    colors      : true,
+    // hash        : false,
+    // version     : false,
+    // timings     : false,
+    // assets      : false,
+    // chunks      : true,
+    // modules     : false,
+    // reasons     : false,
+    // children    : false,
+    // source      : false,
+    // errors      : false,
+    // errorDetails: false,
+    // warnings    : false,
+    // publicPath  : false
   }
 };
 
