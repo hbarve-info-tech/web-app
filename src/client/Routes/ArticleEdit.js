@@ -2,6 +2,7 @@
 import React, { Component, PropTypes }  from "react";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { getToken, getUserId } from "../apis";
 
 import {
   convertToRaw,
@@ -18,6 +19,7 @@ import { Row, Col, Button, Form, FormControl, FormGroup, ControlLabel, HelpBlock
 
 import 'medium-draft/lib/index.css';
 import {
+  ImageSideButton,
   Block,
   addNewBlock,
   createEditorState,
@@ -25,6 +27,38 @@ import {
 } from 'medium-draft';
 
 import actions from '../actions';
+
+class CustomImageSideButton extends ImageSideButton {
+  onChange(e) {
+    const file = e.target.files[0];
+    if(file.type.indexOf('image/') === 0) {
+      fetch(`/api/elements/${getUserId()}/images`, {
+          method : 'POST',
+          headers: {
+            'Authorization': getToken()
+          },
+          body   : file
+        })
+        .then(response => response.json())
+        .then(json => {
+          console.log(json);
+          if(json.statusCode === 200) {
+            const { authorId, imageId } = json.payload;
+
+            const src = `/api/elements/${authorId}/images/${imageId}`;
+            this.props.setEditorState(addNewBlock(
+              this.props.getEditorState(),
+              Block.IMAGE, { src }
+            ));
+          }
+          else {
+            console.log(json);
+          }
+        });
+    }
+    this.props.close();
+  }
+}
 
 class BasicArticleInfo extends Component {
   constructor (props) {
@@ -131,7 +165,10 @@ class ArticleEditor extends Component {
       editorEnabled: true,
       placeholder  : 'Story goes here...',
     };
-    this.sideButtons = [];
+    this.sideButtons = [{
+      title: 'Image',
+      component: CustomImageSideButton,
+    }];
 
     this.onChange = (editorState) => this.setState({editorState});
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
