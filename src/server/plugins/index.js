@@ -12,6 +12,11 @@ plugins.push({
 });
 
 plugins.push({
+  register: require('vision'),
+  options: {}
+});
+
+plugins.push({
   register : require('good'),
   options : {
     ops: {
