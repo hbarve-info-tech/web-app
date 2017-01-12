@@ -1,6 +1,15 @@
 'use strict';
 const { NODE_ENV } = process.env;
 
+import React from 'react';
+import { renderToString } from 'react-dom/server';
+import { match, RouterContext } from 'react-router';
+
+import App from "../../../client/App";
+import routes from '../../../client/routes';
+import NotFoundPage from '../../../client/components/NotFoundPage';
+
+
 const googleAds = `<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
   <script>
     (adsbygoogle = window.adsbygoogle || []).push({
@@ -23,7 +32,8 @@ const googleAnalytic = `<script>
 let template = ({
   title       = 'Mayash',
   description = 'Mayash is a group of IITians committed for providing world class education at your door-step.',
-  keywords    = ['Mayash', 'Mayash education', 'IITians committed for providing world class education.']
+  keywords    = ['Mayash', 'Mayash education', 'IITians committed for providing world class education.'],
+  body
 } = {}) => {
   return (`<!DOCTYPE html>
 <html lang="en">
@@ -42,11 +52,7 @@ let template = ({
   <link rel="stylesheet" href="/public/style.css">
 </head>
 <body class="skin-purple layout-top-nav">
-  <div id="app">
-    <div id="loading">
-      Loading...
-    </div>
-  </div>
+  <div id="app">${body}</div>
   <script src="/public/bundle.js" ></script>
   ${NODE_ENV !== 'development' ? googleAnalytic : ''}
 </body>
@@ -56,18 +62,44 @@ let template = ({
 export const register = (server, options, next) => {
 
   server.route([
-    {method: 'GET', path:'/',                     handler: (request, reply) => reply(template())},
+    {
+      method : 'GET',
+      path   :'/{url*}',
+      handler: (request, reply) => {
+        match( { routes, location: request.path}, (err, redirectLocation, renderProps) => {
 
-    {method: 'GET', path:'/{username}',           handler: (request, reply) => reply(template())},
-    {method: 'GET', path:'/{username}/classroom', handler: (request, reply) => reply(template())},
+          // in case of error display the error message
+          if (err) {
+            // return res.status(500).send(err.message);
+            console.error(err);
+          }
 
-    {method: 'GET', path:'/articles/{articleId}',      handler: (request, reply) => reply(template())},
-    {method: 'GET', path:'/articles/{articleId}/edit', handler: (request, reply) => reply(template())},
+          // in case of redirect propagate the redirect to the browser
+          if (redirectLocation) {
+            // return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+            console.log(redirectLocation);
+          }
 
-    {method: 'GET', path:'/courses/{courseId}',      handler: (request, reply) => reply(template())},
-    {method: 'GET', path:'/courses/{courseId}/edit', handler: (request, reply) => reply(template())},
+          // generate the React markup for the current route
+          let markup;
+          if (renderProps) {
+            // if the current route matched we have renderProps
+            markup = renderToString(<RouterContext {...renderProps}/>);
+          } else {
+            // otherwise we can render a 404 page
+            markup = renderToString(<NotFoundPage/>);
+            // res.status(404);
+          }
 
-    // {method: 'GET', path:'/{url*}',               handler: (request, reply) => reply(template())},
+          // render the index template with the embedded React markup
+
+          return reply.view('index', {
+            title  : 'Mayash',
+            app    : markup
+          });
+        });
+      }
+    },
 
     {method: 'GET', path:'/public/{url*}',       handler: {directory: {path: 'public'}}},
 
