@@ -8,13 +8,23 @@ module.exports = {
     app: [
       "./src/client/index.js"
     ],
-    vendor: ["react", "react-dom"]
+    vendor: [
+      "react",
+      "react-dom",
+      "react-router",
+      "react-redux",
+      "react-bootstrap",
+      "redux",
+      "redux-thunk",
+      "medium-draft",
+      "isomorphic-fetch"
+    ]
   },
   output: {
     path: __dirname + "/../public",
     publicPath: "/public",
     pathinfo: true,
-    filename: "[name].js"
+    filename: "index.[hash].js"
   },
   module: {
     rules: [
@@ -42,13 +52,31 @@ module.exports = {
         test: /\.scss$/,
         loaders: ["style", "css", "sass"]
       },
+      {
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: "url-loader?limit=10000&mimetype=application/font-woff"
+      },
+      {
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: "file-loader"
+      }
     ]
   },
   plugins: [
     new webpack.EnvironmentPlugin(["NODE_ENV"]),
+
     new webpack.optimize.CommonsChunkPlugin({
-      names: ['vendor', 'manifest'] // Specify the common bundle's name.
+      minChunks: Infinity,
+      name     : 'vendor',
+      filename : 'vendor.[chunkhash].js'
     }),
+
+    new webpack.optimize.CommonsChunkPlugin({
+      name    : 'meta',
+      chunks  : ['vendor'],
+      filename: 'meta.[hash].js'
+    }),
+
     new webpack.optimize.UglifyJsPlugin({
       compress : { warnings: false },
       output   : { comments: false },
@@ -56,10 +84,12 @@ module.exports = {
       beautify : false,
       dead_code: true
     }),
+
     new HtmlWebpackPlugin({
       template: './src/template/index.html',
       inject  : 'body'
     }),
+
     new ExtractTextPlugin('style.css')
   ]
 };
