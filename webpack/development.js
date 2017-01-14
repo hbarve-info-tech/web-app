@@ -8,15 +8,27 @@ module.exports = {
   entry : {
     app: [
       "webpack-dev-server/client?http://localhost:5001/",
+      'webpack/hot/dev-server',
+      'react-hot-loader/patch',
       "./src/client/index.js"
     ],
-    vendor: ["react", "react-dom"]
+    vendor: [
+      "react",
+      "react-dom",
+      "react-router",
+      "react-redux",
+      "react-bootstrap",
+      "redux",
+      "redux-thunk",
+      "medium-draft",
+      "isomorphic-fetch"
+    ]
   },
   output: {
     path: __dirname + "/../public",
     publicPath: "/public",
     pathinfo: true,
-    filename: "[name].js"
+    filename: "index.js"
   },
   module: {
     rules: [
@@ -36,28 +48,42 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract({
-          fallbackLoader: "style-loader",
-          loader        : "css-loader"
-        })
-      },
+        loaders: ["style-loader", "css-loader"]},
       {
         test: /\.scss$/,
-        loaders: ["style", "css", "sass"]
+        loaders: ["style-loader", "css-loader", "sass-loader"]
       },
+      {
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: "url-loader?limit=10000&mimetype=application/font-woff"
+      },
+      {
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: "file-loader"
+      }
     ]
   },
   plugins: [
     new webpack.EnvironmentPlugin(["NODE_ENV", "DEV_ENV"]),
-    // new webpack.HotModuleReplacementPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+
     new webpack.optimize.CommonsChunkPlugin({
-      minChunks: 2,
-      names    : ['vendor', 'manifest'] // Specify the common bundle's name.
+      minChunks: Infinity,
+      name     : 'vendor',
+      filename : 'vendor.js'
     }),
+
+    new webpack.optimize.CommonsChunkPlugin({
+      name    : 'meta',
+      chunks  : ['vendor'],
+      filename: 'meta.js'
+    }),
+
     new HtmlWebpackPlugin({
       template: './src/template/index.html',
       inject  : 'body'
     }),
-    new ExtractTextPlugin('style.css')
+
+    // new ExtractTextPlugin('style.css')
   ]
 };
