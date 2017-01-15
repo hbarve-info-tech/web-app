@@ -1,5 +1,6 @@
 'use strict';
 import { Server } from "hapi";
+import Hoek       from "hoek";
 import config     from "./config";
 import plugins    from "./plugins";
 
@@ -24,9 +25,8 @@ server.register(plugins, (error) => {
 
   //Finally server is starting here.
   server.start((error) => {
-    if (error) {
-      throw error;
-    }
+    Hoek.assert(!error, error);
+
     console.log('Hapi server started @ ' + server.info.uri);
   });
 });
