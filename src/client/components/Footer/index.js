@@ -1,24 +1,28 @@
 "use strict";
-import React, { Component } from 'react';
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
+const IsClient = typeof document === "object";
 
-export default class Layout extends Component {
+import React, { Component } from 'react';
+
+if(IsClient) {
+  require('./Footer.scss');
+}
+
+export default class Footer extends Component {
   constructor (props) {
     super(props);
   }
 
   render() {
     return (
-      <Navbar>
-        <Navbar.Collapse>
-          <Navbar.Text>
-            Copyright: <Navbar.Link href="#">Mayash</Navbar.Link>
-          </Navbar.Text>
-          <Navbar.Text pullRight>
-            Transforming education.
-          </Navbar.Text>
-        </Navbar.Collapse>
-      </Navbar>
+      <footer class="mdl-mini-footer">
+        <div class="mdl-mini-footer__left-section">
+          <div class="mdl-logo">Title</div>
+          <ul class="mdl-mini-footer__link-list">
+            <li><a href="#">Help</a></li>
+            <li><a href="#">Privacy & Terms</a></li>
+          </ul>
+        </div>
+      </footer>
     );
   }
 };
