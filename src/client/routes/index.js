@@ -4,13 +4,17 @@ const IsServer = typeof window === "undefined";
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 
+if(!IsServer) {
+  require('./index.scss');
+}
+
 const routes = (
   <Route path="/" getComponent={(nextState, callback) => {
     if(IsServer) {
-      callback(null, require('./Layout').default);
+      callback(null, require('./Layout/index').default);
     } else {
       require.ensure([], function(require) {
-        callback(null, require('./Layout').default);
+        callback(null, require('./Layout/index').default);
       })
     }
   }}>
