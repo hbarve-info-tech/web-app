@@ -1,4 +1,6 @@
 "use strict";
+const IsClient = typeof document === "object";
+
 import React        from 'react';
 import { render }   from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
@@ -8,9 +10,10 @@ import Root from "./containers/Root";
 
 const store = configureStore();
 
-// import "bootstrap/dist/css/bootstrap.css";
-// import "bootswatch/paper/bootstrap.css";
-// import "bootstrap/dist/css/bootstrap-theme.min.css";
+if(IsClient) {
+  require('material-design-lite/src/material-design-lite.scss');
+  // require('material-design-lite/dist/material.blue-lime.min.css');
+}
 
 render(
   <AppContainer>
