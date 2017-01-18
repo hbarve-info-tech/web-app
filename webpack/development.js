@@ -17,7 +17,7 @@ module.exports = {
       "react-dom",
       "react-router",
       "react-redux",
-      "react-bootstrap",
+      "material-design-lite",
       "redux",
       "redux-thunk",
       "medium-draft",
