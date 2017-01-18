@@ -10,6 +10,14 @@ const options = {
   compress: false,
   publicPath: "/public",
   headers: { "X-Custom-Header": "yes" },
+
+  hot: true,
+  inline: true,
+  lazy: false,
+  noInfo: true,
+
+  host: 'localhost',
+  port: 5001,
   proxy: {
     "*": "http://localhost:5000"
   },
