@@ -1,8 +1,7 @@
-/**
- * Created by himank on 9/8/16.
- */
 "use strict";
 //Global variables are defined here.
+const { NODE_ENV } = process.env;
+const HOST = NODE_ENV === `production` ? `https://mayash.xyz` : `http://localhost:5001`;
 
 //These constants are for user Signing In.
 export const USER_SIGN_IN         = 'USER_SIGN_IN';
@@ -143,8 +142,9 @@ export const signIn = (payload) => {
   return (dispatch) => {
 
     dispatch(signInStart());
+    let url = `${HOST}/api/signin`;
 
-    fetch('/api/signin', {
+    fetch(url, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

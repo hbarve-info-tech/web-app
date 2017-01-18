@@ -5,14 +5,19 @@ import { USER_SIGN_IN, USER_SIGN_IN_START, USER_SIGN_IN_ERROR, USER_SIGN_IN_SUCC
   USER_FETCH, USER_FETCH_START, USER_FETCH_SUCCESS, USER_FETCH_ERROR } from '../actions/user';
 
 import { readLocalStore, writeLocalStore, removeLocalStore } from "../actions/user";
+// import { readLocalStore, writeLocalStore, removeLocalStore } from "../api";
 
 let initialState = {
+  isSigningIn : false,
   isSignedIn  : false,
+
   isFetching  : false,
   isFetched   : false,
+
   isError     : false,
   error       : '',
   message     : '',
+
   lastUpdated : Date.now()
 };
 
@@ -21,38 +26,54 @@ export default (state = initialState, action) => {
     case USER_SIGN_IN_START  : {
       return {
         ...state,
+        isSigningIn: false,
         isSignedIn : false,
-        isFetching : true,
+
+        isFetching : false,
         isFetched  : false,
+
         isError    : false,
         error      : '',
         message    : '',
+
         lastUpdated: Date.now()
       };
     }
     case USER_SIGN_IN_ERROR  : {
       return {
         ...state,
-        isSignedIn  : false,
-        isFetching  : false,
-        isFetched   : false,
-        isError     : true,
-        error       : action.payload.error,
-        message     : action.payload.message,
-        lastUpdated : Date.now()
+        isSigningIn: false,
+        isSignedIn : false,
+
+        isFetching : false,
+        isFetched  : false,
+
+        isError    : true,
+        error      : action.payload.error,
+        message    : action.payload.message,
+
+        lastUpdated: Date.now()
       };
     }
     case USER_SIGN_IN_SUCCESS: {
       writeLocalStore("user", action.payload);
+      document.cookie = `id=${action.payload.id}`;
+      document.cookie = `token=${action.payload.token}`;
+
       return {
         ...state,
         ...action.payload,
+        ...state,
+        isSigningIn: false,
         isSignedIn : true,
+
         isFetching : false,
-        isFetched  : true,
+        isFetched  : false,
+
         isError    : false,
         error      : '',
         message    : '',
+
         lastUpdated: Date.now()
       };
     }
