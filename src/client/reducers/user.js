@@ -1,13 +1,10 @@
 "use strict";
-import { USER_SIGN_IN, USER_SIGN_IN_START, USER_SIGN_IN_ERROR, USER_SIGN_IN_SUCCESS,
-  USER_SIGN_OUT, USER_SIGN_OUT_START, USER_SIGN_OUT_SUCCESS, USER_SIGN_OUT_ERROR,
-  USER_UPDATE, USER_UPDATE_START, USER_UPDATE_SUCCESS, USER_UPDATE_ERROR,
-  USER_FETCH, USER_FETCH_START, USER_FETCH_SUCCESS, USER_FETCH_ERROR } from '../actions/user';
+import { USER_SIGN_IN, USER_SIGN_IN_START, USER_SIGN_IN_ERROR, USER_SIGN_IN_SUCCESS } from '../actions/user';
 
-import { readLocalStore, writeLocalStore, removeLocalStore } from "../actions/user";
-// import { readLocalStore, writeLocalStore, removeLocalStore } from "../api";
+import { readLocalStore, writeLocalStore, removeLocalStore,
+  readCookie, writeCookie, removeAllCookies } from "../api/clientApi";
 
-let initialState = {
+const initialState = {
   isSigningIn : false,
   isSignedIn  : false,
 
@@ -56,13 +53,15 @@ export default (state = initialState, action) => {
       };
     }
     case USER_SIGN_IN_SUCCESS: {
-      writeLocalStore("user", action.payload);
-      document.cookie = `id=${action.payload.id}`;
-      document.cookie = `token=${action.payload.token}`;
+      let { payload } = action;
+
+      writeLocalStore('user', payload);
+      writeCookie('id', payload.id);
+      writeCookie('token', payload.token);
 
       return {
         ...state,
-        ...action.payload,
+        ...payload,
         ...state,
         isSigningIn: false,
         isSignedIn : true,
@@ -74,49 +73,6 @@ export default (state = initialState, action) => {
         error      : '',
         message    : '',
 
-        lastUpdated: Date.now()
-      };
-    }
-
-    case USER_SIGN_OUT: {
-
-      // removeCookieStore();
-      removeLocalStore("user");
-      window.location.href = '/';
-      return state;
-    }
-
-    case USER_FETCH_START : {
-      return {
-        ...state,
-        isError    : false,
-        isFetched  : false,
-        isFetching : true,
-        error      : '',
-        message    : '',
-        lastUpdated: Date.now()
-      };
-    }
-    case USER_FETCH_ERROR : {
-      return {
-        ...state,
-        isError    : true,
-        isFetched  : false,
-        isFetching : false,
-        error      : action.error,
-        message    : action.message,
-        lastUpdated: Date.now()
-      };
-    }
-    case USER_FETCH_SUCCESS : {
-      return {
-        ...state,
-        ...action.payload,
-        isError    : false,
-        isFetched  : true,
-        isFetching : false,
-        error      : '',
-        message    : '',
         lastUpdated: Date.now()
       };
     }
