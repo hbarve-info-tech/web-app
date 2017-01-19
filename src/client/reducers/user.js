@@ -26,7 +26,7 @@ export default (state = initialState, action) => {
     case USER_SIGN_IN_START  : {
       return {
         ...state,
-        isSigningIn: false,
+        isSigningIn: true,
         isSignedIn : false,
 
         isFetching : false,
