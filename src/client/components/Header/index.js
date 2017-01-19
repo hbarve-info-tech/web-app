@@ -59,6 +59,9 @@ class Header extends Component {
   }
 
   render() {
+    let { username, password, invalid } = this.state;
+    let { user } = this.props;
+
     return (
       <header class="mdl-layout__header">
         <div class="mdl-layout__header-row">
@@ -94,7 +97,7 @@ class Header extends Component {
                      pattern  ="^[a-z0-9]+([_]?[a-z0-9])*$"
                      minLength={3}
                      maxLength={20}
-                     value    ={this.state.username}
+                     value    ={username}
                      onChange ={this.onChange.bind(this, 'username')}
               />
               <label class="mdl-textfield__label">Username</label>
@@ -109,7 +112,7 @@ class Header extends Component {
                      pattern  ="^[a-z0-9]+([a-z0-9])*$"
                      minLength={5}
                      maxLength={20}
-                     value    ={this.state.password}
+                     value    ={password}
                      onChange ={this.onChange.bind(this, 'password')}
               />
               <label class="mdl-textfield__label">Password</label>
@@ -121,10 +124,10 @@ class Header extends Component {
           <div class="mdl-dialog__actions">
             <button type="button"
                     class="mdl-button"
-                    disabled={this.state.invalid}
+                    disabled={invalid}
                     onClick={this.signIn.bind(this)}
             >
-              Sign In
+              {user.isSigningIn ? `Signing In...` : `Sign In`}
             </button>
             <button type="button"
                     class="mdl-button"
