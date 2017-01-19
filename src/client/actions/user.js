@@ -1,7 +1,5 @@
 "use strict";
 //Global variables are defined here.
-const { NODE_ENV } = process.env;
-const HOST = NODE_ENV === `production` ? `https://mayash.xyz` : `http://localhost:5001`;
 
 //These constants are for user Signing In.
 export const USER_SIGN_IN         = 'USER_SIGN_IN';
@@ -29,6 +27,7 @@ export const USER_UPDATE_ERROR   = 'USER_UPDATE_ERROR';
 
 //Import library here.
 import fetch from 'isomorphic-fetch';
+import * as api from "../api";
 
 export const readLocalStore    = (key)       => {
 
@@ -142,27 +141,15 @@ export const signIn = (payload) => {
   return (dispatch) => {
 
     dispatch(signInStart());
-    let url = `${HOST}/api/signin`;
 
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    })
-      .then(response => response.json())
-      .then(
-        (success) => {
-          if(success.statusCode === 200) {
-            dispatch(signInSuccess(success.payload));
-          }
-          else if(success.statusCode >= 400) {
-            dispatch(signInError(success));
-          }
-        }
-      );
+    api.signIn(payload, (success) => {
+      if(success.statusCode === 200) {
+        dispatch(signInSuccess(success.payload));
+      }
+      else if(success.statusCode >= 400) {
+        dispatch(signInError(success));
+      }
+    });
   };
 };
 

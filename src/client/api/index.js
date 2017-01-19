@@ -1,4 +1,7 @@
 'use strict';
+const { NODE_ENV } = process.env;
+const HOST = NODE_ENV === `production` ? `https://mayash.xyz` : `http://localhost:5001`;
+
 import fetch from 'isomorphic-fetch';
 
 /**
@@ -85,7 +88,7 @@ export const getUserId = () => {
 };
 
 export const signIn        = (payload, callback) => {
-  let url = '/api/signin';
+  let url = `${HOST}/api/signin`;
 
   fetch(url, {
     method: 'POST',
