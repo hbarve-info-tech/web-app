@@ -28,14 +28,28 @@ const register = (server, options, next) => {
           }
 
           // generate the React markup for the current route
-          let markup;
-          const store = configureStore();
+          let app = '';
+          const { isSignedIn, id, token } = request.state;
 
-          // store = configureStore();
+          let initialState = configureStore().getState();
+          let store = configureStore(initialState);
+
+          if (isSignedIn === 'true') {
+            const { user } = initialState;
+            store = configureStore({
+              ...initialState,
+              user: {
+                ...user,
+                isSignedIn: true,
+                id: parseInt(id, 10),
+                token,
+              },
+            });
+          }
 
           if (renderProps) {
             // if the current route matched we have renderProps
-            markup = renderToString(
+            app = renderToString(
               <Provider store={store}>
                 <RouterContext {...renderProps} />
               </Provider>,
@@ -43,13 +57,15 @@ const register = (server, options, next) => {
           }
           else {
             // otherwise we can render a 404 page
-            markup = renderToString(<NotFoundPage />);
+            app = renderToString(<NotFoundPage />);
           }
 
+          initialState = JSON.stringify(store.getState());
           return reply.view('index', {
             title: 'Mayash',
-            app: markup,
-            store: JSON.stringify(store),
+            description: 'Mayash',
+            app,
+            initialState,
           });
         });
       },

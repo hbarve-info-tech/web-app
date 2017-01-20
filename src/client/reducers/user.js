@@ -55,6 +55,7 @@ export default (state = initialState, action) => {
       const { payload } = action;
 
       writeLocalStore('user', payload);
+      writeCookie('isSignedIn', true);
       writeCookie('id', payload.id);
       writeCookie('token', payload.token);
 

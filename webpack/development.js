@@ -96,7 +96,7 @@ module.exports = {
     }),
 
     new HtmlWebpackPlugin({
-      template: './src/template/index.html',
+      template: './src/template/index.hbs',
       inject: 'body',
     }),
   ],
