@@ -1,15 +1,16 @@
-"use strict";
-const webpack          = require("webpack");
-const WebpackDevServer = require("webpack-dev-server");
+/* eslint import/no-extraneous-dependencies: "warn" */
 
-const webpackConfig    = require("../webpack/development");
-const webpackCompiler  = webpack(webpackConfig);
+import webpack from 'webpack';
+import WebpackDevServer from 'webpack-dev-server';
+import webpackConfig from '../webpack/development';
+
+const webpackCompiler = webpack(webpackConfig);
 
 const options = {
-  contentBase: "../public",
+  contentBase: '../public',
   compress: false,
-  publicPath: "/public",
-  headers: { "X-Custom-Header": "yes" },
+  publicPath: '/public',
+  headers: { 'X-Custom-Header': 'yes' },
 
   hot: true,
   inline: true,
@@ -19,11 +20,11 @@ const options = {
   host: 'localhost',
   port: 5001,
   proxy: {
-    "*": "http://localhost:5000"
+    '*': 'http://localhost:5000',
   },
   historyApiFallback: true,
   stats: {
-    colors      : true,
+    colors: true,
     // hash        : false,
     // version     : false,
     // timings     : false,
@@ -37,11 +38,11 @@ const options = {
     // errorDetails: false,
     // warnings    : false,
     // publicPath  : false
-  }
+  },
 };
 
 const webpackServer = new WebpackDevServer(webpackCompiler, options);
 
-webpackServer.listen(5001, "localhost", function() {
+webpackServer.listen(5001, 'localhost', () => {
   console.log('Webpack dev server started @ http://localhost:5001');
 });

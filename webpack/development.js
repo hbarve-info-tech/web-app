@@ -1,16 +1,16 @@
-'use strict';
-const path    = require('path');
+/* eslint import/no-extraneous-dependencies: "warn" */
+
+const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-  entry : {
+  entry: {
     app: [
       'react-hot-loader/patch',
       'webpack-dev-server/client?http://localhost:5001/',
       'webpack/hot/only-dev-server',
-      './src/client/index.js'
+      './src/client/index.js',
     ],
     vendor: [
       'react',
@@ -21,14 +21,14 @@ module.exports = {
       'redux',
       'redux-thunk',
       'medium-draft',
-      'isomorphic-fetch'
-    ]
+      'isomorphic-fetch',
+    ],
   },
   output: {
-    path: __dirname + '/../public',
+    path: `${__dirname}/../public`,
     publicPath: '/public',
     pathinfo: true,
-    filename: 'index.js'
+    filename: 'index.js',
   },
   context: path.resolve(__dirname, '..'),
   devtool: 'inline-source-map',
@@ -39,42 +39,40 @@ module.exports = {
     contentBase: path.resolve(__dirname, '..', 'public'),
     // match the output path
 
-    publicPath: '/public'
+    publicPath: '/public',
     // match the output `publicPath`
   },
-
   module: {
     rules: [
       {
-        test   : path.join(__dirname, '..', 'src', 'client'),
-        // test   : /(\.js|\.jsx)$/,
+        test: /(\.js|\.jsx)$/,
         exclude: /(node_modules)/,
-        use    : [
+        use: [
           {
             loader: 'babel-loader',
-            query : {
+            query: {
               presets: ['es2015', 'stage-0', 'react'],
-              plugins: ['react-html-attrs', 'transform-class-properties', 'transform-decorators-legacy']
-            }
-          }
-        ]
+              plugins: ['react-html-attrs', 'transform-class-properties', 'transform-decorators-legacy'],
+            },
+          },
+        ],
       },
       {
         test: /\.css$/,
-        loaders: ['style-loader', 'css-loader']},
+        loaders: ['style-loader', 'css-loader'] },
       {
         test: /\.scss$/,
-        loaders: ['style-loader', 'css-loader', 'sass-loader']
+        loaders: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: 'url-loader?limit=10000&mimetype=application/font-woff'
+        loader: 'url-loader?limit=10000&mimetype=application/font-woff',
       },
       {
         test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: 'file-loader'
-      }
-    ]
+        loader: 'file-loader',
+      },
+    ],
   },
   plugins: [
     new webpack.EnvironmentPlugin(['NODE_ENV', 'DEV_ENV']),
@@ -87,21 +85,19 @@ module.exports = {
 
     new webpack.optimize.CommonsChunkPlugin({
       minChunks: Infinity,
-      name     : 'vendor',
-      filename : 'vendor.js'
+      name: 'vendor',
+      filename: 'vendor.js',
     }),
 
     new webpack.optimize.CommonsChunkPlugin({
-      name    : 'meta',
-      chunks  : ['vendor'],
-      filename: 'meta.js'
+      name: 'meta',
+      chunks: ['vendor'],
+      filename: 'meta.js',
     }),
 
     new HtmlWebpackPlugin({
       template: './src/template/index.html',
-      inject  : 'body'
+      inject: 'body',
     }),
-
-    // new ExtractTextPlugin('style.css')
-  ]
+  ],
 };
