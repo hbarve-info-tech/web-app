@@ -1,40 +1,35 @@
-/**
- * Created by himank on 2/8/16.
- */
-'use strict';
-import Joi    from "joi";
-import Boom   from "boom";
 
-import { elementdb }  from "../../database";
-import { id, username } from "../../config/schema";
+import Joi from 'joi';
 
-const getElement    = {
-  auth    : {
-      mode : 'required',
-      strategies : ['ReadTrafficCheck', 'user']
+import { elementdb } from '../../database';
+import { Id, Username } from '../../config/schema';
+
+const getElement = {
+  auth: {
+    mode: 'required',
+    strategies: ['ReadTrafficCheck', 'user'],
   },
   validate: {
-    query  : Joi.object({
-      id : id,
-      username: username
-    }).length(1)
+    query: Joi.object({
+      id: Id,
+      username: Username,
+    }).length(1),
   },
   handler: (request, reply) => {
-    let { username, id } = request.query;
-    if(username) {
-      elementdb.getElementByUsername(username, (result) => reply(result));
+    const { username, id } = request.query;
+    if (Username) {
+      elementdb.getElementByUsername(username, result => reply(result));
     }
     else {
-      elementdb.getElementById(parseInt(id), (result) => reply(result));
+      elementdb.getElementById(parseInt(id, 10), result => reply(result));
     }
-  }
+  },
 };
 
-export const register = (server, options, next) => {
-
+const register = (server, options, next) => {
   server.route([
 
-    {method: 'GET',    path: '/api/elements',    config: getElement}
+    { method: 'GET', path: '/api/elements', config: getElement },
 
   ]);
 
@@ -42,9 +37,11 @@ export const register = (server, options, next) => {
 };
 
 register.attributes = {
-  pkg : {
-    "name": "Elements",
-    "version": "0.0.1",
-    "description": "This plugin contains all the features related to element."
-  }
+  pkg: {
+    name: 'Elements',
+    version: '0.0.1',
+    description: 'This plugin contains all the features related to element.',
+  },
 };
+
+export default register;

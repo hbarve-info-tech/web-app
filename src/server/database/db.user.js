@@ -1,260 +1,263 @@
-'use strict';
-import crypto from "crypto";
 
-import db, { ELEMENTS } from "./setup";
+import crypto from 'crypto';
 
-export const validateUsername  = (username, callback) => {
-  let query = db.createQuery(ELEMENTS).filter('username', '=', username);
+import db, { ELEMENTS } from './setup';
+
+export const validateUsername = (username, callback) => {
+  const query = db.createQuery(ELEMENTS)
+    .filter('username', '=', username);
 
   db.runQuery(query, (error, success) => {
-    if(error) {
-        console.log(error);
+    if (error) {
+      console.log(error);
 
-        return callback({
-          statusCode: 500,
-          error     : 'Database server error.',
-          message   : 'Database server error.'
-        });
-      }
+      return callback({
+        statusCode: 500,
+        error: 'Database server error.',
+        message: 'Database server error.',
+      });
+    }
 
-      if(success.length === 1) {
-        return callback({
-          statusCode: 200,
-          error     : 'Username Taken',
-          message   : 'Username is already taken.',
-          payload   : {
-            usernameValid: false
-          }
-        });
-      }
-
-      if(success.length > 1) {
-        return callback({
-          statusCode: 500,
-          error     : 'Server error',
-          message   : 'The server encountered an unexpected condition which ' +
-          'prevented it from fulfilling the request.'
-        });
-      }
-
+    if (success.length === 1) {
       return callback({
         statusCode: 200,
-        message   : 'Username is valid.',
-        payload   : {
-          usernameValid : true
-        }
+        error: 'Username Taken',
+        message: 'Username is already taken.',
+        payload: {
+          usernameValid: false,
+        },
       });
+    }
+
+    if (success.length > 1) {
+      return callback({
+        statusCode: 500,
+        error: 'Server error',
+        message: 'The server encountered an unexpected condition which ' +
+          'prevented it from fulfilling the request.',
+      });
+    }
+
+    return callback({
+      statusCode: 200,
+      message: 'Username is valid.',
+      payload: {
+        usernameValid: true,
+      },
+    });
   });
 };
 
-export const getUserById       = (id,       callback) => {
-  let key = db.key([ELEMENTS, parseInt(id, 10)]);
-  db.get(key, function (error, result) {
-    if(error) {
+export const getUserById = (id, callback) => {
+  db.get(db.key([ELEMENTS, parseInt(id, 10)]), (error, user) => {
+    if (error) {
       console.log(error);
 
       return callback({
         statusCode: 500,
-        error     : 'Database server error.',
-        message   : 'Database server error.'
+        error: 'Database server error.',
+        message: 'Database server error.',
       });
     }
 
-    if(!result) {
+    if (!user) {
       return callback({
         statusCode: 404,
-        message   : 'User does not exists.'
+        message: 'User does not exists.',
       });
     }
 
-    delete result['password'];
-    result.id = id;
+    const payload = { ...user, id: user.id.id };
+    delete payload.password;
+
     return callback({
       statusCode: 200,
-      message   : 'Success',
-      payload   : result
+      message: 'Success',
+      payload,
     });
   });
 };
+
 export const getUserByUsername = (username, callback) => {
-  let query = db.createQuery(ELEMENTS).filter('username', '=', username);
+  const query = db.createQuery(ELEMENTS)
+    .filter('username', '=', username);
 
-  db.runQuery(query, (error, success) => {
-    if(error) {
+  db.runQuery(query, (error, users) => {
+    if (error) {
       console.log(error);
 
       return callback({
         statusCode: 500,
-        error     : 'Database server error.',
-        message   : 'Database server error.'
+        error: 'Database server error.',
+        message: 'Database server error.',
       });
     }
 
-    if(success.length === 0) {
+    if (users.length === 0) {
       return callback({
         statusCode: 404,
-        error     : 'User does not exists.',
-        message   : 'User does not exists.'
+        error: 'User does not exists.',
+        message: 'User does not exists.',
       });
     }
 
-    if(success[0].password) {
-      delete success[0].password;
+    const payload = { ...users[0], id: users[0].id };
+    if (payload.password) {
+      delete payload.password;
     }
 
     return callback({
       statusCode: 200,
-      message   : 'Successful.',
-      payload   : success[0]
+      message: 'Successful.',
+      payload,
     });
   });
 };
 
-export const signInById        = (id,       callback) => {
-  let key = db.key([ELEMENTS, parseInt(id, 10)]);
-
-  db.get(key, (err, result) => {
-    if(err) {
-      console.log(err);
+export const signInById = (id, callback) => {
+  db.get(db.key([ELEMENTS, parseInt(id, 10)]), (error, user) => {
+    if (error) {
+      console.log(error);
 
       return callback({
         statusCode: 500,
-        error     : 'Database server error.',
-        message   : 'Database server error.'
+        error: 'Database server error.',
+        message: 'Database server error.',
       });
     }
 
-    if(!result) {
+    if (!user) {
       return callback({
         statusCode: 404,
-        message   : 'User does not exists.'
+        message: 'User does not exists.',
       });
     }
 
     return callback({
       statusCode: 200,
-      message   : 'Success',
-      payload   : result
+      message: 'Success',
+      payload: { ...user, id: user.id.id },
     });
   });
 };
-export const signInByUsername  = (username, callback) => {
-  let query = db.createQuery(ELEMENTS).filter('username', '=', username);
 
-  db.runQuery(query, (err, result) => {
-    if(err) {
-      console.log(err);
+export const signInByUsername = (username, callback) => {
+  const query = db.createQuery(ELEMENTS)
+    .filter('username', '=', username);
+
+  db.runQuery(query, (error, elements) => {
+    if (error) {
+      console.log(error);
 
       return callback({
         statusCode: 500,
-        error     : 'Database server error.',
-        message   : 'Database server error.'
+        error: 'Database server error.',
+        message: 'Database server error.',
       });
     }
 
-    if(result.length === 0) {
+    if (elements.length === 0) {
       return callback({
         statusCode: 404,
-        error     : 'User does not exists.',
-        message   : 'User does not exists.'
+        error: 'User does not exists.',
+        message: 'User does not exists.',
       });
     }
+
+    const payload = { ...elements[0], id: elements[0].id.id };
 
     return callback({
       statusCode: 200,
-      message   : 'Successful.',
-      payload   : result[0]
+      message: 'Successful.',
+      payload,
     });
   });
 };
 
-export const createUser        = (payload, callback) => {
-  let query = db.createQuery(ELEMENTS)
+export const createUser = (payload, callback) => {
+  const query = db.createQuery(ELEMENTS)
     .filter('username', '=', payload.username)
+    .select('username')
     .limit(1);
 
-  db.runQuery(query, (err, result) => {
-    if(err) {
-      console.log(err);
+  db.runQuery(query, (error1, result) => {
+    if (error1) {
+      console.log(error1);
 
       return callback({
         statusCode: 500,
-        error: 'server error.'
+        error: 'server error.',
       });
     }
 
-    if(result.length !== 0){
+    if (result.length !== 0) {
       return callback({
         statusCode: 200,
-        message   : 'username taken.'
+        message: 'username taken.',
       });
     }
 
-    let key = db.key(ELEMENTS);
-
-    db.allocateIds(key, 1, (err, result1) => {
-      if(err) {
-        console.log(err);
+    db.allocateIds(db.key(ELEMENTS), 1, (error2, keys) => {
+      if (error2) {
+        console.log(error2);
 
         return callback({
           statusCode: 500,
-          error     : 'Server error.'
+          error: 'Server error.',
         });
       }
 
-      payload.id       = db.key([ELEMENTS, result1[0].id]);
-      payload.password = crypto.createHash('sha256').update(payload.password).digest('hex');
-      payload.valid    = true;
-      payload.elementType = 'user';
-      let newUser = {
-        key  : payload.id,
-        data : payload
+      const key = db.key([ELEMENTS, keys[0].id]);
+      const data = {
+        ...payload,
+        id: key,
+        password: crypto.createHash('sha256').update(payload.password).digest('hex'),
+        valid: true,
+        elementType: 'user',
       };
 
-      db.save(newUser, (err, result2) => {
-        if(err) {
-          console.log(err);
+      db.save({ key, data }, (error3) => {
+        if (error3) {
+          console.log(error3);
 
           return callback({
             statusCode: 500,
-            error     : 'Server error.'
+            error: 'Server error.',
           });
         }
 
         return callback({
           statusCode: 200,
-          message   : 'Success',
-          payload   : payload
+          message: 'Success',
+          payload: { ...data, id: data.id.id },
         });
       });
     });
   });
 };
 
-export const updateUserById    = (id, payload, callback) => {
-  return callback({
-    statusCode: 503,
-    error     : 'Service is not available.',
-    message   : 'This is not working right now.'
-  });
-};
+export const updateUserById = (id, payload, callback) => callback({
+  statusCode: 503,
+  error: 'Service is not available.',
+  message: 'This is not working right now.',
+});
 
-export const deleteUserById    = (id, callback) => {
-  let key = db.key([ELEMENTS, parseInt(id, 10)]);
-  db.delete(key, (err, result) => {
-    if(err) {
+export const deleteUserById = (id, callback) => {
+  const key = db.key([ELEMENTS, parseInt(id, 10)]);
+  db.delete(key, (err) => {
+    if (err) {
       console.log(err);
 
       return callback({
         statusCode: 500,
-        error     : 'Database server error.',
-        message   : 'Database server error.'
+        error: 'Database server error.',
+        message: 'Database server error.',
       });
     }
 
     return callback({
       statusCode: 200,
-      message   : 'Successfully deleted.'
-    })
+      message: 'Successfully deleted.',
+    });
   });
 };

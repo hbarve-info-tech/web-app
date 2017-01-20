@@ -1,16 +1,16 @@
-'use strict';
-import * as userdb    from "./db.user";
-import * as elementdb from "./db.elements";
-import * as articledb from "./db.articles";
-import * as coursedb  from "./db.courses";
-import * as classroomdb  from "./db.classroom";
+
+import * as userdb from './db.user';
+import * as elementdb from './db.elements';
+import * as articledb from './db.articles';
+import * as coursedb from './db.courses';
+import * as classroomdb from './db.classroom';
 
 export {
   userdb,
   elementdb,
   articledb,
   coursedb,
-  classroomdb
+  classroomdb,
 };
 
 export default {
@@ -18,5 +18,5 @@ export default {
   elementdb,
   articledb,
   coursedb,
-  classroomdb
+  classroomdb,
 };

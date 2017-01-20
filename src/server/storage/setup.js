@@ -1,8 +1,8 @@
-'use strict';
-export const BUCKET_NAME = 'mayash';
 
-import { storage } from "google-cloud";
-import { gcloud }  from "../config";
+import { storage } from 'google-cloud';
+import { gcloud } from '../config';
+
+export const BUCKET_NAME = 'mayash';
 const { projectId } = gcloud;
 
-export default storage({projectId});
+export default storage({ projectId });
