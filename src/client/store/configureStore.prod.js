@@ -1,13 +1,8 @@
+
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from '../reducers';
 
 const enhancer = applyMiddleware(thunk);
 
-export default function (initialState) {
-  return createStore(
-    rootReducer,
-    initialState,
-    enhancer
-  );
-}
+export default initialState => createStore(rootReducer, initialState, enhancer);
