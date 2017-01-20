@@ -1,15 +1,4 @@
-"use strict";
-import React, { Component } from 'react';
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
 
-export default class Home extends Component {
-  constructor (props) {
-    super(props);
-  }
+import React from 'react';
 
-  render() {
-    return (
-      <div>Hi there.</div>
-    );
-  }
-};
+export default () => (<div>This is Home Component.</div>);

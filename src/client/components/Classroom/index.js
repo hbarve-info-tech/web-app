@@ -1,24 +1,4 @@
-"use strict";
-import React, { Component } from 'react';
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
 
-export default class Layout extends Component {
-  constructor (props) {
-    super(props);
-  }
+import React from 'react';
 
-  render() {
-    return (
-      <Navbar fixedBottom={true}>
-        <Navbar.Collapse>
-          <Navbar.Text>
-            Copyright: <Navbar.Link href="#">Mayash</Navbar.Link>
-          </Navbar.Text>
-          <Navbar.Text pullRight>
-            Transforming education.
-          </Navbar.Text>
-        </Navbar.Collapse>
-      </Navbar>
-    );
-  }
-};
+export default () => (<div>This is Classroom Component.</div>);
