@@ -1,8 +1,7 @@
-"use strict";
 
-import * as user     from "./user";
+import * as user from './user';
 
 export default Object.assign(
   {},
-  user
+  user,
 );
