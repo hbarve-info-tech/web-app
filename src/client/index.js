@@ -1,16 +1,16 @@
-"use strict";
-const IsClient = typeof document === "object";
 
-import React      from 'react';
-import ReactDOM   from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 
 import configureStore from './store/configureStore';
-import Root from "./containers/Root";
+import Root from './containers/Root';
+
+const IsClient = typeof document === 'object';
 
 const store = configureStore();
 
-if(IsClient) {
+if (IsClient) {
   require('material-design-lite/src/material-design-lite.scss');
   // require('material-design-lite/dist/material.blue-lime.min.css');
 }
@@ -18,9 +18,9 @@ if(IsClient) {
 const render = (Component) => {
   ReactDOM.render(
     <AppContainer>
-      <Component store={store}/>
+      <Component store={store} />
     </AppContainer>,
-    document.getElementById('app')
+    document.getElementById('app'),
   );
 };
 
