@@ -1,162 +1,161 @@
-'use strict';
-import Joi from "joi";
-import fs from "fs";
-import "./clean";
 
-import db, { ELEMENTS, IMAGES } from "../../database/setup";
-import { id, imageId } from "../../config/schema";
+import Joi from 'joi';
+import fs from 'fs';
+import './clean';
 
-import gcs, { BUCKET_NAME } from "../../storage/setup";
+import db, { ELEMENTS, IMAGES } from '../../database/setup';
+import { Id, ImageId } from '../../config/schema';
+
+import gcs, { BUCKET_NAME } from '../../storage/setup';
+
 const bucket = gcs.bucket(BUCKET_NAME);
 
 
-const getImage    = {
-  auth    : {
-    mode       : 'required',
-    strategies : ['visitor']
+const getImage = {
+  auth: {
+    mode: 'required',
+    strategies: ['visitor'],
   },
   validate: {
-    params : Joi.object({
-      id      : id.required(),
-      imageId : imageId.required()
-    })
+    params: Joi.object({
+      id: Id.required(),
+      imageId: ImageId.required(),
+    }),
   },
-  handler : (request, reply) => {
+  handler: (request, reply) => {
     const { id, imageId } = request.params;
     const key = db.key([IMAGES, imageId]);
 
-    db.get(key, (err, image) => {
-      if(err) {
-        console.log(err);
+    db.get(key, (error1, image) => {
+      if (error1) {
+        console.log(error1);
 
         return reply({
           statusCode: 500,
-          error     : 'Server Error.',
-          message   : 'Server Error.'
+          error: 'Server Error.',
+          message: 'Server Error.',
         });
       }
 
-      if(!image) {
+      if (!image) {
         return reply({
           statusCode: 404,
-          error     : 'Image Not Found',
-          message   : 'Image Not Found'
+          error: 'Image Not Found',
+          message: 'Image Not Found',
         });
       }
 
-      let file = bucket.file(`images/${id}/${imageId}.jpg`);
+      const file = bucket.file(`images/${id}/${imageId}.jpg`);
 
-      file.download((err, result) => {
-        if(err) {
-          console.log(err);
+      file.download((error2, result) => {
+        if (error2) {
+          console.log(error2);
 
           return reply({
             statusCode: 500,
-            error     : 'Server Error.',
-            message   : 'Server Error.'
+            error: 'Server Error.',
+            message: 'Server Error.',
           });
         }
 
         return reply(result);
       });
     });
-  }
+  },
 };
 const uploadImage = {
-  auth    : {
-    mode       : 'required',
-    strategies : ['WriteTrafficCheck', 'owner']
+  auth: {
+    mode: 'required',
+    strategies: ['WriteTrafficCheck', 'owner'],
   },
-  payload :{
+  payload: {
     maxBytes: 209715200,
-    output  :'file',
-    uploads: __dirname + '/temp_images',
-    parse   : true
+    output: 'file',
+    uploads: `${__dirname}/temp_images`,
+    parse: true,
   },
   validate: {
-    params : Joi.object({
-      id : id.required()
-    })
+    params: Joi.object({
+      id: Id.required(),
+    }),
   },
-  handler : (request, reply) => {
+  handler: (request, reply) => {
     const { id } = request.params;
-    const key = db.key([IMAGES]);
 
-    db.allocateIds(key, 1, (err, result1) => {
-      if(err) {
-        console.log(err);
+    db.allocateIds(db.key([IMAGES]), 1, (error1, keys) => {
+      if (error1) {
+        console.log(error1);
 
         return reply({
           statusCode: 500,
-          error     : 'Server error.1'
+          error: 'Server error.1',
         });
       }
 
-      const imageId = result1[0].id;
-
-      let timestamp = (new Date(Date.now()));
-      timestamp = timestamp.toString();
-      const newImage = {
-        key : db.key([IMAGES, imageId]),
-        data: {
-          imageId : db.key([IMAGES, imageId]),
-          authorId: db.key([ELEMENTS, id]),
-          timestamp
-        }
+      const key = db.key([IMAGES, keys[0].id]);
+      const imageId = key.id;
+      const timestamp = (new Date(Date.now()));
+      const data = {
+        imageId: key,
+        authorId: db.key([ELEMENTS, id]),
+        timestamp: timestamp.toString(),
       };
 
-      db.save(newImage, (err, result2) => {
-        if(err) {
-          console.log(err);
+      db.save({ key, data }, (error2) => {
+        if (error2) {
+          console.log(error2);
 
           return reply({
             statusCode: 500,
-            error     : 'Server error.2'
+            error: 'Server error.2',
           });
         }
 
         const option = {
           destination: bucket.file(`images/${id}/${imageId}.jpg`),
           metadata: {
-            contentType: 'image/jpeg'
-          }
+            contentType: 'image/jpeg',
+          },
         };
 
-        bucket.upload(request.payload.path, option, (err, newFile) => {
-          if(err) {
-            console.log(err);
+        bucket.upload(request.payload.path, option, (error3) => {
+          if (error3) {
+            console.log(error3);
 
             return reply({
               statusCode: 500,
-              error     : 'Server error.3'
+              error: 'Server error.3',
             });
           }
 
-          try { fs.unlinkSync(request.payload.image.path); }
-          catch (e) {}
+          try {
+            fs.unlinkSync(request.payload.image.path);
+          }
+          catch (e) {
+            console.log(e);
+          }
 
-          let payload = {
-            authorId : newImage.data.authorId.id,
-            imageId  : newImage.data.imageId.id
+          const payload = {
+            authorId: id,
+            imageId,
           };
 
           return reply({
             statusCode: 200,
-            message   : 'Success',
-            payload
+            message: 'Success',
+            payload,
           });
         });
       });
     });
-  }
+  },
 };
 
-export const register = (server, options, next) => {
-
+const register = (server, options, next) => {
   server.route([
 
-    {method: 'GET',  path: '/api/elements/{id}/images/{imageId}', config: getImage},
-    {method: 'POST', path: '/api/elements/{id}/images',           config: uploadImage}
+    { method: 'GET', path: '/api/elements/{id}/images/{imageId}', config: getImage },
+    { method: 'POST', path: '/api/elements/{id}/images', config: uploadImage },
 
   ]);
 
@@ -164,9 +163,11 @@ export const register = (server, options, next) => {
 };
 
 register.attributes = {
-  pkg : {
-    "name": "Photos",
-    "version": "0.0.1",
-    "description": "This plugin contains all the features related to Photos."
-  }
+  pkg: {
+    name: 'Photos',
+    version: '0.0.1',
+    description: 'This plugin contains all the features related to Photos.',
+  },
 };
+
+export default register;

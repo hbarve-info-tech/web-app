@@ -1,19 +1,27 @@
-'use strict';
-import fs from "fs";
+
+
+import fs from 'fs';
 
 export function makeDir(dirPath) {
   try {
     fs.mkdirSync(dirPath);
-  } catch(e) {}
+  }
+  catch (e) {
+    // console.log(e);
+  }
 }
 
 export function cleanDir(dirPath) {
   let files = [];
-  try { files = fs.readdirSync(dirPath); }
-  catch(e) { return; }
+  try {
+    files = fs.readdirSync(dirPath);
+  }
+  catch (e) {
+    return;
+  }
   if (files.length > 0) {
     for (let i = 0; i < files.length; i++) {
-      let filePath = dirPath + '/' + files[i];
+      const filePath = `${dirPath}/${files[i]}`;
       if (fs.statSync(filePath).isFile()) {
         fs.unlinkSync(filePath);
       }
@@ -21,9 +29,9 @@ export function cleanDir(dirPath) {
   }
 }
 
-makeDir (__dirname + '/temp_images');
-cleanDir(__dirname + '/temp_images');
+makeDir(`${__dirname}/temp_images`);
+cleanDir(`${__dirname}/temp_images`);
 
 setInterval(() => {
-  cleanDir(__dirname + '/temp_images');
-}, 60*60*1000);
+  cleanDir(`${__dirname}/temp_images`);
+}, 60 * 60 * 1000);
