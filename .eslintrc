@@ -1,0 +1,25 @@
+{
+  "extends": "airbnb",
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true
+  },
+  "rules": {
+    "newline-per-chained-call": "warn",
+    "consistent-return": "warn",
+    "no-console": "warn",
+    "import/prefer-default-export": "warn",
+    "brace-style": [2, "stroustrup"],
+    "no-shadow": [
+      "error",
+      {
+        "builtinGlobals": false,
+        "hoist": "functions",
+        "allow": []
+      }
+    ],
+    "react/jsx-filename-extension": "off",
+    "global-require": "off"
+  }
+}
