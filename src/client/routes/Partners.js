@@ -1,17 +1,4 @@
-"use strict";
-import React, { Component } from 'react';
 
+import React from 'react';
 
-export default class ElementPage extends Component {
-  constructor (props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <div>
-        Element: {this.props.routeParams.username}
-      </div>
-    );
-  }
-};
+export default () => (<div>This is Partners Component.</div>);

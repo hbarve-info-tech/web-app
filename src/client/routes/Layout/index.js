@@ -1,37 +1,38 @@
-"use strict";
-const IsClient = typeof document === "object";
 
-import React, { Component } from 'react';
-// import { connect } from 'react-redux';
+import React from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
-import Header from "../../components/Header";
-import Drawer from "../../components/Drawer";
-import Footer from "../../components/Footer";
+import Header from '../../components/Header';
+import Drawer from '../../components/Drawer';
+import Footer from '../../components/Footer';
 
-if(IsClient) {
+import actions from '../../actions';
+
+const IsClient = typeof document === 'object';
+
+if (IsClient) {
   require('./Layout.scss');
 }
 
-const Layout = ({user, children}) => {
-  return (
-    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-      <Header/>
-      <Drawer/>
-      <main class="mdl-layout__content">
-        <div class="page-content">
-          {children}
-        </div>
+const Layout = ({ children }) => (
+  <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <Header />
+    <Drawer />
+    <main className="mdl-layout__content">
+      <div className="page-content">
+        {children}
+      </div>
 
-        {/*Add spacer to push Footer down when not enough content*/}
-        <div class="mdl-layout-spacer"></div>
-        <Footer/>
-      </main>
-    </div>
-  );
-};
+      {/* Add spacer to push Footer down when not enough content*/}
+      <div className="mdl-layout-spacer" />
+      <Footer />
+    </main>
+  </div>
+);
 
-export default Layout;
 
-// const mapStateToProps = (state) => ({user: state.user});
-//
-// export default connect(mapStateToProps, /*mapDispatchToProps*/)(Layout);
+const mapStateToProps = state => ({ user: state.user });
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Layout);

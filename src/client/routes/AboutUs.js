@@ -1,12 +1,4 @@
-"use strict";
+
 import React from 'react';
 
-const AboutUs = ({}) => {
-  return (
-    <div>
-      This is About Us.
-    </div>
-  );
-};
-
-export default AboutUs;
+export default () => (<div>This is About Us Component.</div>);

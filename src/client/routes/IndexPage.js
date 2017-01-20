@@ -1,12 +1,17 @@
-"use strict";
-import React, { Component } from 'react';
+
+import React from 'react';
 import { connect } from 'react-redux';
 
-import LandingPage from "../components/LandingPage";
-import Home        from "../components/Home";
+import LandingPage from '../components/LandingPage';
+import Home from '../components/Home';
 
-const IndexPage = ({user}) => user.isSignedIn ? <Home/> : <LandingPage/>;
+const IndexPage = ({ user }) => {
+  if (user.isSignedIn) {
+    return <Home />;
+  }
+  return <LandingPage />;
+};
 
-const mapStateToProps = (state) => ({user: state.user});
+const mapStateToProps = state => ({ user: state.user });
 
 export default connect(mapStateToProps)(IndexPage);
