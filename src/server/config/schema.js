@@ -1,41 +1,61 @@
-'use strict';
-import Joi from "joi";
 
-export const id       = Joi.number().integer();
-export const username = Joi.string().lowercase().trim().token().min(2).max(20);
-export const postId   = Joi.string().length(24);
+import Joi from 'joi';
 
-export const password = Joi.string().regex(/[a-zA-Z0-9]+/).min(5).max(30);
-export const mobile   = Joi.number().min(7000000000).max(9999999999).integer();
-export const email    = Joi.string().email();
-export const name     = Joi.string().min(3).max(30);
+export const Id = Joi.number().integer();
 
-export const circleType = Joi.string().valid('edu', 'org', 'location', 'field', 'social');
-export const status     = Joi.string().min(1).max(148);
-export const description= Joi.string().min(1).max(300);
-export const classroom  = Joi.boolean();
+export const Username = Joi.string().min(2).max(20).lowercase().trim().token();
 
+export const PostId = Joi.string().length(24);
 
-export const courseId    = Joi.number().integer();
-export const moduleId    = Joi.number().integer();
-export const courseName  = Joi.string().min(3).max(148);
-export const courseUrl   = Joi.string().regex(/[a-zA-Z0-9-]+/);
-export const standard    = Joi.string().valid(
-                              'primary', 'secondary',
-                              'higher-secondary', 'graduation',
-                              'post-graduation', 'phd');
-export const level       = Joi.number().integer().min(1).max(5);
+export const Password = Joi.string().regex(/[a-zA-Z0-9]+/).min(5).max(30);
 
+export const Mobile = Joi.number().min(7000000000).max(9999999999).integer();
 
-export const moduleName  = Joi.string().min(3).max(148);
-export const moduleData  = Joi.object();
+export const Email = Joi.string().email();
+
+export const Name = Joi.string().min(3).max(30);
+
+export const Dob = Joi.date().min('1-1-1974');
+
+export const CircleType = Joi.string().valid('edu', 'org', 'location', 'field', 'social');
+
+export const Status = Joi.string().max(148);
+
+export const Description = Joi.string().min(1).max(300);
+
+export const Classroom = Joi.boolean();
 
 
-export const articleId   = Joi.number().integer();
-export const articleName = Joi.string().min(3).max(148);
-export const articleUrl  = Joi.string().regex(/[a-zA-Z0-9-]+/);
-export const articleData = Joi.object();
+export const CourseId = Joi.number().integer();
 
-export const imageId     = Joi.number().integer();
+export const ModuleId = Joi.number().integer();
 
-//Cover rest all the things here.
+export const CourseName = Joi.string().min(3).max(148);
+
+export const CourseUrl = Joi.string().regex(/[a-zA-Z0-9-]+/);
+
+export const Standard = Joi.string()
+  .valid('primary', 'secondary', 'higher-secondary', 'graduation', 'post-graduation', 'phd');
+
+export const Level = Joi.number().integer().min(1).max(5);
+
+
+export const ModuleName = Joi.string().min(3).max(148);
+export const ModuleData = Joi.object();
+
+
+export const ArticleId = Joi.number().integer();
+
+export const ArticleName = Joi.string().min(3).max(148);
+
+export const ArticleUrl = Joi.string().regex(/[a-zA-Z0-9-]+/);
+
+export const ArticleData = Joi.object();
+
+export const ImageId = Joi.number().integer();
+
+export const Semester = Joi.number().integer();
+export const Degree = Joi.string();
+export const Next = Joi.string();
+
+// Cover rest all the things here.
