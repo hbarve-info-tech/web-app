@@ -1,5 +1,6 @@
 
-import { USER_SIGN_IN_START, USER_SIGN_IN_ERROR, USER_SIGN_IN_SUCCESS } from '../actions/user';
+import { USER_SIGN_IN_START, USER_SIGN_IN_ERROR, USER_SIGN_IN_SUCCESS,
+  USER_FETCH_START, USER_FETCH_SUCCESS, USER_FETCH_ERROR } from '../actions/user';
 
 import { writeLocalStore, writeCookie } from '../api/clientApi';
 
@@ -19,7 +20,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case USER_SIGN_IN_START : {
+    case USER_SIGN_IN_START: {
       return {
         ...state,
         isSigningIn: true,
@@ -35,7 +36,7 @@ export default (state = initialState, action) => {
         lastUpdated: Date.now(),
       };
     }
-    case USER_SIGN_IN_ERROR : {
+    case USER_SIGN_IN_ERROR: {
       return {
         ...state,
         isSigningIn: false,
@@ -73,6 +74,41 @@ export default (state = initialState, action) => {
         error: '',
         message: '',
 
+        lastUpdated: Date.now(),
+      };
+    }
+
+    case USER_FETCH_START: {
+      return {
+        ...state,
+        isError: false,
+        isFetched: false,
+        isFetching: true,
+        error: '',
+        message: '',
+        lastUpdated: Date.now(),
+      };
+    }
+    case USER_FETCH_ERROR: {
+      return {
+        ...state,
+        isError: true,
+        isFetched: false,
+        isFetching: false,
+        error: action.error,
+        message: action.message,
+        lastUpdated: Date.now(),
+      };
+    }
+    case USER_FETCH_SUCCESS: {
+      return {
+        ...state,
+        ...action.payload,
+        isError: false,
+        isFetched: true,
+        isFetching: false,
+        error: '',
+        message: '',
         lastUpdated: Date.now(),
       };
     }
