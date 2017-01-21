@@ -1,8 +1,10 @@
 
 import { USER_SIGN_IN_START, USER_SIGN_IN_ERROR, USER_SIGN_IN_SUCCESS,
-  USER_FETCH_START, USER_FETCH_SUCCESS, USER_FETCH_ERROR } from '../actions/user';
+  USER_FETCH_START, USER_FETCH_SUCCESS, USER_FETCH_ERROR,
+  USER_SIGN_OUT } from '../actions/user';
 
-import { writeLocalStore, writeCookie } from '../api/clientApi';
+import { writeLocalStore, writeCookie,
+  removeLocalStore, removeAllCookies } from '../api/clientApi';
 
 const initialState = {
   isSigningIn: false,
@@ -76,6 +78,14 @@ export default (state = initialState, action) => {
 
         lastUpdated: Date.now(),
       };
+    }
+
+    case USER_SIGN_OUT: {
+      removeAllCookies();
+      removeLocalStore('user');
+
+      location.reload();
+      return state;
     }
 
     case USER_FETCH_START: {
