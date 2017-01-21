@@ -1,5 +1,6 @@
 
 import React from 'react';
+import PropTypes from 'react/lib/ReactPropTypes';
 import { connect } from 'react-redux';
 
 import LandingPage from '../components/LandingPage';
@@ -10,6 +11,12 @@ const IndexPage = ({ user }) => {
     return <Home />;
   }
   return <LandingPage />;
+};
+
+IndexPage.propTypes = {
+  user: PropTypes.shape({
+    isSignedIn: PropTypes.bool,
+  }).isRequired,
 };
 
 const mapStateToProps = state => ({ user: state.user });
