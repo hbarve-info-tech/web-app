@@ -1,0 +1,27 @@
+
+.post.mdl-card {
+  width: 100%;
+}
+
+.post {
+  .mdl-card__title {
+    color: #fff;
+    height: 150px;
+
+            background-size: cover;
+         -o-background-size: cover;
+       -moz-background-size: cover;
+    -webkit-background-size: cover;
+
+    background: {
+      image: url('https://getmdl.io/assets/demos/welcome_card.jpg');
+      repeat: no-repeat;
+      //attachment: fixed;
+      //position: center center;
+    };
+  }
+
+  .mdl-card__menu {
+    color: #fff;
+  }
+}
