@@ -19,3 +19,18 @@ export const signIn = (payload, callback) => {
     .then(response => response.json())
     .then(json => callback(json));
 };
+
+export const fetchUser = ({ id, token }, callback) => {
+  const url = `${HOST}/api/users/${id}`;
+
+  fetch(url, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+  })
+    .then(response => response.json())
+    .then(json => callback(json));
+};
