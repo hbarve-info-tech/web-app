@@ -23,7 +23,14 @@ class Home extends Component {
     this.state = {};
   }
 
+  componentDidMount() {
+    const { id, token } = this.props.user;
+    this.props.fetchArticles({ id, token });
+  }
+
   render() {
+    const articles = this.props.articles.array;
+
     return (
       <div className="mdl-grid">
         <div className="mdl-cell mdl-cell--2-col mdl-cell--2-col-tablet mdl-cell--4-col-phone">
@@ -36,7 +43,7 @@ class Home extends Component {
         </div>
         <div className="mdl-cell mdl-cell--8-col mdl-cell--5-col-tablet mdl-cell--4-col-phone">
           <Timeline
-            posts={[]}
+            posts={articles}
             timelineType="article"
           />
         </div>
@@ -61,6 +68,10 @@ Home.propTypes = {
     error: PropTypes.string,
     message: PropTypes.string,
     lastUpdated: PropTypes.number,
+  }).isRequired,
+  fetchArticles: PropTypes.func.isRequired,
+  articles: PropTypes.shape({
+    array: PropTypes.array.isRequired,
   }).isRequired,
 };
 
