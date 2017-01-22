@@ -1,6 +1,12 @@
 
-.post.mdl-card {
+.post.mdl-card,
+.post-empty.mdl-card {
   width: 100%;
+}
+
+.post-empty {
+  font-size: 16px;
+  min-height: 20px;
 }
 
 .post {

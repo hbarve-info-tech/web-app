@@ -14,7 +14,16 @@ const Post = ({ post, postType }) => {
   let postTitle;
   let postDescription;
 
-  if (postType === 'article') {
+  if (postType === 'emptyPost') {
+    return (
+      <div className="mdl-card mdl-shadow--4dp post-empty">
+        <div className="mdl-card__title">
+          <h2 className="mdl-card__title-text">There is no posts.</h2>
+        </div>
+      </div>
+    );
+  }
+  else if (postType === 'article') {
     postId = post.articleId;
     postTitle = post.articleName;
     postDescription = post.description;
@@ -27,9 +36,12 @@ const Post = ({ post, postType }) => {
 
   return (
     <div className="mdl-card mdl-shadow--4dp post">
-      <div className="mdl-card__title">
+      <a
+        className="mdl-card__title"
+        onClick={() => browserHistory.push(`/${postType}s/${postId}`)}
+      >
         <h2 className="mdl-card__title-text">{postTitle}</h2>
-      </div>
+      </a>
       <div className="mdl-card__supporting-text">
         {postDescription}
       </div>
@@ -48,11 +60,12 @@ const Post = ({ post, postType }) => {
   );
 };
 
-Post.postTypes = {
+Post.propTypes = {
   post: PropTypes.shape({
     articleId: PropTypes.number,
     articleName: PropTypes.string,
-    articleData: PropTypes.number,
+    articleData: PropTypes.shape({}),
+    description: PropTypes.string,
   }),
   postType: PropTypes.string.isRequired,
 };
