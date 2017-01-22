@@ -34,3 +34,36 @@ export const fetchUser = ({ id, token }, callback) => {
     .then(response => response.json())
     .then(json => callback(json));
 };
+
+export const getArticle = ({ articleId, token }, callback) => {
+  const url = `${HOST}/api/articles/${articleId}`;
+  const headers = {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  };
+  if (token) {
+    headers.Authorization = token;
+  }
+
+  fetch(url, {
+    method: 'GET',
+    headers,
+  })
+    .then(response => response.json())
+    .then(json => callback(json));
+};
+
+export const getArticles = ({ id, token }, callback) => {
+  const url = `${HOST}/api/elements/${id}/articles`;
+
+  fetch(url, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+  })
+    .then(response => response.json())
+    .then(json => callback(json));
+};
