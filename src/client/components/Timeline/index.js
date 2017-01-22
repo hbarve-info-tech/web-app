@@ -21,7 +21,7 @@ const Timeline = ({ posts, timelineType }) => {
           postType={postType}
           key={postType === 'article' ? post.articleId : post.courseId}
         />
-      )) : <Post /> }
+      )) : <Post postType="emptyPost" /> }
     </div>
   );
 };
