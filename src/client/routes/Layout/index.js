@@ -25,7 +25,7 @@ class Layout extends Component {
 
   componentDidMount() {
     const { id, token, isFetched } = this.props.user;
-    if (isFetched) {
+    if (!isFetched) {
       this.props.fetchUser({ id, token });
     }
   }

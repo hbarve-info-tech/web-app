@@ -29,16 +29,17 @@ class Home extends Component {
   }
 
   render() {
+    const { user } = this.props;
     const articles = this.props.articles.array;
 
     return (
       <div className="mdl-grid">
         <div className="mdl-cell mdl-cell--2-col mdl-cell--2-col-tablet mdl-cell--4-col-phone">
           <ProfileInfo
-            name="Himank Barve"
-            username="hbarve1"
-            profilePic="https://storage.googleapis.com/mayash/12993536_1078754218834834_8314114430867694644_n.jpg"
-            classroom={false}
+            name={user.name}
+            username={user.username}
+            profilePic={user.profilePic}
+            classroom={user.classroom}
           />
         </div>
         <div className="mdl-cell mdl-cell--8-col mdl-cell--5-col-tablet mdl-cell--4-col-phone">
