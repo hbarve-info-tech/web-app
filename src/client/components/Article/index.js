@@ -11,7 +11,8 @@ if (IsClient) {
 }
 
 const Article = ({ articleId, articleName, description, articleData }) => {
-  const editorState = createEditorState(articleData);
+  const articleInitialState = Object.keys(articleData).length !== 0;
+  const editorState = articleInitialState ? createEditorState(articleData) : createEditorState();
   const onChange = () => {};
 
   return (
