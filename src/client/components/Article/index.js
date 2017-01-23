@@ -23,6 +23,9 @@ const Article = ({ articleId, articleName, description, articleData }) => {
         </h2>
       </div>
       <div className="mdl-card__supporting-text">
+        {description}
+      </div>
+      <div className="mdl-card__supporting-text">
         <Editor
           editorState={editorState}
           onChange={onChange}
