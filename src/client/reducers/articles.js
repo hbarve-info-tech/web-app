@@ -7,7 +7,7 @@ import {
 } from '../actions/articles';
 
 
-const initialArticleState = {
+export const initialArticleState = {
   articleId: -1,
   articleName: '',
   description: '',
@@ -23,6 +23,7 @@ const initialArticleState = {
   isFetched: false,
   isDeleted: false,
 
+  statusCode: 200,
   isError: false,
   error: '',
   message: '',
@@ -41,6 +42,7 @@ const initialArticlesState = {
   isFetched: false,
   isDeleted: false,
 
+  statusCode: 200,
   isError: false,
   error: '',
   message: '',
@@ -119,7 +121,7 @@ const articleReducer = (state = initialArticleState, action) => {
   }
 };
 
-const articlesReducer = (state = initialArticlesState, action) => {
+export const articlesReducer = (state = initialArticlesState, action) => {
   switch (action.type) {
     case ARTICLES_FETCH_START: {
       return {
