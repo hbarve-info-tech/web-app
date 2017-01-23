@@ -14,15 +14,6 @@ class ArticleViewPage extends Component {
     this.state = {};
   }
 
-  componentWillMount() {
-    const { articleId } = this.props.routeParams;
-    const article = this.props.articles.array.find(a => a.articleId === parseInt(articleId, 10));
-    if (!article) {
-      const { token } = this.props.user;
-      this.props.fetchArticle({ articleId, token });
-    }
-  }
-
   render() {
     const { articleId } = this.props.routeParams;
     const article = this.props.articles.array.find(a => a.articleId === parseInt(articleId, 10));
@@ -39,21 +30,6 @@ class ArticleViewPage extends Component {
 }
 
 ArticleViewPage.propTypes = {
-  user: PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-    username: PropTypes.string,
-    token: PropTypes.string,
-    profilePic: PropTypes.string,
-    isSigningIn: PropTypes.bool,
-    isSignedIn: PropTypes.bool,
-    isFetching: PropTypes.bool,
-    isFetched: PropTypes.bool,
-    isError: PropTypes.bool,
-    error: PropTypes.string,
-    message: PropTypes.string,
-    lastUpdated: PropTypes.number,
-  }).isRequired,
   articles: PropTypes.shape({
     array: PropTypes.arrayOf(PropTypes.object),
     isCreating: PropTypes.bool,
@@ -72,7 +48,6 @@ ArticleViewPage.propTypes = {
   routeParams: PropTypes.shape({
     articleId: PropTypes.string.isRequired,
   }).isRequired,
-  fetchArticle: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => state;
