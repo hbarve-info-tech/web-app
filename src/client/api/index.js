@@ -82,3 +82,78 @@ export const getArticles = ({ id, token }, callback) => {
     .then(response => response.json())
     .then(json => callback(json));
 };
+
+export const getCourses = ({ id, token }, callback) => {
+  const url = `${HOST}/api/elements/${id}/courses`;
+
+  fetch(url, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+  })
+    .then(response => response.json())
+    .then(json => callback(json));
+};
+
+export const getCourse = ({ courseId, token }, callback) => {
+  const url = `${HOST}/api/courses/${courseId}`;
+
+  fetch(url, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+  })
+    .then(response => response.json())
+    .then(json => callback(json));
+};
+
+export const getModules = ({ courseId, token }, callback) => {
+  const url = `${HOST}/api/courses/${courseId}/modules`;
+
+  fetch(url, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+  })
+    .then(response => response.json())
+    .then(json => callback(json));
+};
+
+export const getModule = ({ courseId, moduleId, token }, callback) => {
+  const url = `${HOST}/api/courses/${courseId}/modules/${moduleId}`;
+
+  fetch(url, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+  })
+    .then(response => response.json())
+    .then(json => callback(json));
+};
+
+export const getClassroomCourses = ({ id, token }, callback) => {
+  const url = `${HOST}/api/classroom/${id}/courses`;
+
+  fetch(url, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+  })
+    .then(response => response.json())
+    .then(json => callback(json));
+};
