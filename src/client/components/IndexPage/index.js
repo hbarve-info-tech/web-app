@@ -3,8 +3,8 @@ import React from 'react';
 import PropTypes from 'react/lib/ReactPropTypes';
 import { connect } from 'react-redux';
 
-import LandingPage from '../components/LandingPage';
-import Home from '../components/Home';
+import LandingPage from '../LandingPage';
+import Home from '../Home';
 
 const IndexPage = ({ user }) => {
   if (user.isSignedIn) {

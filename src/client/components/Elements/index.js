@@ -10,40 +10,34 @@ import actions from '../../actions';
 import ProfileInfo from '../ProfileInfo';
 import Timeline from '../Timeline';
 
-const IsClient = typeof document === 'object';
-
-if (IsClient) {
-  require('./Elements.scss');
-}
-
-class Elements extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
+class ElementPage extends Component {
   componentDidMount() {
-    const { id, token } = this.props.user;
-    this.props.fetchArticles({ id, token });
+    const { token } = this.props.user;
+    const { username } = this.props.routeParams;
+    const element = this.props.elements.array.find(e => e.username === username);
+    if (element.isFetched) {
+      this.props.fetchArticles({ id: element.id, token });
+    }
   }
-
+  
   render() {
-    const { user } = this.props;
-    const articles = this.props.articles.array;
-
+    const { username } = this.props.routeParams;
+    const element = this.props.elements.array.find(e => e.username === username);
+    const posts = this.props.articles.array.filter(a => a.authorId === element.id);
+    
     return (
       <div className="mdl-grid">
         <div className="mdl-cell mdl-cell--2-col mdl-cell--2-col-tablet mdl-cell--4-col-phone">
           <ProfileInfo
-            name={user.name}
-            username={user.username}
-            profilePic={user.profilePic}
-            classroom={user.classroom}
+            name={element.name}
+            username={element.username}
+            profilePic={element.profilePic}
+            classroom={element.classroom || false}
           />
         </div>
         <div className="mdl-cell mdl-cell--8-col mdl-cell--5-col-tablet mdl-cell--4-col-phone">
           <Timeline
-            posts={articles}
+            posts={posts}
             timelineType="article"
           />
         </div>
@@ -52,29 +46,23 @@ class Elements extends Component {
   }
 }
 
-Elements.propTypes = {
-  user: PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-    username: PropTypes.string,
-    token: PropTypes.string,
-    profilePic: PropTypes.string,
-    isSigningIn: PropTypes.bool,
-    isSignedIn: PropTypes.bool,
-    isFetching: PropTypes.bool,
-    isFetched: PropTypes.bool,
-    isError: PropTypes.bool,
-    error: PropTypes.string,
-    message: PropTypes.string,
-    lastUpdated: PropTypes.number,
+ElementPage.propTypes = {
+  routeParams: PropTypes.shape({
+    username: PropTypes.string.isRequired,
   }).isRequired,
-  fetchArticles: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    token: PropTypes.string.isRequired,
+  }).isRequired,
+  elements: PropTypes.shape({
+    array: PropTypes.arrayOf(PropTypes.object.isRequired),
+  }).isRequired,
   articles: PropTypes.shape({
     array: PropTypes.array.isRequired,
   }).isRequired,
+  fetchArticles: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Elements);
+export default connect(mapStateToProps, mapDispatchToProps)(ElementPage);

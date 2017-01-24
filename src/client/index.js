@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 
 import configureStore from './store/configureStore';
-import Root from './containers/Root';
+import Root from './components/Root';
 
 const IsClient = typeof document === 'object';
 
@@ -30,9 +30,8 @@ const render = (Component) => {
 render(Root);
 
 if (module.hot) {
-  module.hot.accept('./containers/Root', () => {
-    const Root = require('./containers/Root').default;
+  module.hot.accept('./components/Root', () => {
+    const Root = require('./components/Root').default;
     render(Root);
   });
 }
-  
