@@ -121,18 +121,6 @@ const routes = (
         }
       }}
     />
-    <Route
-      path="articles/:articleId/edit" getComponent={(nextState, callback) => {
-        if (IsServer) {
-          callback(null, require('./ArticleEditPage').default);
-        }
-        else {
-          require.ensure([], (require) => {
-            callback(null, require('./ArticleEditPage').default);
-          });
-        }
-      }}
-    />
 
     <Route
       path="courses/:courseId" getComponent={(nextState, callback) => {
@@ -142,18 +130,6 @@ const routes = (
         else {
           require.ensure([], (require) => {
             callback(null, require('./CourseViewPage').default);
-          });
-        }
-      }}
-    />
-    <Route
-      path="courses/:courseId/edit" getComponent={(nextState, callback) => {
-        if (IsServer) {
-          callback(null, require('./CourseEditPage').default);
-        }
-        else {
-          require.ensure([], (require) => {
-            callback(null, require('./CourseEditPage').default);
           });
         }
       }}
