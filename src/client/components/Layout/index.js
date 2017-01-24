@@ -5,9 +5,9 @@ import PropTypes from 'react/lib/ReactPropTypes';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import Header from '../../components/Header';
-import Drawer from '../../components/Drawer';
-import Footer from '../../components/Footer';
+import Header from '../Header';
+import Drawer from '../Drawer';
+import Footer from '../Footer';
 
 import actions from '../../actions';
 

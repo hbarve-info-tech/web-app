@@ -1,49 +1,56 @@
 
 import React from 'react';
+import Component from 'react/lib/ReactComponent';
 import PropTypes from 'react/lib/ReactPropTypes';
-import { Editor, createEditorState } from 'medium-draft';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
-const IsClient = typeof document === 'object';
+import actions from '../../actions';
+import Article from './Article';
 
-if (IsClient) {
-  require('medium-draft/lib/index.css');
-  require('./Article.scss');
+class ArticleViewPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  render() {
+    const { articleId } = this.props.routeParams;
+    const article = this.props.articles.array.find(a => a.articleId === parseInt(articleId, 10));
+
+    return (
+      <div className="mdl-grid mdl-shadow--4dp mayash-article-view-page">
+        <div className="mdl-cell mdl-cell--8-col mdl-cell--6-col-tablet mdl-cell--4-col-phone">
+          <Article {...article} />
+        </div>
+        <div className="mdl-cell mdl-cell--4-col mdl-cell--2-col-tablet mdl-cell--4-col-phone" />
+      </div>
+    );
+  }
 }
 
-const Article = ({ articleId, articleName, description, articleData }) => {
-  const articleInitialState = Object.keys(articleData).length !== 0;
-  const editorState = articleInitialState ? createEditorState(articleData) : createEditorState();
-  const onChange = () => {};
-
-  return (
-    <div className="mdl-card mayash-article">
-      <div className="mdl-card__title">
-        <h2 className="mdl-card__title-text">
-          {articleName}
-        </h2>
-      </div>
-      <div className="mdl-card__supporting-text">
-        {description}
-      </div>
-      <div className="mdl-card__supporting-text">
-        <Editor
-          editorState={editorState}
-          onChange={onChange}
-          editorEnabled={false}
-        />
-      </div>
-    </div>
-  );
-};
-
-Article.propTypes = {
-  articleId: PropTypes.number.isRequired,
-  articleName: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  articleData: PropTypes.shape({
-    entityMap: PropTypes.shape({}),
-    blocks: PropTypes.arrayOf(PropTypes.object),
+ArticleViewPage.propTypes = {
+  articles: PropTypes.shape({
+    array: PropTypes.arrayOf(PropTypes.object),
+    isCreating: PropTypes.bool,
+    isUpdating: PropTypes.bool,
+    isFetching: PropTypes.bool,
+    isDeleting: PropTypes.bool,
+    isCreated: PropTypes.bool,
+    isUpdated: PropTypes.bool,
+    isFetched: PropTypes.bool,
+    isDeleted: PropTypes.bool,
+    isError: PropTypes.bool,
+    error: PropTypes.string,
+    message: PropTypes.string,
+    lastUpdated: PropTypes.number,
+  }).isRequired,
+  routeParams: PropTypes.shape({
+    articleId: PropTypes.string.isRequired,
   }).isRequired,
 };
 
-export default Article;
+const mapStateToProps = state => state;
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(ArticleViewPage);

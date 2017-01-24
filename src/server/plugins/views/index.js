@@ -7,8 +7,8 @@ import { Provider } from 'react-redux';
 
 import actions from '../../../client/actions';
 
-import routes from '../../../client/routes/index';
-import NotFoundPage from '../../../client/routes/ErrorPage';
+import routes from '../../../client/components/Routes';
+import NotFoundPage from '../../../client/components/Error';
 import configureStore from '../../../client/store/configureStore';
 
 const { NODE_ENV } = process.env;

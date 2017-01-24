@@ -2,22 +2,22 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 
-const IsClient = typeof window === 'undefined';
+const IsClient = typeof document === 'object';
 
 if (IsClient) {
-  require('./index.scss');
+  require('./Routes.scss');
 }
 
 const routes = (
   <Route
     path="/" getComponent={(nextState, callback) => {
       if (IsClient) {
-        callback(null, require('./Layout/index').default);
+        require.ensure([], (require) => {
+          callback(null, require('../Layout').default);
+        });
       }
       else {
-        require.ensure([], (require) => {
-          callback(null, require('./Layout/index').default);
-        });
+        callback(null, require('../Layout').default);
       }
     }}
   >
@@ -25,11 +25,11 @@ const routes = (
       getComponent={(nextState, callback) => {
         if (IsClient) {
           require.ensure([], (require) => {
-            callback(null, require('./IndexPage').default);
+            callback(null, require('../IndexPage').default);
           });
         }
         else {
-          callback(null, require('./IndexPage').default);
+          callback(null, require('../IndexPage').default);
         }
       }}
     />
@@ -37,12 +37,12 @@ const routes = (
     <Route
       path="articles/:articleId" getComponent={(nextState, callback) => {
         if (IsClient) {
-          callback(null, require('./ArticleViewPage').default);
+          require.ensure([], (require) => {
+            callback(null, require('../Article').default);
+          });
         }
         else {
-          require.ensure([], (require) => {
-            callback(null, require('./ArticleViewPage').default);
-          });
+          callback(null, require('../Article').default);
         }
       }}
     />
@@ -50,12 +50,12 @@ const routes = (
     <Route
       path="courses/:courseId" getComponent={(nextState, callback) => {
         if (IsClient) {
-          callback(null, require('./CourseViewPage').default);
+          require.ensure([], (require) => {
+            callback(null, require('../Course').default);
+          });
         }
         else {
-          require.ensure([], (require) => {
-            callback(null, require('./CourseViewPage').default);
-          });
+          callback(null, require('../Course').default);
         }
       }}
     />
@@ -63,24 +63,24 @@ const routes = (
     <Route
       path=":username" getComponent={(nextState, callback) => {
         if (IsClient) {
-          callback(null, require('./ElementPage').default);
+          require.ensure([], (require) => {
+            callback(null, require('../Elements').default);
+          });
         }
         else {
-          require.ensure([], (require) => {
-            callback(null, require('./ElementPage').default);
-          });
+          callback(null, require('../Elements').default);
         }
       }}
     />
     <Route
       path=":username/classroom" getComponent={(nextState, callback) => {
         if (IsClient) {
-          callback(null, require('./ClassroomPage').default);
+          require.ensure([], (require) => {
+            callback(null, require('../Classroom').default);
+          });
         }
         else {
-          require.ensure([], (require) => {
-            callback(null, require('./ClassroomPage').default);
-          });
+          callback(null, require('../Classroom').default);
         }
       }}
     />
@@ -88,12 +88,12 @@ const routes = (
     <Route
       path="*" getComponent={(nextState, callback) => {
         if (IsClient) {
-          callback(null, require('./ErrorPage').default);
+          require.ensure([], (require) => {
+            callback(null, require('../Error').default);
+          });
         }
         else {
-          require.ensure([], (require) => {
-            callback(null, require('./ErrorPage').default);
-          });
+          callback(null, require('../Error').default);
         }
       }}
     />

@@ -1,8 +1,10 @@
 
 import React from 'react';
 import { Provider } from 'react-redux';
-import App from './App';
-import DevTools from './DevTools';
+import { Router, browserHistory } from 'react-router';
+
+import routes from '../Routes';
+import DevTools from '../DevTools';
 
 const { REDUX } = process.env;
 
@@ -11,7 +13,7 @@ export default ({ store }) => {
     return (
       <Provider store={store}>
         <div>
-          <App />
+          <Router history={browserHistory} routes={routes} />
           <DevTools />
         </div>
       </Provider>
@@ -20,7 +22,7 @@ export default ({ store }) => {
 
   return (
     <Provider store={store}>
-      <App />
+      <Router history={browserHistory} routes={routes} />
     </Provider>
   );
 };
