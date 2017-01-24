@@ -67,12 +67,7 @@ const elementsReducer = (state = initialState, action) => {
       const { username, id } = action.payload;
       let index = -1;
 
-      if (username) {
-        index = state.array.findIndex(element => element.username === username);
-      }
-      else if (id) {
-        index = state.array.findIndex(element => element.id === parseInt(id, 10));
-      }
+      index = state.array.findIndex(e => e.username === username || e.id === id);
 
       return {
         ...state,
@@ -87,12 +82,7 @@ const elementsReducer = (state = initialState, action) => {
       const { username, id } = action.payload;
       let index = -1;
 
-      if (username) {
-        index = state.array.findIndex(element => element.username === username);
-      }
-      else if (id) {
-        index = state.array.findIndex(element => element.id === parseInt(id, 10));
-      }
+      index = state.array.findIndex(e => e.username === username || e.id === id);
 
       return {
         ...state,
@@ -109,12 +99,7 @@ const elementsReducer = (state = initialState, action) => {
       const { username, id } = action.payload;
       let index = -1;
 
-      if (username) {
-        index = state.array.findIndex(element => element.username === username);
-      }
-      else if (id) {
-        index = state.array.findIndex(element => element.id === parseInt(id, 10));
-      }
+      index = state.array.findIndex(e => e.username === username || e.id === id);
 
       return {
         ...state,
