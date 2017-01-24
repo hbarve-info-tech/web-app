@@ -66,9 +66,12 @@ const HomeHandler = (request, reply) => {
       },
     });
 
-    store.dispatch(actions.fetchUser({ id, token }));
+    store.dispatch(actions.fetchUser({ id: parseInt(id, 10), token }));
 
+    let count = 0;
     const unsubscribe = store.subscribe(() => {
+      count += 1;
+
       context.app = renderToString(
         <Provider store={store}>
           <RouterContext {...renderProps} />
@@ -76,13 +79,20 @@ const HomeHandler = (request, reply) => {
       );
 
       context.initialState = JSON.stringify(store.getState());
-      unsubscribe();
-      return reply.view('index', context);
+
+      if (count === 2) {
+        unsubscribe();
+        return reply.view('index', context);
+      }
     });
   });
 };
 
 const ArticleHandler = (request, reply) => {
+  if (request.path !== request.path.toLowerCase()) {
+    return reply.redirect(request.path.toLowerCase());
+  }
+
   match({
     routes,
     location: request.path
@@ -148,6 +158,10 @@ const ArticleHandler = (request, reply) => {
 };
 
 const CourseHandler = (request, reply) => {
+  if (request.path !== request.path.toLowerCase()) {
+    return reply.redirect(request.path.toLowerCase());
+  }
+
   match({
     routes,
     location: request.path,
@@ -196,19 +210,29 @@ const CourseHandler = (request, reply) => {
       },
     });
 
-    context.app = renderToString(
-      <Provider store={store}>
-        <RouterContext {...renderProps} />
-      </Provider>,
-    );
+    const { courseId } = request.params;
 
-    context.initialState = JSON.stringify(store.getState());
+    store.dispatch(actions.fetchCourse({ courseId, token }));
 
-    return reply.view('index', context);
+    const unsubscribe = store.subscribe(() => {
+      context.app = renderToString(
+        <Provider store={store}>
+          <RouterContext {...renderProps} />
+        </Provider>,
+      );
+
+      context.initialState = JSON.stringify(store.getState());
+      unsubscribe();
+      return reply.view('index', context);
+    });
   });
 };
 
 const ElementHandler = (request, reply) => {
+  if (request.path !== request.path.toLowerCase()) {
+    return reply.redirect(request.path.toLowerCase());
+  }
+
   match({
     routes,
     location: request.path,
@@ -276,6 +300,10 @@ const ElementHandler = (request, reply) => {
 };
 
 const ClassroomHandler = (request, reply) => {
+  if (request.path !== request.path.toLowerCase()) {
+    return reply.redirect(request.path.toLowerCase());
+  }
+
   match({
     routes,
     location: request.path,
@@ -324,19 +352,29 @@ const ClassroomHandler = (request, reply) => {
       },
     });
 
-    context.app = renderToString(
-      <Provider store={store}>
-        <RouterContext {...renderProps} />
-      </Provider>,
-    );
+    const { username } = request.params;
 
-    context.initialState = JSON.stringify(store.getState());
+    store.dispatch(actions.fetchElement({ username, token }));
 
-    return reply.view('index', context);
+    const unsubscribe = store.subscribe(() => {
+      context.app = renderToString(
+        <Provider store={store}>
+          <RouterContext {...renderProps} />
+        </Provider>,
+      );
+
+      context.initialState = JSON.stringify(store.getState());
+      unsubscribe();
+      return reply.view('index', context);
+    });
   });
 };
 
 const handler = (request, reply) => {
+  if (request.path !== request.path.toLowerCase()) {
+    return reply.redirect(request.path.toLowerCase());
+  }
+
   match({
     routes,
     location: request.path,
