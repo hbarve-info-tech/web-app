@@ -11,6 +11,9 @@ import routes from '../../../client/routes/index';
 import NotFoundPage from '../../../client/routes/ErrorPage';
 import configureStore from '../../../client/store/configureStore';
 
+const { NODE_ENV } = process.env;
+
+
 const HomeHandler = (request, reply) => {
   match({
     routes,
@@ -35,6 +38,11 @@ const HomeHandler = (request, reply) => {
       app: '',
       initialState: '',
     };
+
+    if (NODE_ENV === 'production') {
+      context.PRODUCTION = true;
+    }
+
     if (!renderProps) {
       context.app = renderToString(<NotFoundPage />);
       return reply.view('index', context);
@@ -116,6 +124,10 @@ const ArticleHandler = (request, reply) => {
       app: '',
       initialState: '',
     };
+    if (NODE_ENV === 'production') {
+      context.PRODUCTION = true;
+    }
+
     if (!renderProps) {
       context.app = renderToString(<NotFoundPage />);
       return reply.view('index', context);
@@ -185,6 +197,10 @@ const CourseHandler = (request, reply) => {
       app: '',
       initialState: '',
     };
+    if (NODE_ENV === 'production') {
+      context.PRODUCTION = true;
+    }
+
     if (!renderProps) {
       context.app = renderToString(<NotFoundPage />);
       return reply.view('index', context);
@@ -256,6 +272,10 @@ const ElementHandler = (request, reply) => {
       app: '',
       initialState: '',
     };
+    if (NODE_ENV === 'production') {
+      context.PRODUCTION = true;
+    }
+
     if (!renderProps) {
       context.app = renderToString(<NotFoundPage />);
       return reply.view('index', context);
@@ -327,6 +347,10 @@ const ClassroomHandler = (request, reply) => {
       app: '',
       initialState: '',
     };
+    if (NODE_ENV === 'production') {
+      context.PRODUCTION = true;
+    }
+
     if (!renderProps) {
       context.app = renderToString(<NotFoundPage />);
       return reply.view('index', context);
@@ -398,6 +422,10 @@ const handler = (request, reply) => {
       app: '',
       initialState: '',
     };
+    if (NODE_ENV === 'production') {
+      context.PRODUCTION = true;
+    }
+
     if (!renderProps) {
       context.app = renderToString(<NotFoundPage />);
       return reply.view('index', context);
