@@ -14,7 +14,7 @@ module.exports = {
       'react-dom',
       'react-router',
       'react-redux',
-      'react-bootstrap',
+      'material-design-lite',
       'redux',
       'redux-thunk',
       'medium-draft',
@@ -22,8 +22,8 @@ module.exports = {
     ],
   },
   output: {
-    path: `${__dirname}/../public`,
-    publicPath: '/public',
+    path: `${__dirname}/../public/`,
+    publicPath: '/public/',
     pathinfo: true,
     filename: 'index.[hash].js',
   },
@@ -51,7 +51,7 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        loaders: ['style', 'css', 'sass'],
+        loaders: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -87,7 +87,7 @@ module.exports = {
     }),
 
     new HtmlWebpackPlugin({
-      template: './src/template/index.html',
+      template: './src/template/index.hbs',
       inject: 'body',
     }),
 

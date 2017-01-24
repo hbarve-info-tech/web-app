@@ -1,5 +1,6 @@
 
 import * as api from '../api';
+import { fetchElementStart, fetchElementSuccess, fetchElementError } from './elements';
 
 // Global variables are defined here.
 // These constants are for user Signing In.
@@ -8,18 +9,19 @@ export const USER_SIGN_IN_START = 'USER_SIGN_IN_START';
 export const USER_SIGN_IN_SUCCESS = 'USER_SIGN_IN_SUCCESS';
 export const USER_SIGN_IN_ERROR = 'USER_SIGN_IN_ERROR';
 
+// These constants are for user Signing In.
+export const USER_SIGN_OUT = 'USER_SIGN_OUT';
 
-const signInStart = () => ({
-  type: USER_SIGN_IN_START,
-});
-const signInSuccess = payload => ({
-  type: USER_SIGN_IN_SUCCESS,
-  payload,
-});
-const signInError = payload => ({
-  type: USER_SIGN_IN_ERROR,
-  payload,
-});
+// These constants are for fetching user's data from server.
+export const USER_FETCH = 'USER_FETCH';
+export const USER_FETCH_START = 'USER_FETCH_START';
+export const USER_FETCH_SUCCESS = 'USER_FETCH_SUCCESS';
+export const USER_FETCH_ERROR = 'USER_FETCH_ERROR';
+
+
+const signInStart = () => ({ type: USER_SIGN_IN_START });
+const signInSuccess = payload => ({ type: USER_SIGN_IN_SUCCESS, payload });
+const signInError = payload => ({ type: USER_SIGN_IN_ERROR, payload });
 export const signIn = payload => (dispatch) => {
   dispatch(signInStart());
 
@@ -32,3 +34,24 @@ export const signIn = payload => (dispatch) => {
     }
   });
 };
+
+const fetchUserStart = () => ({ type: USER_FETCH_START });
+const fetchUserSuccess = payload => ({ type: USER_FETCH_SUCCESS, payload });
+const fetchUserError = payload => ({ type: USER_FETCH_ERROR, payload });
+export const fetchUser = ({ id, token }) => (dispatch) => {
+  dispatch(fetchUserStart());
+  dispatch(fetchElementStart({ id: parseInt(id, 10) }));
+
+  api.fetchUser({ id, token }, (json) => {
+    if (json.statusCode === 200) {
+      dispatch(fetchUserSuccess(json.payload));
+      dispatch(fetchElementSuccess(json.payload));
+    }
+    else if (json.statusCode >= 400) {
+      dispatch(fetchUserError(json));
+      dispatch(fetchElementError(json));
+    }
+  });
+};
+
+export const signOut = () => ({ type: USER_SIGN_OUT });

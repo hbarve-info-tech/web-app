@@ -8,16 +8,15 @@ import { connect } from 'react-redux';
 import actions from '../../actions';
 
 import ProfileInfo from '../ProfileInfo';
-import PostCreate from '../PostCreate';
 import Timeline from '../Timeline';
 
 const IsClient = typeof document === 'object';
 
 if (IsClient) {
-  require('./Home.scss');
+  require('./Elements.scss');
 }
 
-class Home extends Component {
+class Elements extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -48,13 +47,12 @@ class Home extends Component {
             timelineType="article"
           />
         </div>
-        <PostCreate />
       </div>
     );
   }
 }
 
-Home.propTypes = {
+Elements.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
@@ -79,4 +77,4 @@ Home.propTypes = {
 const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Elements);

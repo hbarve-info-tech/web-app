@@ -8,7 +8,10 @@ import Root from './containers/Root';
 
 const IsClient = typeof document === 'object';
 
-const store = configureStore();
+const initialState = window.__INITIAL_STATE__;
+delete window.__INITIAL_STATE__;
+
+const store = configureStore(initialState);
 
 if (IsClient) {
   require('material-design-lite/src/material-design-lite.scss');
@@ -32,3 +35,4 @@ if (module.hot) {
     render(Root);
   });
 }
+  

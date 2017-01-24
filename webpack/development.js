@@ -25,8 +25,8 @@ module.exports = {
     ],
   },
   output: {
-    path: `${__dirname}/../public`,
-    publicPath: '/public',
+    path: `${__dirname}/../public/`,
+    publicPath: '/public/',
     pathinfo: true,
     filename: 'index.js',
   },
@@ -39,7 +39,7 @@ module.exports = {
     contentBase: path.resolve(__dirname, '..', 'public'),
     // match the output path
 
-    publicPath: '/public',
+    publicPath: '/public/',
     // match the output `publicPath`
   },
   module: {
@@ -96,7 +96,7 @@ module.exports = {
     }),
 
     new HtmlWebpackPlugin({
-      template: './src/template/index.html',
+      template: './src/template/index.hbs',
       inject: 'body',
     }),
   ],

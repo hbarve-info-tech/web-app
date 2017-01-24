@@ -1,0 +1,13 @@
+
+.course-module-list > * {
+  display: block;
+  margin: 10px 0;
+}
+
+.course-module-list > *:first-child {
+  margin-top: 0;
+}
+
+.course-module-list {
+  width: 100%;
+}

@@ -7,9 +7,9 @@ import webpackConfig from '../webpack/development';
 const webpackCompiler = webpack(webpackConfig);
 
 const options = {
-  contentBase: '../public',
+  contentBase: '../public/',
   compress: false,
-  publicPath: '/public',
+  publicPath: '/public/',
   headers: { 'X-Custom-Header': 'yes' },
 
   hot: true,
@@ -23,22 +23,9 @@ const options = {
     '*': 'http://localhost:5000',
   },
   historyApiFallback: true,
-  stats: {
-    colors: true,
-    // hash        : false,
-    // version     : false,
-    // timings     : false,
-    // assets      : false,
-    // chunks      : true,
-    // modules     : false,
-    // reasons     : false,
-    // children    : false,
-    // source      : false,
-    // errors      : false,
-    // errorDetails: false,
-    // warnings    : false,
-    // publicPath  : false
-  },
+
+  // https://webpack.js.org/configuration/stats/#stats
+  stats: 'none',
 };
 
 const webpackServer = new WebpackDevServer(webpackCompiler, options);

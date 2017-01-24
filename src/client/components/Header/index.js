@@ -1,5 +1,7 @@
 
-import React, { Component } from 'react';
+import React from 'react';
+import Component from 'react/lib/ReactComponent';
+import PropTypes from 'react/lib/ReactPropTypes';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -62,7 +64,7 @@ class Header extends Component {
     const { user } = this.props;
 
     return (
-      <header className="mdl-layout__header">
+      <header className="mayash-header mdl-layout__header">
         <div className="mdl-layout__header-row">
 
           <span className="mdl-layout-title">Mayash</span>
@@ -70,12 +72,18 @@ class Header extends Component {
           <div className="mdl-layout-spacer" />
 
           <nav className="mdl-navigation mdl-layout--large-screen-only">
-            <a
-              className="mdl-navigation__link"
-              onClick={this.openSignInDialog}
-            >
-              Sign In
-            </a>
+            {user.isSignedIn ? (
+              <a className="mdl-navigation__link">
+                {user.name}
+              </a>
+              ) : (
+                <a
+                  className="mdl-navigation__link"
+                  onClick={this.openSignInDialog}
+                >
+                  Sign In
+                </a>
+              )}
           </nav>
 
           <button
@@ -88,7 +96,21 @@ class Header extends Component {
             className="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
             htmlFor="demo-menu-lower-right"
           >
-            <li className="mdl-menu__item" onClick={this.openSignInDialog.bind(this)}>Sign In</li>
+            {user.isSignedIn ? (
+              <li
+                className="mdl-menu__item"
+                onClick={this.props.signOut}
+              >
+                Sign Out
+              </li>
+              ) : (
+                <li
+                  className="mdl-menu__item"
+                  onClick={this.openSignInDialog}
+                >
+                  Sign In
+                </li>
+              )}
           </ul>
         </div>
 
@@ -149,6 +171,27 @@ class Header extends Component {
     );
   }
 }
+
+Header.propTypes = {
+  user: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    username: PropTypes.string,
+    token: PropTypes.string,
+    profilePic: PropTypes.string,
+    
+    isSigningIn: PropTypes.bool,
+    isSignedIn: PropTypes.bool,
+    isFetching: PropTypes.bool,
+    isFetched: PropTypes.bool,
+    isError: PropTypes.bool,
+    error: PropTypes.string,
+    message: PropTypes.string,
+    lastUpdated: PropTypes.number,
+  }).isRequired,
+  signIn: PropTypes.func.isRequired,
+  signOut: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = state => ({ user: state.user });
 
