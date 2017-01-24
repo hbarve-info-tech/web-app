@@ -2,16 +2,16 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 
-const IsServer = typeof window === 'undefined';
+const IsClient = typeof window === 'undefined';
 
-if (!IsServer) {
+if (IsClient) {
   require('./index.scss');
 }
 
 const routes = (
   <Route
     path="/" getComponent={(nextState, callback) => {
-      if (IsServer) {
+      if (IsClient) {
         callback(null, require('./Layout/index').default);
       }
       else {
@@ -23,95 +23,20 @@ const routes = (
   >
     <IndexRoute
       getComponent={(nextState, callback) => {
-        if (IsServer) {
-          callback(null, require('./IndexPage').default);
-        }
-        else {
+        if (IsClient) {
           require.ensure([], (require) => {
             callback(null, require('./IndexPage').default);
           });
         }
-      }}
-    />
-
-    <Route
-      path="about-us" getComponent={(nextState, callback) => {
-        if (IsServer) {
-          callback(null, require('./AboutUs').default);
-        }
         else {
-          require.ensure([], (require) => {
-            callback(null, require('./AboutUs').default);
-          });
-        }
-      }}
-    />
-    <Route
-      path="contact-us" getComponent={(nextState, callback) => {
-        if (IsServer) {
-          callback(null, require('./ContactUs').default);
-        }
-        else {
-          require.ensure([], (require) => {
-            callback(null, require('./ContactUs').default);
-          });
-        }
-      }}
-    />
-
-    <Route
-      path="team" getComponent={(nextState, callback) => {
-        if (IsServer) {
-          callback(null, require('./Team').default);
-        }
-        else {
-          require.ensure([], (require) => {
-            callback(null, require('./Team').default);
-          });
-        }
-      }}
-    />
-    <Route
-      path="partners" getComponent={(nextState, callback) => {
-        if (IsServer) {
-          callback(null, require('./Partners').default);
-        }
-        else {
-          require.ensure([], (require) => {
-            callback(null, require('./Partners').default);
-          });
-        }
-      }}
-    />
-
-    <Route
-      path="products" getComponent={(nextState, callback) => {
-        if (IsServer) {
-          callback(null, require('./Products').default);
-        }
-        else {
-          require.ensure([], (require) => {
-            callback(null, require('./Products').default);
-          });
-        }
-      }}
-    />
-    <Route
-      path="feedback" getComponent={(nextState, callback) => {
-        if (IsServer) {
-          callback(null, require('./Feedback').default);
-        }
-        else {
-          require.ensure([], (require) => {
-            callback(null, require('./Feedback').default);
-          });
+          callback(null, require('./IndexPage').default);
         }
       }}
     />
 
     <Route
       path="articles/:articleId" getComponent={(nextState, callback) => {
-        if (IsServer) {
+        if (IsClient) {
           callback(null, require('./ArticleViewPage').default);
         }
         else {
@@ -124,7 +49,7 @@ const routes = (
 
     <Route
       path="courses/:courseId" getComponent={(nextState, callback) => {
-        if (IsServer) {
+        if (IsClient) {
           callback(null, require('./CourseViewPage').default);
         }
         else {
@@ -137,7 +62,7 @@ const routes = (
 
     <Route
       path=":username" getComponent={(nextState, callback) => {
-        if (IsServer) {
+        if (IsClient) {
           callback(null, require('./ElementPage').default);
         }
         else {
@@ -149,7 +74,7 @@ const routes = (
     />
     <Route
       path=":username/classroom" getComponent={(nextState, callback) => {
-        if (IsServer) {
+        if (IsClient) {
           callback(null, require('./ClassroomPage').default);
         }
         else {
@@ -162,7 +87,7 @@ const routes = (
 
     <Route
       path="*" getComponent={(nextState, callback) => {
-        if (IsServer) {
+        if (IsClient) {
           callback(null, require('./ErrorPage').default);
         }
         else {
