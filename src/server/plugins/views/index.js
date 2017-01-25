@@ -35,6 +35,11 @@ const HomeHandler = (request, reply) => {
     const context = {
       title: 'Mayash',
       description: 'Transforming Education.',
+      keywords: 'education, courses',
+      imageUrl: 'https://storage.googleapis.com/mayash/website/mayash-title.png',
+      type: 'website',
+      url: request.path,
+      site_name: 'Transforming Education',
       app: '',
       initialState: '',
     };
@@ -121,9 +126,15 @@ const ArticleHandler = (request, reply) => {
     const context = {
       title: 'Mayash',
       description: 'Transforming Education.',
+      keywords: 'education, courses',
+      imageUrl: 'https://storage.googleapis.com/mayash/website/mayash-title.png',
+      type: 'website',
+      url: request.path,
+      site_name: 'Transforming Education',
       app: '',
       initialState: '',
     };
+
     if (NODE_ENV === 'production') {
       context.PRODUCTION = true;
     }
@@ -194,9 +205,15 @@ const CourseHandler = (request, reply) => {
     const context = {
       title: 'Mayash',
       description: 'Transforming Education.',
+      keywords: 'education, courses',
+      imageUrl: 'https://storage.googleapis.com/mayash/website/mayash-title.png',
+      type: 'website',
+      url: request.path,
+      site_name: 'Transforming Education',
       app: '',
       initialState: '',
     };
+
     if (NODE_ENV === 'production') {
       context.PRODUCTION = true;
     }
@@ -269,9 +286,15 @@ const ElementHandler = (request, reply) => {
     const context = {
       title: 'Mayash',
       description: 'Transforming Education.',
+      keywords: 'education, courses',
+      imageUrl: 'https://storage.googleapis.com/mayash/website/mayash-title.png',
+      type: 'website',
+      url: request.path,
+      site_name: 'Transforming Education',
       app: '',
       initialState: '',
     };
+
     if (NODE_ENV === 'production') {
       context.PRODUCTION = true;
     }
@@ -344,6 +367,11 @@ const ClassroomHandler = (request, reply) => {
     const context = {
       title: 'Mayash',
       description: 'Transforming Education.',
+      keywords: 'education, courses',
+      imageUrl: 'https://storage.googleapis.com/mayash/website/mayash-title.png',
+      type: 'website',
+      url: request.path,
+      site_name: 'Transforming Education',
       app: '',
       initialState: '',
     };
@@ -419,6 +447,11 @@ const handler = (request, reply) => {
     const context = {
       title: 'Mayash',
       description: 'Transforming Education.',
+      keywords: 'education, courses',
+      imageUrl: 'https://storage.googleapis.com/mayash/website/mayash-title.png',
+      type: 'website',
+      url: request.path,
+      site_name: 'Transforming Education',
       app: '',
       initialState: '',
     };
