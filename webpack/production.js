@@ -64,7 +64,9 @@ module.exports = {
     ],
   },
   plugins: [
-    new webpack.EnvironmentPlugin(['NODE_ENV']),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    }),
 
     new webpack.optimize.CommonsChunkPlugin({
       minChunks: Infinity,
