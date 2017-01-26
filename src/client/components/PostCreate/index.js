@@ -7,11 +7,7 @@ import { connect } from 'react-redux';
 
 import actions from '../../actions';
 
-const IsClient = typeof document === 'object';
-
-if (IsClient) {
-  require('./PostCreate.scss');
-}
+import style from './style';
 
 class PostCreate extends Component {
   constructor(props) {
@@ -31,7 +27,7 @@ class PostCreate extends Component {
 
   render() {
     return (
-      <div className="mayash-post-create">
+      <div style={style.postCreate}>
         <button
           className="mdl-button mdl-js-button mdl-button--fab
                     mdl-js-ripple-effect mdl-button--primary"
@@ -42,6 +38,7 @@ class PostCreate extends Component {
         <dialog
           className="mdl-dialog"
           id="post-create-dialog"
+          style={style.dialog}
         >
           <div className="mdl-dialog__content">
             <div

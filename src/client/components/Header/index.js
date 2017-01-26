@@ -7,12 +7,6 @@ import { connect } from 'react-redux';
 
 import actions from '../../actions';
 
-const IsClient = typeof document === 'object';
-
-if (IsClient) {
-  require('./Header.scss');
-}
-
 class Header extends Component {
   constructor(props) {
     super(props);

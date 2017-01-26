@@ -5,12 +5,6 @@ import { Route, IndexRoute } from 'react-router';
 // polyfill webpack require.ensure
 if (typeof require.ensure !== 'function') require.ensure = (d, c) => c(require);
 
-const IsClient = typeof document === 'object';
-
-if (IsClient) {
-  require('./Routes.scss');
-}
-
 const routes = (
   <Route
     path="/" getComponent={(nextState, callback) => {

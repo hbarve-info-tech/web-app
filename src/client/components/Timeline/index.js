@@ -4,17 +4,13 @@ import PropTypes from 'react/lib/ReactPropTypes';
 
 import Post from '../Post';
 
-const IsClient = typeof document === 'object';
-
-if (IsClient) {
-  require('./Timeline.scss');
-}
+import style from './style';
 
 const Timeline = ({ posts, timelineType }) => {
   const postType = timelineType;
 
   return (
-    <div className="timeline">
+    <div style={style.timeline}>
       {posts.length ? posts.map(post => (
         <Post
           post={post}

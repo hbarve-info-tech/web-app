@@ -3,11 +3,7 @@ import React from 'react';
 import PropTypes from 'react/lib/ReactPropTypes';
 import { browserHistory } from 'react-router';
 
-const IsClient = typeof document === 'object';
-
-if (IsClient) {
-  require('./ProfileInfo.scss');
-}
+import style from './style';
 
 const ProfileInfo = ({
   username,
@@ -15,12 +11,27 @@ const ProfileInfo = ({
   profilePic,
   classroom = false,
 }) => (
-  <div className="profile-info mdl-card mdl-shadow--4dp">
+  <div
+    className="mdl-card mdl-shadow--4dp"
+    style={style.profileInfo}
+  >
     <div className="mdl-card__media">
-      <img src={profilePic} alt="" />
+      <img
+        src={profilePic}
+        alt=""
+        style={style.image}
+      />
     </div>
-    <div className="mdl-card__title mdl-card--expand">
-      <h2 className="mdl-card__title-text">{name}</h2>
+    <div
+      className="mdl-card__title mdl-card--expand"
+      style={style.title}
+    >
+      <h2
+        className="mdl-card__title-text"
+        style={style.titleText}
+      >
+        {name}
+      </h2>
       <h2 className="mdl-card__subtitle-text">@{username}</h2>
     </div>
     { classroom ? (
