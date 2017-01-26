@@ -51,7 +51,10 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        loaders: ['style-loader', 'css-loader', 'sass-loader'],
+        loader: ExtractTextPlugin.extract({
+          fallbackLoader: 'style-loader',
+          loader: 'css-loader!sass-loader',
+        }),
       },
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
