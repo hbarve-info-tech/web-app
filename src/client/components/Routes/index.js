@@ -2,6 +2,9 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 
+// polyfill webpack require.ensure
+if (typeof require.ensure !== 'function') require.ensure = (d, c) => c(require);
+
 const IsClient = typeof document === 'object';
 
 if (IsClient) {
@@ -11,90 +14,55 @@ if (IsClient) {
 const routes = (
   <Route
     path="/" getComponent={(nextState, callback) => {
-      if (IsClient) {
-        require.ensure([], (require) => {
-          callback(null, require('../Layout').default);
-        });
-      }
-      else {
+      require.ensure([], (require) => {
         callback(null, require('../Layout').default);
-      }
+      });
     }}
   >
     <IndexRoute
       getComponent={(nextState, callback) => {
-        if (IsClient) {
-          require.ensure([], (require) => {
-            callback(null, require('../IndexPage').default);
-          });
-        }
-        else {
+        require.ensure([], (require) => {
           callback(null, require('../IndexPage').default);
-        }
+        });
       }}
     />
 
     <Route
       path="articles/:articleId" getComponent={(nextState, callback) => {
-        if (IsClient) {
-          require.ensure([], (require) => {
-            callback(null, require('../Article').default);
-          });
-        }
-        else {
+        require.ensure([], (require) => {
           callback(null, require('../Article').default);
-        }
+        });
       }}
     />
 
     <Route
       path="courses/:courseId" getComponent={(nextState, callback) => {
-        if (IsClient) {
-          require.ensure([], (require) => {
-            callback(null, require('../Course').default);
-          });
-        }
-        else {
+        require.ensure([], (require) => {
           callback(null, require('../Course').default);
-        }
+        });
       }}
     />
 
     <Route
       path=":username" getComponent={(nextState, callback) => {
-        if (IsClient) {
-          require.ensure([], (require) => {
-            callback(null, require('../Elements').default);
-          });
-        }
-        else {
+        require.ensure([], (require) => {
           callback(null, require('../Elements').default);
-        }
+        });
       }}
     />
     <Route
       path=":username/classroom" getComponent={(nextState, callback) => {
-        if (IsClient) {
-          require.ensure([], (require) => {
-            callback(null, require('../Classroom').default);
-          });
-        }
-        else {
+        require.ensure([], (require) => {
           callback(null, require('../Classroom').default);
-        }
+        });
       }}
     />
 
     <Route
       path="*" getComponent={(nextState, callback) => {
-        if (IsClient) {
-          require.ensure([], (require) => {
-            callback(null, require('../Error').default);
-          });
-        }
-        else {
+        require.ensure([], (require) => {
           callback(null, require('../Error').default);
-        }
+        });
       }}
     />
   </Route>
