@@ -54,6 +54,7 @@
     "jsx-a11y/no-static-element-interactions": [
       "warn"
     ],
-    "radix": ["error", "always"]
+    "radix": ["error", "always"],
+    "react/no-string-refs": "warn"
   }
 }
