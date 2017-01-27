@@ -22,6 +22,7 @@ module.exports = {
       'redux-thunk',
       'medium-draft',
       'isomorphic-fetch',
+      'dialog-polyfill',
     ],
   },
   output: {
