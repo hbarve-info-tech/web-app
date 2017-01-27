@@ -174,6 +174,7 @@ const courseReducer = (state = initialCourseState, action) => {
     case COURSE_FETCH_ERROR: {
       return {
         ...state,
+        ...action.payload,
 
         isCreating: false,
         isUpdating: false,
@@ -185,10 +186,7 @@ const courseReducer = (state = initialCourseState, action) => {
         isFetched: false,
         isDeleted: false,
 
-        statusCode: 200,
         isError: true,
-        error: action.payload.error,
-        message: action.payload.message,
         lastUpdated: Date.now(),
       };
     }
