@@ -191,6 +191,76 @@ export const getModule = ({ courseId, moduleId, token }, callback) => {
     .then(json => callback(json));
 };
 
+export const updateCourse = ({
+  id,
+  token,
+  courseId,
+  courseName,
+  description,
+  level,
+  standard,
+}, callback) => {
+  const url = `${HOST}/api/elements/${id}/courses/${courseId}`;
+  const payload = {};
+
+  if (courseName) {
+    payload.courseName = courseName;
+  }
+  if (description) {
+    payload.description = description;
+  }
+  if (level) {
+    payload.level = level;
+  }
+  if (standard) {
+    payload.standard = standard;
+  }
+
+  fetch(url, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+    body: JSON.stringify(payload),
+  })
+    .then(response => response.json())
+    .then(json => callback(json));
+};
+
+export const updateModule = ({
+  id,
+  token,
+  courseId,
+  moduleId,
+  moduleName,
+  moduleData,
+}, callback) => {
+  const url = `${HOST}/api/elements/${id}/courses/${courseId}/modules/${moduleId}`;
+  const payload = {};
+
+  if (moduleName) {
+    payload.moduleName = moduleName;
+  }
+  if (moduleData) {
+    payload.moduleData = moduleData;
+  }
+
+  fetch(url, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+    body: JSON.stringify(payload),
+  })
+    .then(response => response.json())
+    .then(json => callback(json));
+};
+
+
 export const getClassroomCourses = ({ id, token }, callback) => {
   const url = `${HOST}/api/classroom/${id}/courses`;
 
