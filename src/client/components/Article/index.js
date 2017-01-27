@@ -27,8 +27,9 @@ class ArticlePage extends Component {
             <Article
               article={article}
               user={this.props.user}
+              updateArticle={this.props.updateArticle}
             />
-            ) : (<Error {...article} />)})
+            ) : (<Error {...article} />)}
         </div>
         <div className="mdl-cell mdl-cell--4-col mdl-cell--2-col-tablet mdl-cell--4-col-phone" />
       </div>
@@ -70,6 +71,7 @@ ArticlePage.propTypes = {
   routeParams: PropTypes.shape({
     articleId: PropTypes.string.isRequired,
   }).isRequired,
+  updateArticle: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => state;

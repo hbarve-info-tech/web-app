@@ -2,15 +2,12 @@
 import React from 'react';
 import PropTypes from 'react/lib/ReactPropTypes';
 import Component from 'react/lib/ReactComponent';
-import { Editor, createEditorState } from 'medium-draft';
+
+import ArticleName from './ArticleName';
+import ArticleEditor from './ArticleEditor';
+import ArticleDescription from './ArticleDescription';
 
 import style from './style';
-
-const IsClient = typeof document === 'object';
-
-if (IsClient) {
-  require('medium-draft/lib/index.css');
-}
 
 class Article extends Component {
   constructor(props) {
@@ -18,19 +15,10 @@ class Article extends Component {
     this.state = {};
   }
 
-  componentDidMount() {
-
-  }
-
-  componentWillUnmount() {
-
-  }
-
   render() {
-    const { articleId, articleName, description, articleData } = this.props.article;
-    const articleInitialState = Object.keys(articleData).length !== 0;
-    const editorState = articleInitialState ? createEditorState(articleData) : createEditorState();
-    const onChange = () => {};
+    const { id, isSignedIn } = this.props.user;
+    const { updateArticle } = this.props;
+    const { articleId, authorId, articleName, description, articleData } = this.props.article;
 
     return (
       <div
@@ -39,23 +27,31 @@ class Article extends Component {
       >
         <div className="mdl-card__title" style={style.articleTitle}>
           <h2 className="mdl-card__title-text">
-            {articleName}
-            <button className="mdl-button mdl-js-button mdl-button--icon">
-              <i className="material-icons">edit</i>
-            </button>
+            <ArticleName
+              author={isSignedIn && authorId === id}
+              user={this.props.user}
+              articleId={articleId}
+              articleName={articleName}
+              updateArticle={updateArticle}
+            />
           </h2>
         </div>
         <div className="mdl-card__supporting-text">
-          {description}
-          <button className="mdl-button mdl-js-button mdl-button--icon">
-            <i className="material-icons">edit</i>
-          </button>
+          <ArticleDescription
+            author={isSignedIn && authorId === id}
+            user={this.props.user}
+            articleId={articleId}
+            articleDescription={description}
+            updateArticle={updateArticle}
+          />
         </div>
         <div className="mdl-card__supporting-text">
-          <Editor
-            editorState={editorState}
-            onChange={onChange}
-            editorEnabled={false}
+          <ArticleEditor
+            author={isSignedIn && authorId === id}
+            user={this.props.user}
+            articleId={articleId}
+            articleData={articleData || {}}
+            updateArticle={updateArticle}
           />
         </div>
       </div>
@@ -89,6 +85,7 @@ Article.propTypes = {
     message: PropTypes.string,
     lastUpdated: PropTypes.number,
   }).isRequired,
+  updateArticle: PropTypes.func.isRequired,
 };
 
 export default Article;
