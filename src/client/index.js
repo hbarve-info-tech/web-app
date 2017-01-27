@@ -7,17 +7,10 @@ import { Provider } from 'react-redux';
 import configureStore from './store/configureStore';
 import App from './App';
 
-const IsClient = typeof document === 'object';
-
 const initialState = window.__INITIAL_STATE__;
 // delete window.__INITIAL_STATE__;
 
 const store = configureStore(initialState);
-
-if (IsClient) {
-  require('material-design-lite/src/material-design-lite.scss');
-  // require('material-design-lite/dist/material.blue-lime.min.css');
-}
 
 const render = (Component) => {
   ReactDOM.render(
