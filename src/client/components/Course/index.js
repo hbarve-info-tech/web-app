@@ -6,8 +6,11 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import actions from '../../actions';
+
 import CourseInfo from './CourseInfo';
 import ModuleList from './ModuleList';
+
+import style from './style';
 
 class CourseViewPage extends Component {
   constructor(props) {
@@ -30,11 +33,14 @@ class CourseViewPage extends Component {
     const course = this.props.courses.array.find(a => a.courseId === parseInt(courseId, 10));
 
     return (
-      <div className="mdl-grid mdl-shadow--4dp mayash-article-view-page">
+      <div
+        className="mdl-grid mdl-shadow--4dp"
+        style={style.course}
+      >
         <div className="mdl-cell mdl-cell--3-col mdl-cell--3-col-tablet mdl-cell--4-col-phone">
           <CourseInfo
             courseName={course.courseName}
-            description={course.description}
+            description={course.description || ''}
             level={course.level || 0}
             standard={course.standard || ''}
           />

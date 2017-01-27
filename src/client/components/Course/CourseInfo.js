@@ -2,11 +2,7 @@
 import React from 'react';
 import PropTypes from 'react/lib/ReactPropTypes';
 
-const IsClient = typeof document === 'object';
-
-if (IsClient) {
-  require('./CourseInfo.scss');
-}
+import style from './style';
 
 const CourseInfo = ({
   courseName,
@@ -14,8 +10,14 @@ const CourseInfo = ({
   standard,
   level = false,
 }) => (
-  <div className="mdl-card mdl-shadow--4dp course-info">
-    <div className="mdl-card__title">
+  <div
+    className="mdl-card mdl-shadow--4dp"
+    style={style.courseInfo}
+  >
+    <div
+      className="mdl-card__title"
+      style={style.courseInfo.title}
+    >
       <h2 className="mdl-card__title-text">{courseName}</h2>
     </div>
     <div className="mdl-card__supporting-text">
