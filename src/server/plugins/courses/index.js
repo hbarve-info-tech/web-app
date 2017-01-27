@@ -134,11 +134,11 @@ const updateCourse = {
       courseId: CourseId.required(),
     }),
     payload: Joi.object({
-      courseName: CourseName.required(),
-      level: Level.required(),
-      standard: Standard.required(),
-      description: Description.required(),
-    }),
+      courseName: CourseName,
+      level: Level,
+      standard: Standard,
+      description: Description,
+    }).min(1).max(4),
   },
   handler: (request, reply) => {
     coursedb.updateCourseByCourseId(
