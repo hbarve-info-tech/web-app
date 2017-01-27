@@ -15,14 +15,15 @@ class PostCreate extends Component {
     this.state = {
       title: '',
     };
-    this.openDialog = () => {
-      const postCreate = document.querySelector('#post-create-dialog');
-      postCreate.showModal();
-    };
-    this.closeDialog = () => {
-      const postCreate = document.querySelector('#post-create-dialog');
-      postCreate.close();
-    };
+    this.create = this.create.bind(this);
+  }
+
+  create(e) {
+    e.preventDefault();
+    const { id, token } = this.props.user;
+    const articleName = this.state.title;
+    this.props.createArticle({ id, token, articleName });
+    this.refs['post-create-dialog'].close();
   }
 
   render() {
@@ -31,12 +32,13 @@ class PostCreate extends Component {
         <button
           className="mdl-button mdl-js-button mdl-button--fab
                     mdl-js-ripple-effect mdl-button--primary"
-          onClick={this.openDialog}
+          onClick={() => this.refs['post-create-dialog'].showModal()}
         >
           <i className="material-icons">add</i>
         </button>
         <dialog
           className="mdl-dialog"
+          ref="post-create-dialog"
           id="post-create-dialog"
           style={style.dialog}
         >
@@ -50,6 +52,7 @@ class PostCreate extends Component {
                 type="text"
                 pattern="^[a-zA-Z0-9 ',./?;:{}()-_=\+!@#$%^&*`~]*"
                 id="post-create-input"
+                onChange={e => this.setState({ title: e.target.value })}
               />
               <label
                 className="mdl-textfield__label"
@@ -66,13 +69,14 @@ class PostCreate extends Component {
             <button
               type="button"
               className="mdl-button"
+              onClick={this.create}
             >
-              Agree
+              Create
             </button>
             <button
               type="button"
               className="mdl-button close"
-              onClick={this.closeDialog}
+              onClick={() => this.refs['post-create-dialog'].close()}
             >
               Cancel
             </button>
@@ -99,9 +103,19 @@ PostCreate.propTypes = {
     message: PropTypes.string,
     lastUpdated: PropTypes.number,
   }).isRequired,
+  courses: PropTypes.object.isRequired,
+  articles: PropTypes.object.isRequired,
+  createArticle: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => state;
-const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
+const mapStateToProps = state => ({
+  user: state.user,
+  articles: state.articles,
+  courses: state.courses,
+});
+const mapDispatchToProps = dispatch => bindActionCreators({
+  createArticle: actions.createArticle,
+  createCourse: actions.createCourse,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostCreate);

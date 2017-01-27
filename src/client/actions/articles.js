@@ -1,4 +1,5 @@
 
+import { browserHistory } from 'react-router';
 // Import library here.
 import * as api from '../api';
 
@@ -60,7 +61,9 @@ export const createArticle = ({ id, token, articleName }) => (dispatch) => {
 
   api.createArticle({ id, token, articleName }, (json) => {
     if (json.statusCode === 201) {
-      dispatch(createArticleSuccess(json.payload));
+      const { articleId } = json.payload;
+      dispatch(createArticleSuccess({ ...json.payload, articleName }));
+      browserHistory.push(`/articles/${articleId}`);
     }
     else if (json.statusCode >= 400) {
       dispatch(createArticleError(json));
