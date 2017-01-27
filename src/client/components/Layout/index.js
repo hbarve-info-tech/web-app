@@ -11,11 +11,7 @@ import Footer from '../Footer';
 
 import actions from '../../actions';
 
-const IsClient = typeof document === 'object';
-
-if (IsClient) {
-  require('./Layout.scss');
-}
+import style from './style';
 
 class Layout extends Component {
   constructor(props) {
@@ -35,7 +31,8 @@ class Layout extends Component {
 
     return (
       <div
-        className="mayash-layout mdl-layout mdl-js-layout mdl-layout--fixed-header"
+        className="mdl-layout mdl-js-layout mdl-layout--fixed-header"
+        style={style.layout}
       >
         <Header />
         <Drawer />

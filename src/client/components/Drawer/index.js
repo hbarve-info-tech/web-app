@@ -2,12 +2,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-const IsClient = typeof document === 'object';
-
-if (IsClient) {
-  require('./Drawer.scss');
-}
-
 const Drawer = () => (
   <div className="mdl-layout__drawer">
     <span className="mdl-layout-title">Mayash</span>

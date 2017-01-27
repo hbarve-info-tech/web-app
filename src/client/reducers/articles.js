@@ -2,8 +2,10 @@
 import uniqBy from 'lodash/uniqBy';
 
 import {
+  ARTICLE_CREATE_START, ARTICLE_CREATE_ERROR, ARTICLE_CREATE_SUCCESS,
   ARTICLES_FETCH_START, ARTICLES_FETCH_ERROR, ARTICLES_FETCH_SUCCESS,
   ARTICLE_FETCH_START, ARTICLE_FETCH_ERROR, ARTICLE_FETCH_SUCCESS,
+  ARTICLE_UPDATE_START, ARTICLE_UPDATE_ERROR, ARTICLE_UPDATE_SUCCESS,
 } from '../actions/articles';
 
 
@@ -53,6 +55,10 @@ const initialArticlesState = {
 
 const articleReducer = (state = initialArticleState, action) => {
   switch (action.type) {
+    case ARTICLE_CREATE_SUCCESS: {
+      return state;
+    }
+
     case ARTICLE_FETCH_START: {
       return {
         ...state,
@@ -77,6 +83,7 @@ const articleReducer = (state = initialArticleState, action) => {
     case ARTICLE_FETCH_ERROR: {
       return {
         ...state,
+        ...action.payload,
 
         isCreating: false,
         isUpdating: false,
@@ -89,8 +96,6 @@ const articleReducer = (state = initialArticleState, action) => {
         isDeleted: false,
 
         isError: true,
-        error: action.error,
-        message: action.message,
         lastUpdated: Date.now(),
       };
     }
@@ -116,6 +121,66 @@ const articleReducer = (state = initialArticleState, action) => {
       };
     }
 
+    case ARTICLE_UPDATE_START: {
+      return {
+        ...state,
+        ...action.payload,
+        isCreating: false,
+        isUpdating: true,
+        isFetching: false,
+        isDeleting: false,
+
+        isCreated: false,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+
+        isError: false,
+        error: '',
+        message: '',
+        lastUpdated: Date.now(),
+      };
+    }
+    case ARTICLE_UPDATE_ERROR: {
+      return {
+        ...state,
+        isCreating: false,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
+
+        isCreated: false,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+
+        isError: true,
+        error: action.payload.error,
+        message: action.payload.message,
+        lastUpdated: Date.now(),
+      };
+    }
+    case ARTICLE_UPDATE_SUCCESS: {
+      return {
+        ...state,
+        ...action.payload,
+        isCreating: false,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
+
+        isCreated: false,
+        isUpdated: true,
+        isFetched: false,
+        isDeleted: false,
+
+        isError: false,
+        error: '',
+        message: '',
+        lastUpdated: Date.now(),
+      };
+    }
+
     default:
       return state;
   }
@@ -123,6 +188,70 @@ const articleReducer = (state = initialArticleState, action) => {
 
 export const articlesReducer = (state = initialArticlesState, action) => {
   switch (action.type) {
+    case ARTICLE_CREATE_START: {
+      return {
+        ...state,
+        isCreating: true,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
+
+        isCreated: false,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+
+        isError: false,
+        error: '',
+        message: '',
+
+        lastUpdated: Date.now(),
+      };
+    }
+    case ARTICLE_CREATE_ERROR: {
+      return {
+        ...state,
+        isCreating: false,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
+
+        isCreated: false,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+
+        isError: true,
+        error: action.payload.error,
+        message: action.payload.message,
+        lastUpdated: Date.now(),
+      };
+    }
+    case ARTICLE_CREATE_SUCCESS: {
+      return {
+        ...state,
+        array: [
+          ...state.array,
+          articleReducer(undefined, action),
+        ],
+        isCreating: false,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
+
+        isCreated: true,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+
+        isError: false,
+        error: '',
+        message: '',
+
+        lastUpdated: Date.now(),
+      };
+    }
+
     case ARTICLES_FETCH_START: {
       return {
         ...state,
@@ -206,7 +335,8 @@ export const articlesReducer = (state = initialArticlesState, action) => {
       };
     }
     case ARTICLE_FETCH_ERROR: {
-      const index = state.array.findIndex(article => article.articleId == action.payload.articleId);
+      const { articleId } = action.payload;
+      const index = state.array.findIndex(a => a.articleId === parseInt(articleId, 10));
 
       return {
         ...state,
@@ -219,7 +349,48 @@ export const articlesReducer = (state = initialArticlesState, action) => {
       };
     }
     case ARTICLE_FETCH_SUCCESS: {
-      const index = state.array.findIndex(article => article.articleId == action.payload.articleId);
+      const { articleId } = action.payload;
+      const index = state.array.findIndex(a => a.articleId === articleId);
+
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          articleReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length),
+        ],
+        lastUpdated: Date.now(),
+      };
+    }
+
+    case ARTICLE_UPDATE_START: {
+      const index = state.array.findIndex(a => a.articleId === action.payload.articleId);
+
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          articleReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length),
+        ],
+        lastUpdated: Date.now(),
+      };
+    }
+    case ARTICLE_UPDATE_ERROR: {
+      const index = state.array.findIndex(a => a.articleId === action.payload.articleId);
+
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          articleReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length),
+        ],
+        lastUpdated: Date.now(),
+      };
+    }
+    case ARTICLE_UPDATE_SUCCESS: {
+      const index = state.array.findIndex(a => a.articleId === action.payload.articleId);
 
       return {
         ...state,

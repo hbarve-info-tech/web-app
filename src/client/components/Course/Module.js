@@ -5,12 +5,7 @@ import Component from 'react/lib/ReactComponent';
 
 import { Editor, createEditorState } from 'medium-draft';
 
-const IsClient = typeof document === 'object';
-
-if (IsClient) {
-  require('./Module.scss');
-}
-
+import style from './style';
 
 class Module extends Component {
   constructor(props) {
@@ -29,7 +24,10 @@ class Module extends Component {
     const { editorState, display } = this.state;
 
     return (
-      <div className="mdl-card mdl-shadow--2dp course-module">
+      <div
+        className="mdl-card mdl-shadow--2dp"
+        style={style.module}
+      >
         <div
           className="mdl-card__title"
           onClick={() => this.setState({ display: display === 'none' ? 'block' : 'none' })}

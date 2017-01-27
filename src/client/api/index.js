@@ -83,6 +83,54 @@ export const getArticles = ({ id, token }, callback) => {
     .then(json => callback(json));
 };
 
+export const createArticle = ({ id, token, articleName }, callback) => {
+  const url = `${HOST}/api/elements/${id}/articles`;
+
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+    body: JSON.stringify({ articleName }),
+  })
+    .then(response => response.json())
+    .then(json => callback(json));
+};
+
+export const updateArticle = ({
+  id, token,
+  articleId, articleName,
+  description, articleData,
+}, callback) => {
+  const url = `${HOST}/api/elements/${id}/articles/${articleId}`;
+  const payload = {};
+
+  if (articleName) {
+    payload.articleName = articleName;
+  }
+  if (description) {
+    payload.description = description;
+  }
+  if (articleData) {
+    payload.articleData = articleData;
+  }
+
+  fetch(url, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+    body: JSON.stringify(payload),
+  })
+    .then(response => response.json())
+    .then(json => callback(json));
+};
+
+
 export const getCourses = ({ id, token }, callback) => {
   const url = `${HOST}/api/elements/${id}/courses`;
 

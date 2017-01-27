@@ -11,12 +11,6 @@ import ProfileInfo from '../ProfileInfo';
 import PostCreate from '../PostCreate';
 import Timeline from '../Timeline';
 
-const IsClient = typeof document === 'object';
-
-if (IsClient) {
-  require('./Home.scss');
-}
-
 class Home extends Component {
   constructor(props) {
     super(props);

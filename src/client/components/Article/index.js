@@ -6,9 +6,11 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import actions from '../../actions';
-import Article from './Article';
 
-class ArticleViewPage extends Component {
+import Article from './Article';
+import Error from '../Error';
+
+class ArticlePage extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -21,7 +23,13 @@ class ArticleViewPage extends Component {
     return (
       <div className="mdl-grid mdl-shadow--4dp mayash-article-view-page">
         <div className="mdl-cell mdl-cell--8-col mdl-cell--6-col-tablet mdl-cell--4-col-phone">
-          <Article {...article} />
+          {article.statusCode === 200 ? (
+            <Article
+              article={article}
+              user={this.props.user}
+              updateArticle={this.props.updateArticle}
+            />
+            ) : (<Error {...article} />)}
         </div>
         <div className="mdl-cell mdl-cell--4-col mdl-cell--2-col-tablet mdl-cell--4-col-phone" />
       </div>
@@ -29,7 +37,22 @@ class ArticleViewPage extends Component {
   }
 }
 
-ArticleViewPage.propTypes = {
+ArticlePage.propTypes = {
+  user: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    username: PropTypes.string,
+    token: PropTypes.string,
+    profilePic: PropTypes.string,
+    isSigningIn: PropTypes.bool,
+    isSignedIn: PropTypes.bool,
+    isFetching: PropTypes.bool,
+    isFetched: PropTypes.bool,
+    isError: PropTypes.bool,
+    error: PropTypes.string,
+    message: PropTypes.string,
+    lastUpdated: PropTypes.number,
+  }).isRequired,
   articles: PropTypes.shape({
     array: PropTypes.arrayOf(PropTypes.object),
     isCreating: PropTypes.bool,
@@ -48,9 +71,10 @@ ArticleViewPage.propTypes = {
   routeParams: PropTypes.shape({
     articleId: PropTypes.string.isRequired,
   }).isRequired,
+  updateArticle: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(ArticleViewPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ArticlePage);

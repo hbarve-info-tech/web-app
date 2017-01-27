@@ -3,11 +3,7 @@ import React from 'react';
 import PropTypes from 'react/lib/ReactPropTypes';
 import { browserHistory } from 'react-router';
 
-const IsClient = typeof document === 'object';
-
-if (IsClient) {
-  require('./Post.scss');
-}
+import style from './style';
 
 const Post = ({ post, postType }) => {
   let postId;
@@ -16,7 +12,10 @@ const Post = ({ post, postType }) => {
 
   if (postType === 'emptyPost') {
     return (
-      <div className="mdl-card mdl-shadow--4dp post-empty">
+      <div
+        className="mdl-card mdl-shadow--4dp"
+        style={style.postEmpty}
+      >
         <div className="mdl-card__title">
           <h2 className="mdl-card__title-text">There is no posts.</h2>
         </div>
@@ -35,13 +34,17 @@ const Post = ({ post, postType }) => {
   }
 
   return (
-    <div className="mdl-card mdl-shadow--4dp post">
-      <a
+    <div
+      className="mdl-card mdl-shadow--4dp"
+      style={style.post}
+    >
+      <div
         className="mdl-card__title"
+        style={style.postTitle}
         onClick={() => browserHistory.push(`/${postType}s/${postId}`)}
       >
         <h2 className="mdl-card__title-text">{postTitle}</h2>
-      </a>
+      </div>
       <div className="mdl-card__supporting-text">
         {postDescription}
       </div>

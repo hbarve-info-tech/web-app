@@ -4,15 +4,10 @@ import PropTypes from 'react/lib/ReactPropTypes';
 
 import Module from './Module';
 
-const IsClient = typeof document === 'object';
-
-if (IsClient) {
-  require('medium-draft/lib/index.css');
-  require('./ModuleList.scss');
-}
+import style from './style';
 
 const ModuleList = ({ modules }) => (
-  <div className="course-module-list">
+  <div style={style.moduleList}>
     {modules.map((module, index) => <Module key={module.moduleId} {...module} index={index + 1} />)}
   </div>
 );

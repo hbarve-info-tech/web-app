@@ -1,12 +1,6 @@
 
 import React from 'react';
 
-const IsClient = typeof document === 'object';
-
-if (IsClient) {
-  require('./Footer.scss');
-}
-
 export default () => (
   <footer className="mdl-mini-footer">
     <div className="mdl-mini-footer__left-section">
