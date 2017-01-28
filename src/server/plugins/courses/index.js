@@ -8,7 +8,7 @@ import { Id, CourseId, ModuleId, CourseName, Level,
 const getCourses = {
   auth: {
     mode: 'required',
-    strategies: ['ReadTrafficCheck', 'user'],
+    strategies: ['visitor'],
   },
   validate: {
     params: Joi.object({
@@ -26,7 +26,7 @@ const getCourses = {
 const getCourse = {
   auth: {
     mode: 'required',
-    strategies: ['ReadTrafficCheck', 'user'],
+    strategies: ['visitor'],
   },
   validate: {
     params: Joi.object({
@@ -43,7 +43,7 @@ const getCourse = {
 const getModules = {
   auth: {
     mode: 'required',
-    strategies: ['ReadTrafficCheck', 'user'],
+    strategies: ['visitor'],
   },
   validate: {
     params: Joi.object({
@@ -59,7 +59,7 @@ const getModules = {
 const getModule = {
   auth: {
     mode: 'required',
-    strategies: ['ReadTrafficCheck', 'user'],
+    strategies: ['visitor'],
   },
   validate: {
     params: Joi.object({

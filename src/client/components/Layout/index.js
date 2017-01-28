@@ -27,12 +27,12 @@ class Layout extends Component {
   }
 
   render() {
-    const { children, user } = this.props;
+    const { children, user, location } = this.props;
 
     return (
       <div
         className="mdl-layout mdl-js-layout mdl-layout--fixed-header"
-        style={style.layout}
+        style={user.isSignedIn === true ? style.layout : {}}
       >
         <Header />
         <Drawer />
@@ -45,7 +45,7 @@ class Layout extends Component {
 
           {/* Add spacer to push Footer down when not enough content*/}
           <div className="mdl-layout-spacer" />
-          {user.isSignedIn === false ? <Footer /> : null}
+          {user.isSignedIn === false && location.pathname === '/' ? <Footer /> : null}
         </main>
       </div>
     );
@@ -71,6 +71,9 @@ Layout.propTypes = {
     lastUpdated: PropTypes.number,
   }).isRequired,
   fetchUser: PropTypes.func.isRequired,
+  location: PropTypes.oneOfType({
+    path: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = state => ({ user: state.user });

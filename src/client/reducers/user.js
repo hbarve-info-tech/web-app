@@ -84,7 +84,7 @@ export default (state = initialState, action) => {
       removeAllCookies();
       removeLocalStore('user');
 
-      location.reload();
+      window.location.href = '/';
       return state;
     }
 

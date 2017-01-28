@@ -7,7 +7,7 @@ import { Id, Degree, Semester, Next } from '../../config/schema';
 const getCourses = {
   auth: {
     mode: 'required',
-    strategies: ['ReadTrafficCheck', 'user'],
+    strategies: ['visitor'],
   },
   validate: {
     params: Joi.object({

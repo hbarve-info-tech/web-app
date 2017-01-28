@@ -33,7 +33,7 @@ class Home extends Component {
             name={user.name}
             username={user.username}
             profilePic={user.profilePic}
-            classroom={user.classroom}
+            classroom={user.classroom || false}
           />
         </div>
         <div className="mdl-cell mdl-cell--8-col mdl-cell--5-col-tablet mdl-cell--4-col-phone">

@@ -18,6 +18,15 @@ class Header extends Component {
     };
 
     this.onChange = this.onChange.bind(this);
+    this.open = this.open.bind(this);
+    this.close = this.close.bind(this);
+    this.signIn = this.signIn.bind(this);
+  }
+
+  componentWillReceiveProps({ user }) {
+    if (user.isSignedIn === true) {
+      this.close();
+    }
   }
 
   onChange(key, e) {
@@ -41,15 +50,11 @@ class Header extends Component {
     }
   }
 
-  openSignInDialog(e) {
-    e.preventDefault();
-    const dialog = document.querySelector('dialog');
-    dialog.showModal();
+  open() {
+    this.refs['sign-in-dialog'].showModal();
   }
-  closeSignInDialog(e) {
-    e.preventDefault();
-    const dialog = document.querySelector('dialog');
-    dialog.close();
+  close() {
+    this.refs['sign-in-dialog'].close();
   }
 
   signIn() {
@@ -88,7 +93,7 @@ class Header extends Component {
               ) : (
                 <a
                   className="mdl-navigation__link"
-                  onClick={this.openSignInDialog}
+                  onClick={this.open}
                 >
                   Sign In
                 </a>
@@ -115,7 +120,7 @@ class Header extends Component {
               ) : (
                 <li
                   className="mdl-menu__item"
-                  onClick={this.openSignInDialog}
+                  onClick={this.open}
                 >
                   Sign In
                 </li>
@@ -123,7 +128,7 @@ class Header extends Component {
           </ul>
         </div>
 
-        <dialog className="mdl-dialog">
+        <dialog className="mdl-dialog" ref="sign-in-dialog">
           <h4 className="mdl-dialog__title">Sign In</h4>
           <div className="mdl-dialog__content">
             <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -163,14 +168,14 @@ class Header extends Component {
               type="button"
               className="mdl-button"
               disabled={invalid}
-              onClick={this.signIn.bind(this)}
+              onClick={this.signIn}
             >
               {user.isSigningIn ? 'Signing In...' : 'Sign In'}
             </button>
             <button
               type="button"
               className="mdl-button"
-              onClick={this.closeSignInDialog.bind(this)}
+              onClick={this.close}
             >
               Cancel
             </button>
