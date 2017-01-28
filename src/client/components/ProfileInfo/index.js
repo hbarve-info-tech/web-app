@@ -38,7 +38,7 @@ const ProfileInfo = ({
       <div className="mdl-card__actions mdl-card--border">
         <button
           className="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-          onClick={() => browserHistory.push(`${username}/classroom`)}
+          onClick={() => browserHistory.push(`/${username}/classroom`)}
         >
           Classroom
         </button>

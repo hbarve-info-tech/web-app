@@ -7,7 +7,7 @@ import { Id, ArticleId, ArticleName, Description, ArticleData } from '../../conf
 const getArticles = {
   auth: {
     mode: 'required',
-    strategies: ['ReadTrafficCheck', 'user'],
+    strategies: ['visitor'],
   },
   validate: {
     params: Joi.object({

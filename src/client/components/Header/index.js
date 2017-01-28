@@ -2,6 +2,7 @@
 import React from 'react';
 import Component from 'react/lib/ReactComponent';
 import PropTypes from 'react/lib/ReactPropTypes';
+import { browserHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -15,19 +16,22 @@ class Header extends Component {
       password: '',
       invalid: true,
     };
+
+    this.onChange = this.onChange.bind(this);
   }
 
   onChange(key, e) {
     const username = key === 'username' ? e.target.value : this.state.username;
     const password = key === 'password' ? e.target.value : this.state.password;
-    
+
     this.setState({ username, password });
-    
+
     const usernameRegexp = new RegExp('^[a-z0-9]+([_]?[a-z0-9])*$');
     const passwordRegexp = new RegExp('^[a-z0-9]+([a-z0-9])*$');
-    
+
     if (usernameRegexp.test(username) && passwordRegexp.test(password)) {
-      if (username.length > 2 && username.length <= 20 && password.length >= 5 && password.length <= 20) {
+      if (username.length > 2 && username.length <= 20
+        && password.length >= 5 && password.length <= 20) {
         this.setState({ invalid: false });
       } else {
         this.setState({ invalid: true });
@@ -58,10 +62,21 @@ class Header extends Component {
     const { user } = this.props;
 
     return (
-      <header className="mayash-header mdl-layout__header">
+      <header className="mdl-layout__header">
         <div className="mdl-layout__header-row">
 
-          <span className="mdl-layout-title">Mayash</span>
+          <span className="mdl-layout-title">
+            <a
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                browserHistory.push('/');
+              }}
+              style={{ color: 'white', textDecoration: 'none' }}
+            >
+              Mayash
+            </a>
+          </span>
 
           <div className="mdl-layout-spacer" />
 
@@ -173,7 +188,6 @@ Header.propTypes = {
     username: PropTypes.string,
     token: PropTypes.string,
     profilePic: PropTypes.string,
-    
     isSigningIn: PropTypes.bool,
     isSignedIn: PropTypes.bool,
     isFetching: PropTypes.bool,

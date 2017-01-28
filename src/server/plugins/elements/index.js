@@ -7,7 +7,7 @@ import { Id, Username } from '../../config/schema';
 const getElement = {
   auth: {
     mode: 'required',
-    strategies: ['ReadTrafficCheck', 'user'],
+    strategies: ['visitor'],
   },
   validate: {
     query: Joi.object({

@@ -17,12 +17,10 @@ module.exports = {
       'react-dom',
       'react-router',
       'react-redux',
-      'material-design-lite',
       'redux',
       'redux-thunk',
       'medium-draft',
       'isomorphic-fetch',
-      'dialog-polyfill',
     ],
   },
   output: {

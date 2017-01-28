@@ -56,7 +56,26 @@ const initialArticlesState = {
 const articleReducer = (state = initialArticleState, action) => {
   switch (action.type) {
     case ARTICLE_CREATE_SUCCESS: {
-      return state;
+      return {
+        ...state,
+        ...action.payload,
+
+        isCreating: false,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
+
+        isCreated: true,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+
+        statusCode: 200,
+        isError: false,
+        error: '',
+        message: '',
+        lastUpdated: Date.now(),
+      };
     }
 
     case ARTICLE_FETCH_START: {
@@ -211,6 +230,8 @@ export const articlesReducer = (state = initialArticlesState, action) => {
     case ARTICLE_CREATE_ERROR: {
       return {
         ...state,
+        ...action.payload,
+
         isCreating: false,
         isUpdating: false,
         isFetching: false,
@@ -222,8 +243,6 @@ export const articlesReducer = (state = initialArticlesState, action) => {
         isDeleted: false,
 
         isError: true,
-        error: action.payload.error,
-        message: action.payload.message,
         lastUpdated: Date.now(),
       };
     }
