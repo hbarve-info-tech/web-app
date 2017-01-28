@@ -1,304 +1,89 @@
-/**
- * Created by himank on 6/8/16.
- */
-"use strict";
-import {
-  COURSE_CREATE, COURSE_CREATE_START, COURSE_CREATE_ERROR, COURSE_CREATE_SUCCESS,
-  COURSES_FETCH, COURSES_FETCH_START, COURSES_FETCH_ERROR, COURSES_FETCH_SUCCESS,
-  COURSE_FETCH,  COURSE_FETCH_START,  COURSE_FETCH_ERROR,  COURSE_FETCH_SUCCESS,
-  COURSE_UPDATE, COURSE_UPDATE_START, COURSE_UPDATE_ERROR, COURSE_UPDATE_SUCCESS,
-  COURSE_DELETE, COURSE_DELETE_START, COURSE_DELETE_ERROR, COURSE_DELETE_SUCCESS,
 
-  MODULE_CREATE, MODULE_CREATE_START, MODULE_CREATE_ERROR, MODULE_CREATE_SUCCESS,
-  MODULES_FETCH, MODULES_FETCH_START, MODULES_FETCH_ERROR, MODULES_FETCH_SUCCESS,
-  MODULE_FETCH,  MODULE_FETCH_START,  MODULE_FETCH_ERROR,  MODULE_FETCH_SUCCESS,
-  MODULE_UPDATE, MODULE_UPDATE_START, MODULE_UPDATE_ERROR, MODULE_UPDATE_SUCCESS,
-  MODULE_DELETE, MODULE_DELETE_START, MODULE_DELETE_ERROR, MODULE_DELETE_SUCCESS
+import _ from 'lodash';
+
+import {
+  COURSES_FETCH_START, COURSES_FETCH_ERROR, COURSES_FETCH_SUCCESS,
+  COURSE_FETCH_START, COURSE_FETCH_ERROR, COURSE_FETCH_SUCCESS,
+
+  MODULES_FETCH_START, MODULES_FETCH_ERROR, MODULES_FETCH_SUCCESS,
+  MODULE_FETCH_START, MODULE_FETCH_ERROR, MODULE_FETCH_SUCCESS,
 } from '../actions/courses';
 
-import _ from "lodash";
-
-let initialModuleState  = {
-  courseId  : -1,
-  moduleId  : -1,
+const initialModuleState = {
+  courseId: -1,
+  moduleId: -1,
   moduleName: '',
   moduleData: {},
 
-  isCreating  : false,
-  isUpdating  : false,
-  isFetching  : false,
-  isDeleting  : false,
+  isCreating: false,
+  isUpdating: false,
+  isFetching: false,
+  isDeleting: false,
 
-  isCreated   : false,
-  isUpdated   : false,
-  isFetched   : false,
-  isDeleted   : false,
+  isCreated: false,
+  isUpdated: false,
+  isFetched: false,
+  isDeleted: false,
 
-  isError     : false,
-  error       : '',
-  message     : '',
-  lastUpdated : Date.now()
+  statusCode: 200,
+  isError: false,
+  error: '',
+  message: '',
+  lastUpdated: Date.now(),
 };
-let initialCourseState  = {
-  courseId    : -1,
-  courseName  : '',
-  description : '',
-  level       : 1,
-  standard    : 'graduation',
-  modules     : [],
+const initialCourseState = {
+  courseId: -1,
+  courseName: '',
+  description: '',
+  level: 0,
+  standard: '',
+  modules: [],
 
-  isCreating  : false,
-  isUpdating  : false,
-  isFetching  : false,
-  isDeleting  : false,
+  isCreating: false,
+  isUpdating: false,
+  isFetching: false,
+  isDeleting: false,
 
-  isCreated   : false,
-  isUpdated   : false,
-  isFetched   : false,
-  isDeleted   : false,
+  isCreated: false,
+  isUpdated: false,
+  isFetched: false,
+  isDeleted: false,
 
-  isError     : false,
-  error       : '',
-  message     : '',
-  lastUpdated : Date.now()
+  isModulesFetching: false,
+  isModulesFetched: false,
+
+  statusCode: 200,
+  isError: false,
+  error: '',
+  message: '',
+  lastUpdated: Date.now(),
 };
-let initialCoursesState = {
-  array       : [],
+const initialCoursesState = {
+  array: [],
 
-  isCreating  : false,
-  isUpdating  : false,
-  isFetching  : false,
-  isDeleting  : false,
+  isCreating: false,
+  isUpdating: false,
+  isFetching: false,
+  isDeleting: false,
 
-  isCreated   : false,
-  isUpdated   : false,
-  isFetched   : false,
-  isDeleted   : false,
+  isCreated: false,
+  isUpdated: false,
+  isFetched: false,
+  isDeleted: false,
 
-  isError     : false,
-  error       : '',
-  message     : '',
+  statusCode: 200,
+  isError: false,
+  error: '',
+  message: '',
 
-  lastUpdated : Date.now()
+  lastUpdated: Date.now(),
 };
 
 const moduleReducer = (state = initialModuleState, action) => {
   switch (action.type) {
-    case MODULE_CREATE_SUCCESS: {
-      return {
-        ...state,
-        ...action.payload,
-
-        isCreating  : false,
-        isUpdating  : false,
-        isFetching  : false,
-        isDeleting  : false,
-
-        isCreated   : true,
-        isUpdated   : false,
-        isFetched   : false,
-        isDeleted   : false,
-
-        isError     : false,
-        error       : '',
-        message     : '',
-        lastUpdated : Date.now()
-      };
-    }
-
     case MODULE_FETCH_START: {
       return {
         ...state,
-        isCreating  : false,
-        isUpdating  : false,
-        isFetching  : true,
-        isDeleting  : false,
-
-        isCreated   : false,
-        isUpdated   : false,
-        isFetched   : false,
-        isDeleted   : false,
-
-        isError     : false,
-        error       : '',
-        message     : '',
-        lastUpdated : Date.now()
-      };
-    }
-    case MODULE_FETCH_ERROR: {
-      return {
-        ...state,
-        isCreating  : false,
-        isUpdating  : false,
-        isFetching  : false,
-        isDeleting  : false,
-
-        isCreated   : false,
-        isUpdated   : false,
-        isFetched   : false,
-        isDeleted   : false,
-
-        isError     : true,
-        error       : action.payload.error,
-        message     : action.payload.message,
-        lastUpdated : Date.now()
-      };
-    }
-    case MODULE_FETCH_SUCCESS: {
-      return {
-        ...state,
-        ...action.payload,
-
-        isCreating  : false,
-        isUpdating  : false,
-        isFetching  : false,
-        isDeleting  : false,
-
-        isCreated   : false,
-        isUpdated   : false,
-        isFetched   : true,
-        isDeleted   : false,
-
-        isError     : false,
-        error       : '',
-        message     : '',
-        lastUpdated : Date.now()
-      };
-    }
-
-    case MODULE_UPDATE_START: {
-      return {
-        ...state,
-        isCreating  : false,
-        isUpdating  : true,
-        isFetching  : false,
-        isDeleting  : false,
-
-        isCreated   : false,
-        isUpdated   : false,
-        isFetched   : false,
-        isDeleted   : false,
-
-        isError     : false,
-        error       : '',
-        message     : '',
-        lastUpdated : Date.now()
-      };
-    }
-    case MODULE_UPDATE_ERROR: {
-      return {
-        ...state,
-        isCreating  : false,
-        isUpdating  : false,
-        isFetching  : false,
-        isDeleting  : false,
-
-        isCreated   : false,
-        isUpdated   : false,
-        isFetched   : false,
-        isDeleted   : false,
-
-        isError     : true,
-        error       : action.payload.error,
-        message     : action.payload.message,
-        lastUpdated : Date.now()
-      };
-    }
-    case MODULE_UPDATE_SUCCESS: {
-      return {
-        ...state,
-        ...action.payload,
-
-        isCreating  : false,
-        isUpdating  : false,
-        isFetching  : false,
-        isDeleting  : false,
-
-        isCreated   : false,
-        isUpdated   : true,
-        isFetched   : false,
-        isDeleted   : false,
-
-        isError     : false,
-        error       : '',
-        message     : '',
-        lastUpdated : Date.now()
-      };
-    }
-
-    case MODULE_DELETE_START: {
-      return {
-        ...state,
-        isCreating  : false,
-        isUpdating  : false,
-        isFetching  : false,
-        isDeleting  : true,
-
-        isCreated   : false,
-        isUpdated   : false,
-        isFetched   : false,
-        isDeleted   : false,
-
-        isError     : false,
-        error       : '',
-        message     : '',
-        lastUpdated : Date.now()
-      };
-    }
-    case MODULE_DELETE_ERROR: {
-      return {
-        ...state,
-        isCreating  : false,
-        isUpdating  : false,
-        isFetching  : true,
-        isDeleting  : false,
-
-        isCreated   : false,
-        isUpdated   : false,
-        isFetched   : false,
-        isDeleted   : false,
-
-        isError     : true,
-        error       : action.payload.error,
-        message     : action.payload.message,
-        lastUpdated : Date.now()
-      };
-    }
-
-    default:
-      return state;
-  }
-};
-
-const courseReducer = (state = initialCourseState, action) => {
-  switch (action.type) {
-    case COURSE_CREATE_SUCCESS: {
-      return {
-        ...state,
-        ...action.payload,
-
-        isCreating  : false,
-        isUpdating  : false,
-        isFetching  : false,
-        isDeleting  : false,
-
-        isCreated   : true,
-        isUpdated   : false,
-        isFetched   : false,
-        isDeleted   : false,
-
-        isError     : false,
-        error       : '',
-        message     : '',
-        lastUpdated : Date.now()
-      };
-    }
-
-    case COURSE_FETCH_START: {
-      return {
-        ...state,
-        ...action.payload,
-
         isCreating: false,
         isUpdating: false,
         isFetching: true,
@@ -309,16 +94,15 @@ const courseReducer = (state = initialCourseState, action) => {
         isFetched: false,
         isDeleted: false,
 
-        isError     : false,
-        error       : '',
-        message     : '',
-        lastUpdated : Date.now()
+        isError: false,
+        error: '',
+        message: '',
+        lastUpdated: Date.now(),
       };
     }
-    case COURSE_FETCH_ERROR: {
+    case MODULE_FETCH_ERROR: {
       return {
         ...state,
-
         isCreating: false,
         isUpdating: false,
         isFetching: false,
@@ -330,12 +114,12 @@ const courseReducer = (state = initialCourseState, action) => {
         isDeleted: false,
 
         isError: true,
-        error: action.error,
-        message: action.message,
-        lastUpdated: Date.now()
+        error: action.payload.error,
+        message: action.payload.message,
+        lastUpdated: Date.now(),
       };
     }
-    case COURSE_FETCH_SUCCESS: {
+    case MODULE_FETCH_SUCCESS: {
       return {
         ...state,
         ...action.payload,
@@ -353,134 +137,79 @@ const courseReducer = (state = initialCourseState, action) => {
         isError: false,
         error: '',
         message: '',
-        lastUpdated: Date.now()
+        lastUpdated: Date.now(),
       };
     }
 
-    case COURSE_UPDATE_START: {
+    default:
+      return state;
+  }
+};
+
+const courseReducer = (state = initialCourseState, action) => {
+  switch (action.type) {
+
+    case COURSE_FETCH_START: {
       return {
         ...state,
         ...action.payload,
 
-        isCreating  : false,
-        isUpdating  : true,
-        isFetching  : false,
-        isDeleting  : false,
+        isCreating: false,
+        isUpdating: false,
+        isFetching: true,
+        isDeleting: false,
 
-        isCreated   : false,
-        isUpdated   : false,
-        isFetched   : false,
-        isDeleted   : false,
+        isCreated: false,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
 
-        isError     : false,
-        error       : '',
-        message     : '',
-        lastUpdated : Date.now()
+        statusCode: 200,
+        isError: false,
+        error: '',
+        message: '',
+        lastUpdated: Date.now(),
       };
     }
-    case COURSE_UPDATE_ERROR: {
-      return {
-        ...state,
-
-        isCreating  : false,
-        isUpdating  : false,
-        isFetching  : false,
-        isDeleting  : false,
-
-        isCreated   : false,
-        isUpdated   : false,
-        isFetched   : false,
-        isDeleted   : false,
-
-        isError     : true,
-        error       : action.payload.error,
-        message     : action.payload.message,
-        lastUpdated : Date.now()
-      };
-    }
-    case COURSE_UPDATE_SUCCESS: {
+    case COURSE_FETCH_ERROR: {
       return {
         ...state,
         ...action.payload,
 
-        isCreating  : false,
-        isUpdating  : false,
-        isFetching  : false,
-        isDeleting  : false,
+        isCreating: false,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
 
-        isCreated   : false,
-        isUpdated   : true,
-        isFetched   : false,
-        isDeleted   : false,
+        isCreated: false,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
 
-        isError     : false,
-        error       : '',
-        message     : '',
-        lastUpdated : Date.now()
+        isError: true,
+        lastUpdated: Date.now(),
       };
     }
-
-    case MODULE_CREATE_START: {
+    case COURSE_FETCH_SUCCESS: {
       return {
         ...state,
+        ...action.payload,
 
-        isCreating  : true,
-        isUpdating  : false,
-        isFetching  : false,
-        isDeleting  : false,
+        isCreating: false,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
 
-        isCreated   : false,
-        isUpdated   : false,
-        isFetched   : false,
-        isDeleted   : false,
+        isCreated: false,
+        isUpdated: false,
+        isFetched: true,
+        isDeleted: false,
 
-        isError     : false,
-        error       : '',
-        message     : '',
-        lastUpdated : Date.now()
-      };
-    }
-    case MODULE_CREATE_ERROR: {
-      return {
-        ...state,
-
-        isCreating  : false,
-        isUpdating  : false,
-        isFetching  : false,
-        isDeleting  : false,
-
-        isCreated   : false,
-        isUpdated   : false,
-        isFetched   : false,
-        isDeleted   : false,
-
-        isError     : true,
-        error       : action.payload.error,
-        message     : action.payload.message,
-        lastUpdated : Date.now()
-      };
-    }
-    case MODULE_CREATE_SUCCESS: {
-      return {
-        ...state,
-        modules: [
-          ...state.modules,
-          moduleReducer(undefined, action)
-        ],
-        isCreating  : false,
-        isUpdating  : false,
-        isFetching  : false,
-        isDeleting  : false,
-
-        isCreated   : true,
-        isUpdated   : false,
-        isFetched   : false,
-        isDeleted   : false,
-
-        isError     : false,
-        error       : '',
-        message     : '',
-        lastUpdated : Date.now()
+        statusCode: 200,
+        isError: false,
+        error: '',
+        message: '',
+        lastUpdated: Date.now(),
       };
     }
 
@@ -497,10 +226,14 @@ const courseReducer = (state = initialCourseState, action) => {
         isFetched: false,
         isDeleted: false,
 
-        isError    : false,
-        error      : '',
-        message    : '',
-        lastUpdated: Date.now()
+        isModulesFetching: true,
+        isModulesFetched: false,
+
+        statusCode: 200,
+        isError: false,
+        error: '',
+        message: '',
+        lastUpdated: Date.now(),
       };
     }
     case MODULES_FETCH_ERROR: {
@@ -516,157 +249,92 @@ const courseReducer = (state = initialCourseState, action) => {
         isFetched: false,
         isDeleted: false,
 
-        isError    : true,
-        error      : action.payload.error,
-        message    : action.payload.message,
-        lastUpdated: Date.now()
+        statusCode: action.payload.statusCode,
+        isError: true,
+        error: action.payload.error,
+        message: action.payload.message,
+        lastUpdated: Date.now(),
       };
     }
     case MODULES_FETCH_SUCCESS: {
       let modules = [
         ...state.modules,
-        ...action.payload.modules.map(module => moduleReducer(undefined, {type: MODULE_FETCH_SUCCESS, payload: module}))
+        ...action.payload.modules.map(module => moduleReducer(undefined, {
+          type: MODULE_FETCH_SUCCESS,
+          payload: module,
+        })),
       ];
 
-      modules = modules.map(module => ({...module, moduleId: parseInt(module.moduleId), courseId: parseInt(module.courseId)}));
+      modules = modules.map(m => ({
+        ...m,
+        moduleId: parseInt(m.moduleId, 10),
+        courseId: parseInt(m.courseId, 10),
+      }));
       modules = _.uniqBy(modules, 'moduleId');
 
       return {
         ...state,
         modules,
-        isCreating  : false,
-        isUpdating  : false,
-        isFetching  : false,
-        isDeleting  : false,
+        isCreating: false,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
 
-        isCreated   : false,
-        isUpdated   : false,
-        isFetched   : true,
-        isDeleted   : false,
+        isCreated: false,
+        isUpdated: false,
+        isFetched: true,
+        isDeleted: false,
 
-        isError     : false,
-        error       : '',
-        message     : '',
-        lastUpdated : Date.now()
+        isModulesFetching: false,
+        isModulesFetched: true,
+
+        isError: false,
+        error: '',
+        message: '',
+        lastUpdated: Date.now(),
       };
     }
 
     case MODULE_FETCH_START: {
-      let index = state.modules.findIndex(module => module.moduleId == action.payload.moduleId);
+      const { moduleId } = action.payload;
+      const index = state.modules.findIndex(module => module.moduleId === parseInt(moduleId, 10));
 
       return {
         ...state,
         modules: [
           ...state.modules.slice(0, index),
           moduleReducer(state.modules[index], action),
-          ...state.modules.slice(index + 1, state.modules.length)
+          ...state.modules.slice(index + 1, state.modules.length),
         ],
-        lastUpdated : Date.now()
+        lastUpdated: Date.now(),
       };
     }
     case MODULE_FETCH_ERROR: {
-      let index = state.modules.findIndex(module => module.moduleId == action.payload.moduleId);
+      const { moduleId } = action.payload;
+      const index = state.modules.findIndex(module => module.moduleId === parseInt(moduleId, 10));
 
       return {
         ...state,
         modules: [
           ...state.modules.slice(0, index),
           moduleReducer(state.modules[index], action),
-          ...state.modules.slice(index + 1, state.modules.length)
+          ...state.modules.slice(index + 1, state.modules.length),
         ],
-        lastUpdated : Date.now()
+        lastUpdated: Date.now(),
       };
     }
     case MODULE_FETCH_SUCCESS: {
-      let index = state.modules.findIndex(module => module.moduleId == action.payload.moduleId);
+      const { moduleId } = action.payload;
+      const index = state.modules.findIndex(module => module.moduleId === parseInt(moduleId, 10));
 
       return {
         ...state,
         modules: [
           ...state.modules.slice(0, index),
           moduleReducer(state.modules[index], action),
-          ...state.modules.slice(index + 1, state.modules.length)
+          ...state.modules.slice(index + 1, state.modules.length),
         ],
-        lastUpdated : Date.now()
-      };
-    }
-
-    case MODULE_UPDATE_START: {
-      let index = state.modules.findIndex(module => module.moduleId == action.payload.moduleId);
-
-      return {
-        ...state,
-        modules: [
-          ...state.modules.slice(0, index),
-          moduleReducer(state.modules[index], action),
-          ...state.modules.slice(index + 1, state.modules.length)
-        ],
-        lastUpdated : Date.now()
-      };
-    }
-    case MODULE_UPDATE_ERROR: {
-      let index = state.modules.findIndex(module => module.moduleId == action.payload.moduleId);
-
-      return {
-        ...state,
-        modules: [
-          ...state.modules.slice(0, index),
-          moduleReducer(state.modules[index], action),
-          ...state.modules.slice(index + 1, state.modules.length)
-        ],
-        lastUpdated : Date.now()
-      };
-    }
-    case MODULE_UPDATE_SUCCESS: {
-      let index = state.modules.findIndex(module => module.moduleId == action.payload.moduleId);
-
-      return {
-        ...state,
-        modules: [
-          ...state.modules.slice(0, index),
-          moduleReducer(state.modules[index], action),
-          ...state.modules.slice(index + 1, state.modules.length)
-        ],
-        lastUpdated : Date.now()
-      };
-    }
-
-    case MODULE_DELETE_START: {
-      let index = state.modules.findIndex(module => module.moduleId == action.payload.moduleId);
-
-      return {
-        ...state,
-        modules: [
-          ...state.modules.slice(0, index),
-          moduleReducer(state.modules[index], action),
-          ...state.modules.slice(index + 1, state.modules.length)
-        ],
-        lastUpdated : Date.now()
-      };
-    }
-    case MODULE_DELETE_ERROR: {
-      let index = state.modules.findIndex(module => module.moduleId == action.payload.moduleId);
-
-      return {
-        ...state,
-        modules: [
-          ...state.modules.slice(0, index),
-          moduleReducer(state.modules[index], action),
-          ...state.modules.slice(index + 1, state.modules.length)
-        ],
-        lastUpdated : Date.now()
-      };
-    }
-    case MODULE_DELETE_SUCCESS: {
-      let index = state.modules.findIndex(module => module.moduleId == action.payload.moduleId);
-
-      return {
-        ...state,
-        modules: [
-          ...state.modules.slice(0, index),
-          ...state.modules.slice(index + 1, state.modules.length)
-        ],
-        lastUpdated : Date.now()
+        lastUpdated: Date.now(),
       };
     }
 
@@ -677,71 +345,6 @@ const courseReducer = (state = initialCourseState, action) => {
 
 const coursesReducer = (state = initialCoursesState, action) => {
   switch (action.type) {
-    case COURSE_CREATE_START: {
-      return {
-        ...state,
-        isCreating: true,
-        isUpdating: false,
-        isFetching: false,
-        isDeleting: false,
-
-        isCreated: false,
-        isUpdated: false,
-        isFetched: false,
-        isDeleted: false,
-
-        isError : false,
-        error   : '',
-        message : '',
-
-        lastUpdated: Date.now()
-      };
-    }
-    case COURSE_CREATE_ERROR: {
-      return {
-        ...state,
-        isCreating: false,
-        isUpdating: false,
-        isFetching: false,
-        isDeleting: false,
-
-        isCreated: false,
-        isUpdated: false,
-        isFetched: false,
-        isDeleted: false,
-
-        isError: true,
-        error  : action.payload.error,
-        message: action.payload.message,
-
-        lastUpdated : Date.now()
-      };
-    }
-    case COURSE_CREATE_SUCCESS: {
-      return {
-        ...state,
-        array: [
-          ...array,
-          courseReducer(undefined, action)
-        ],
-        isCreating  : false,
-        isUpdating  : false,
-        isFetching  : false,
-        isDeleting  : false,
-
-        isCreated   : true,
-        isUpdated   : false,
-        isFetched   : false,
-        isDeleted   : false,
-
-        isError     : false,
-        error       : '',
-        message     : '',
-
-        lastUpdated : Date.now()
-      };
-    }
-
     case COURSES_FETCH_START: {
       return {
         ...state,
@@ -755,11 +358,11 @@ const coursesReducer = (state = initialCoursesState, action) => {
         isFetched: false,
         isDeleted: false,
 
-        isError : false,
-        error   : '',
-        message : '',
+        isError: false,
+        error: '',
+        message: '',
 
-        lastUpdated : Date.now()
+        lastUpdated: Date.now(),
       };
     }
     case COURSES_FETCH_ERROR: {
@@ -775,41 +378,45 @@ const coursesReducer = (state = initialCoursesState, action) => {
         isFetched: false,
         isDeleted: false,
 
+        statusCode: action.payload.statusCode,
         isError: true,
-        error  : action.payload.error,
+        error: action.payload.error,
         message: action.payload.message,
 
-        lastUpdated: Date.now()
+        lastUpdated: Date.now(),
       };
     }
     case COURSES_FETCH_SUCCESS: {
-      action.payload = action.payload.map(course => courseReducer(undefined, {type: COURSE_FETCH_SUCCESS, payload: course}));
+      const fetchedCourses = action.payload.map((course) => {
+        return courseReducer(undefined, { type: COURSE_FETCH_SUCCESS, payload: course });
+      });
 
       let array = [
         ...state.array,
-        ...action.payload
+        ...fetchedCourses,
       ];
-      array = array.map(course => ({...course, courseId: parseInt(course.courseId)}));
+      array = array.map(course => ({ ...course, courseId: parseInt(course.courseId, 10) }));
       array = _.uniqBy(array, 'courseId');
 
       return {
         ...state,
         array,
-        isCreating  : false,
-        isUpdating  : false,
-        isFetching  : false,
-        isDeleting  : false,
+        isCreating: false,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
 
-        isCreated   : false,
-        isUpdated   : false,
-        isFetched   : true,
-        isDeleted   : false,
+        isCreated: false,
+        isUpdated: false,
+        isFetched: true,
+        isDeleted: false,
 
-        isError     : false,
-        error       : '',
-        message     : '',
+        statusCode: 200,
+        isError: false,
+        error: '',
+        message: '',
 
-        lastUpdated : Date.now()
+        lastUpdated: Date.now(),
       };
     }
 
@@ -818,289 +425,123 @@ const coursesReducer = (state = initialCoursesState, action) => {
         ...state,
         array: [
           ...state.array,
-          courseReducer(undefined, action)
+          courseReducer(undefined, action),
         ],
-        lastUpdated : Date.now()
+        lastUpdated: Date.now(),
       };
     }
     case COURSE_FETCH_ERROR: {
-      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
+      const { courseId } = action.payload;
+      const index = state.array.findIndex(c => c.courseId === parseInt(courseId, 10));
 
       return {
         ...state,
         array: [
           ...state.array.slice(0, index),
           courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length)
+          ...state.array.slice(index + 1, state.array.length),
         ],
-        lastUpdated : Date.now()
+        lastUpdated: Date.now(),
       };
     }
     case COURSE_FETCH_SUCCESS: {
-      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
+      const { courseId } = action.payload;
+      const index = state.array.findIndex(c => c.courseId === parseInt(courseId, 10));
 
       return {
         ...state,
         array: [
           ...state.array.slice(0, index),
           courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length)
+          ...state.array.slice(index + 1, state.array.length),
         ],
-        lastUpdated : Date.now()
-      };
-    }
-
-    case COURSE_UPDATE_START: {
-      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
-
-      return {
-        ...state,
-        array: [
-          ...state.array.slice(0, index),
-          courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length)
-        ],
-        lastUpdated : Date.now()
-      };
-    }
-    case COURSE_UPDATE_ERROR: {
-      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
-
-      return {
-        ...state,
-        array: [
-          ...state.array.slice(0, index),
-          courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length)
-        ],
-        lastUpdated : Date.now()
-      };
-    }
-    case COURSE_UPDATE_SUCCESS: {
-      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
-
-      return {
-        ...state,
-        array: [
-          ...state.array.slice(0, index),
-          courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length)
-        ],
-        lastUpdated : Date.now()
-      };
-    }
-
-    case COURSE_DELETE_START: {
-
-      return state;
-    }
-    case COURSE_DELETE_ERROR: {
-
-      return state;
-    }
-    case COURSE_DELETE_SUCCESS: {
-
-      return state;
-    }
-
-
-    case MODULE_CREATE_START: {
-      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
-
-      return {
-        ...state,
-        array: [
-          ...state.array.slice(0, index),
-          courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length)
-        ],
-        lastUpdated : Date.now()
-      };
-    }
-    case MODULE_CREATE_ERROR: {
-      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
-
-      return {
-        ...state,
-        array: [
-          ...state.array.slice(0, index),
-          courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length)
-        ],
-        lastUpdated : Date.now()
-      };
-    }
-    case MODULE_CREATE_SUCCESS: {
-      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
-
-      return {
-        ...state,
-        array: [
-          ...state.array.slice(0, index),
-          courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length)
-        ],
-        lastUpdated : Date.now()
+        lastUpdated: Date.now(),
       };
     }
 
     case MODULES_FETCH_START: {
-      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
+      const { courseId } = action.payload;
+      const index = state.array.findIndex(c => c.courseId === parseInt(courseId, 10));
 
       return {
         ...state,
         array: [
           ...state.array.slice(0, index),
           courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length)
+          ...state.array.slice(index + 1, state.array.length),
         ],
-        lastUpdated : Date.now()
+        lastUpdated: Date.now(),
       };
     }
     case MODULES_FETCH_ERROR: {
-      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
+      const { courseId } = action.payload;
+      const index = state.array.findIndex(c => c.courseId === parseInt(courseId, 10));
 
       return {
         ...state,
         array: [
           ...state.array.slice(0, index),
           courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length)
+          ...state.array.slice(index + 1, state.array.length),
         ],
-        lastUpdated : Date.now()
+        lastUpdated: Date.now(),
       };
     }
     case MODULES_FETCH_SUCCESS: {
-      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
+      const { courseId } = action.payload;
+      const index = state.array.findIndex(c => c.courseId === parseInt(courseId, 10));
 
       return {
         ...state,
         array: [
           ...state.array.slice(0, index),
           courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length)
+          ...state.array.slice(index + 1, state.array.length),
         ],
-        lastUpdated : Date.now()
+        lastUpdated: Date.now(),
       };
     }
 
     case MODULE_FETCH_START: {
-      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
+      const { courseId } = action.payload;
+      const index = state.array.findIndex(c => c.courseId === parseInt(courseId, 10));
 
       return {
         ...state,
         array: [
           ...state.array.slice(0, index),
           courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length)
+          ...state.array.slice(index + 1, state.array.length),
         ],
-        lastUpdated : Date.now()
+        lastUpdated: Date.now(),
       };
     }
     case MODULE_FETCH_ERROR: {
-      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
+      const { courseId } = action.payload;
+      const index = state.array.findIndex(c => c.courseId === parseInt(courseId, 10));
 
       return {
         ...state,
         array: [
           ...state.array.slice(0, index),
           courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length)
+          ...state.array.slice(index + 1, state.array.length),
         ],
-        lastUpdated : Date.now()
+        lastUpdated: Date.now(),
       };
     }
     case MODULE_FETCH_SUCCESS: {
-      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
+      const { courseId } = action.payload;
+      const index = state.array.findIndex(c => c.courseId === parseInt(courseId, 10));
 
       return {
         ...state,
         array: [
           ...state.array.slice(0, index),
           courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length)
+          ...state.array.slice(index + 1, state.array.length),
         ],
-        lastUpdated : Date.now()
-      };
-    }
-
-    case MODULE_UPDATE_START: {
-      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
-
-      return {
-        ...state,
-        array: [
-          ...state.array.slice(0, index),
-          courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length)
-        ],
-        lastUpdated : Date.now()
-      };
-    }
-    case MODULE_UPDATE_ERROR: {
-      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
-
-      return {
-        ...state,
-        array: [
-          ...state.array.slice(0, index),
-          courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length)
-        ],
-        lastUpdated : Date.now()
-      };
-    }
-    case MODULE_UPDATE_SUCCESS: {
-      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
-
-      return {
-        ...state,
-        array: [
-          ...state.array.slice(0, index),
-          courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length)
-        ],
-        lastUpdated : Date.now()
-      };
-    }
-
-    case MODULE_DELETE_START: {
-      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
-
-      return {
-        ...state,
-        array: [
-          ...state.array.slice(0, index),
-          courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length)
-        ],
-        lastUpdated : Date.now()
-      };
-    }
-    case MODULE_DELETE_ERROR: {
-      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
-
-      return {
-        ...state,
-        array: [
-          ...state.array.slice(0, index),
-          courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length)
-        ],
-        lastUpdated : Date.now()
-      };
-    }
-    case MODULE_DELETE_SUCCESS: {
-      let index = state.array.findIndex(course => course.courseId == action.payload.courseId);
-
-      return {
-        ...state,
-        array: [
-          ...state.array.slice(0, index),
-          courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length)
-        ],
-        lastUpdated : Date.now()
+        lastUpdated: Date.now(),
       };
     }
 

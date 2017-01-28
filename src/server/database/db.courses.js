@@ -1,397 +1,331 @@
-'use strict';
-import _ from "lodash";
-import db, { ELEMENTS, ARTICLES, COURSES, MODULES } from "./setup";
 
-export const getCourseByCourseId    = (courseId, callback) => {
+import db, { ELEMENTS, COURSES, MODULES } from './setup';
 
-  let key = db.key([COURSES, courseId]);
-
-  db.get(key, (error, success) => {
-    if(error) {
+export const getCourseByCourseId = (courseId, callback) => {
+  db.get(db.key([COURSES, courseId]), (error, course) => {
+    if (error) {
       console.log(error);
 
       return callback({
         statusCode: 500,
-        error     : 'Database server error.',
-        message   : 'Database server error.'
+        error: 'Database server error.',
+        message: 'Database server error.',
       });
     }
 
-    if(success) {
-      success = Object.assign({}, success, {
-        authorId : success.authorId.id,
-        courseId : success.courseId.id
-      });
-
+    if (course) {
       return callback({
         statusCode: 200,
-        message   : 'Success',
-        payload   : success
+        message: 'Success',
+        payload: { ...course, authorId: course.authorId.id, courseId: course.courseId.id },
       });
     }
 
     return callback({
       statusCode: 404,
-      message   : 'Course does not exists.'
+      message: 'Course does not exists.',
     });
   });
 };
 
-export const getCoursesById         = (id, callback) => {
-  let query = db.createQuery(COURSES)
+export const getCoursesById = (id, callback) => {
+  const query = db.createQuery(COURSES)
     .filter('authorId', '=', db.key([ELEMENTS, id]));
 
-  db.runQuery(query, (error, success) => {
-    if(error) {
+  db.runQuery(query, (error, courses) => {
+    if (error) {
       console.log(error);
 
       return callback({
         statusCode: 500,
-        error     : 'Database server error.',
-        message   : 'Database server error.'
-      });
-    }
-
-    if(success.length !== 0) {
-      success = success.map((course, index) => Object.assign({},
-        course,
-        {
-          courseId: course.courseId.id,
-          authorId: course.authorId.id
-        }
-      ));
-
-      return callback({
-        statusCode: 200,
-        message   : 'Success',
-        payload   : success
+        error: 'Database server error.',
+        message: 'Database server error.',
       });
     }
 
     return callback({
-      statusCode: 404,
-      message   : 'Courses does not exists.'
+      statusCode: 200,
+      message: 'Success',
+      payload: courses.map(c => ({ ...c, courseId: c.courseId.id, authorId: c.authorId.id })),
     });
   });
 };
 
-export const createCourseById       = (id, payload, callback) => {
-  let key           = db.key(COURSES);
-
-  db.allocateIds(key, 1, (err, result) => {
-    if(err) {
-      console.log(err);
+export const createCourseById = (id, payload, callback) => {
+  db.allocateIds(db.key(COURSES), 1, (error1, keys) => {
+    if (error1) {
+      console.log(error1);
 
       return callback({
         statusCode: 500,
-        error     : 'Server Error.'
+        error: 'Server Error.',
       });
     }
 
-    payload.authorId  = db.key([ELEMENTS, id]);
-    payload.courseId  = db.key([COURSES, result[0].id]);
-    let timestamp     = (new Date());
-    payload.timestamp = timestamp.toString();
+    const key = db.key([COURSES, keys[0].id]);
+    const authorId = id;
+    const courseId = key.id;
 
-    db.save({
-      key : payload.courseId,
-      data: payload
-    }, (error, success) => {
-      if(error) {
-        console.log(error);
+    const data = { ...payload, authorId: db.key([ELEMENTS, id]), courseId: key };
+
+    const timestamp = (new Date());
+    data.timestamp = timestamp.toString();
+
+    db.save({ key, data }, (error2) => {
+      if (error2) {
+        console.log(error2);
 
         return callback({
           statusCode: 500,
-          error     : 'Database server error.',
-          message   : 'Database server error.'
+          error: 'Database server error.',
+          message: 'Database server error.',
         });
       }
 
       return callback({
         statusCode: 200,
-        message   : 'Success',
-        payload   : payload
+        message: 'Success',
+        payload: { authorId, courseId },
       });
     });
   });
 };
 
 export const updateCourseByCourseId = (courseId, payload, callback) => {
-  let transaction = db.transaction();
+  const key = db.key([COURSES, courseId]);
 
-  transaction.run((err) => {
-    if(err) {
-      return callback({
-        statusCode : 500,
-        error      : 'Server error'
-      });
-    }
-    let key = db.key([COURSES, courseId]);
-
-    transaction.get(key, (err, data) => {
-      if(err) {
-        return callback({
-          statusCode : 500,
-          error      : 'Server error'
-        });
-      }
-
-      if(!data) {
-        return callback({
-          statusCode: 404,
-          error     : "Course doesn\'t exists."
-        });
-      }
-
-      data = Object.assign({}, data, payload);
-
-      transaction.save({
-        key  : key,
-        data : data
-      });
-
-      transaction.commit((err) => {
-        if(err) {
-          return callback({
-            statusCode : 500,
-            error      : 'Server error'
-          });
-        }
-
-        return callback({
-          statusCode : 200,
-          message    : 'Update successfully.'
-        });
-      })
-    });
-  });
-};
-
-export const deleteCourseByCourseId = (courseId, callback) => {
-  let transaction = db.transaction();
-
-  transaction.run((err) => {
-    if(err) {
-      return callback({
-        statusCode : 500,
-        error      : 'Server error'
-      });
-    }
-    let key = db.key([COURSES, courseId]);
-
-    transaction.delete(key, (err, result) => {
-      if(err) {
-        return callback({
-          statusCode : 500,
-          error      : 'Server error'
-        });
-      }
-
-      if(result.indexUpdates === 0) {
-        return callback({
-          statusCode: 404,
-          error     : 'Course Not found.'
-        });
-      }
-
-      transaction.commit((err) => {
-        if(err) {
-          return callback({
-            statusCode : 500,
-            error      : 'Server error'
-          });
-        }
-
-        return callback({
-          statusCode : 200,
-          message    : 'Update successfully.'
-        });
-      });
-    });
-  });
-};
-
-
-
-export const getModulesByCourseId   = (courseId, callback) => {
-  let query = db.createQuery(MODULES)
-    .filter('courseId', '=', db.key([COURSES, courseId]));
-
-  db.runQuery(query, (error, success) => {
-    if(error) {
-      console.log(error);
+  db.get(key, (error1, course) => {
+    if (error1) {
+      console.log(error1);
 
       return callback({
         statusCode: 500,
-        error     : 'Database server error.',
-        message   : 'Database server error.'
+        error: 'Server error',
       });
     }
 
-    success = success.map((module, index) => Object.assign({},
-      module,
-      {
-        courseId: module.courseId.id,
-        moduleId: module.moduleId.id
-      }
-    ));
-
-    return callback({
-      statusCode: 200,
-      message   : 'Success',
-      payload   : success
-    });
-  });
-};
-
-export const getModuleByModuleId    = (courseId, moduleId, callback) => {
-  db.get(db.key([MODULES, moduleId]), (error, success) => {
-    if(error) {
-      console.log(error);
-
+    if (!course) {
       return callback({
-        statusCode: 500,
-        error     : 'Database server error.',
-        message   : 'Database server error.'
+        statusCode: 404,
+        error: "Course doesn't exists.",
+        message: "Course doesn't exists.",
       });
     }
 
-    if(success) {
-      success = Object.assign(
-        {},
-        success,
-        {
-          courseId: success.courseId.id,
-          moduleId: success.moduleId.id
-        }
-      );
+    const data = { ...course, ...payload };
+
+    db.save({ key, data }, (error2) => {
+      if (error2) {
+        console.log(error2);
+
+        return callback({
+          statusCode: 500,
+          error: 'Server error',
+        });
+      }
 
       return callback({
         statusCode: 200,
-        message   : 'Success',
-        payload   : success
+        message: 'Update successfully.',
+      });
+    });
+  });
+};
+
+
+export const getModulesByCourseId = (courseId, callback) => {
+  const query = db.createQuery(MODULES)
+    .filter('courseId', '=', db.key([COURSES, courseId]));
+
+  db.runQuery(query, (error, modules) => {
+    if (error) {
+      console.log(error);
+
+      return callback({
+        statusCode: 500,
+        error: 'Database server error.',
+        message: 'Database server error.',
       });
     }
 
     return callback({
-      statusCode: 404,
-      message   : 'Module does not exists.'
+      statusCode: 200,
+      message: 'Success',
+      payload: modules.map(m => ({ ...m, courseId: m.courseId.id, moduleId: m.moduleId.id })),
+    });
+  });
+};
+
+export const getModuleByModuleId = (courseId, moduleId, callback) => {
+  db.get(db.key([MODULES, moduleId]), (error, module) => {
+    if (error) {
+      console.log(error);
+
+      return callback({
+        statusCode: 500,
+        error: 'Database server error.',
+        message: 'Database server error.',
+      });
+    }
+
+    if (!module) {
+      return callback({
+        statusCode: 404,
+        message: 'Module does not exists.',
+      });
+    }
+
+    return callback({
+      statusCode: 200,
+      message: 'Success',
+      payload: { ...module, courseId: module.courseId.id, moduleId: module.moduleId.id },
     });
   });
 };
 
 export const createModuleByCourseId = (courseId, payload, callback) => {
-  let key = db.key(MODULES);
-
-  db.allocateIds(key, 1, (err, result) => {
-    if(err) {
+  db.allocateIds(db.key(MODULES), 1, (err, keys) => {
+    if (err) {
       console.log(err);
 
       return callback({
         statusCode: 500,
-        error     : 'Server Error.'
+        error: 'Server Error.',
       });
     }
 
-    payload.courseId  = db.key([COURSES, courseId]);
-    payload.moduleId  = db.key([MODULES, result[0].id]);
-    let timestamp     = (new Date());
-    payload.timestamp = timestamp.toString();
+    const key = db.key([MODULES, keys[0].id]);
+    const timestamp = (new Date());
+    const data = {
+      ...payload,
+      courseId: db.key([COURSES, courseId]),
+      moduleId: key,
+      timestamp: timestamp.toString(),
+    };
 
-    db.save({
-      key : payload.moduleId,
-      data: payload
-    }, (error, success) => {
-      if(error) {
+    db.save({ key, data }, (error) => {
+      if (error) {
         console.log(error);
 
         return callback({
           statusCode: 500,
-          error     : 'Database server error.',
-          message   : 'Database server error.'
+          error: 'Database server error.',
+          message: 'Database server error.',
         });
       }
 
       return callback({
         statusCode: 200,
-        message   : 'Success',
-        payload   : payload
+        message: 'Success',
+        payload: { ...data, courseId, moduleId: key.id },
       });
     });
   });
 };
 
 export const updateModuleByModuleId = (moduleId, payload, callback) => {
-  let transaction = db.transaction();
+  const key = db.key([MODULES, moduleId]);
 
-  transaction.run((err) => {
-    if(err) {
+  db.get(key, (error1, module) => {
+    if (error1) {
+      console.log(error1);
+
       return callback({
-        statusCode : 500,
-        error      : 'Server error'
+        statusCode: 500,
+        error: 'Server error',
       });
     }
-    let key = db.key([MODULES, moduleId]);
 
-    transaction.get(key, (err, data) => {
-      if(err) {
+    if (!module) {
+      return callback({
+        statusCode: 404,
+        error: "Course doesn't exists.",
+        message: "Course doesn't exists.",
+      });
+    }
+
+    const data = { ...module, ...payload };
+
+    db.save({ key, data }, (error2) => {
+      if (error2) {
+        console.log(error2);
+
         return callback({
-          statusCode : 500,
-          error      : 'Server error'
+          statusCode: 500,
+          error: 'Server error',
         });
       }
 
-      data = Object.assign(
-        {},
-        data,
-        payload
-      );
-
-      transaction.save({
-        key : key,
-        data : data
-      });
-
-      transaction.commit((err) => {
-        if(err) {
-          return callback({
-            statusCode : 500,
-            error      : 'Server error'
-          });
-        }
-
-        return callback({
-          statusCode : 200,
-          message    : 'Update successfully.'
-        });
+      return callback({
+        statusCode: 200,
+        message: 'Update successfully.',
       });
     });
   });
 };
 
 export const deleteModuleByModuleId = (moduleId, callback) => {
-  let key = db.key([MODULES, moduleId]);
-
-  db.delete(key, (err, result) => {
-    if(err) {
+  db.delete(db.key([MODULES, moduleId]), (err, result) => {
+    if (err) {
       console.log(err);
 
       return callback({
         statusCode: 500,
-        error     : 'server error'
+        error: 'server error',
       });
     }
 
-    if(result.indexUpdates === 0) {
+    if (result.indexUpdates === 0) {
       return callback({
         statusCode: 404,
-        error     : 'Module Not found.'
+        error: 'Module Not found.',
       });
     }
 
     return callback({
       statusCode: 200,
-      message   : 'Successfully deleted.'
+      message: 'Successfully deleted.',
     });
+  });
+};
+
+
+export const deleteCourseByCourseId = (courseId, callback) => {
+  const key = db.key([COURSES, courseId]);
+
+  db.delete(key, (error, result) => {
+    if (error) {
+      console.log(error);
+
+      return callback({
+        statusCode: 500,
+        error: 'Server error',
+      });
+    }
+
+    if (result.indexUpdates === 0) {
+      return callback({
+        statusCode: 404,
+        error: 'Course Not found.',
+      });
+    }
+
+    return callback({
+      statusCode: 200,
+      message: 'Update successfully.',
+    });
+  });
+
+  // Delete all the modules of this course.
+  const query = db.createQuery(MODULES)
+    .filter('courseId', '=', key)
+    .select('moduleId');
+
+  db.runQuery(query, (error, modules) => {
+    if (error) {
+      console.log(error);
+    }
+
+    modules.map(module => deleteModuleByModuleId(module.moduleId.id));
   });
 };

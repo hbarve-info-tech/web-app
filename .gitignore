@@ -5,3 +5,4 @@
 /test/fixtures/awesome_log
 /backup/
 /public/
+/src/server/plugins/photos/temp_images/*
