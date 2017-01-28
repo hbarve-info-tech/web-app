@@ -1,17 +1,13 @@
 
 import React from 'react';
 
-const IsClient = typeof document === 'object';
-
-if (IsClient) {
-  require('./LandingPage.scss');
-}
+import style from './style';
 
 export default () => (
-  <div className="mayash-landing-page">
+  <div style={style.landingPage}>
 
-    <div className="mayash-introduction mdl-card mdl-shadow--4dp">
-      <div className="mdl-card__title">
+    <div className="mdl-card mdl-shadow--4dp" style={style.introduction}>
+      <div className="mdl-card__title" style={style.introduction.title}>
         <h2 className="mdl-card__title-text">Introduction</h2>
       </div>
       <div className="mdl-card__supporting-text">
@@ -21,8 +17,8 @@ export default () => (
         </div>
     </div>
 
-    <div className="mayash-motivation mdl-card mdl-shadow--4dp">
-      <div className="mdl-card__title">
+    <div className="mdl-card mdl-shadow--4dp" style={style.motivation}>
+      <div className="mdl-card__title" style={style.motivation.title}>
         <h2 className="mdl-card__title-text">Motivation</h2>
       </div>
       <div className="mdl-card__supporting-text">
@@ -32,8 +28,8 @@ export default () => (
       </div>
     </div>
 
-    <div className="mayash-product-and-services mdl-card mdl-shadow--4dp">
-      <div className="mdl-card__title">
+    <div className="mdl-card mdl-shadow--4dp" style={style.productAndServices}>
+      <div className="mdl-card__title" style={style.productAndServices.title}>
         <h2 className="mdl-card__title-text">Products And Services</h2>
       </div>
       <div className="mdl-card__supporting-text">
@@ -42,8 +38,8 @@ export default () => (
       </div>
     </div>
 
-    <div className="mayash-sponsors mdl-card mdl-shadow--4dp">
-      <div className="mdl-card__title">
+    <div className="mdl-card mdl-shadow--4dp" style={style.sponsors}>
+      <div className="mdl-card__title" style={style.sponsors.title}>
         <h2 className="mdl-card__title-text">Sponsors</h2>
       </div>
       <div className="mdl-card__supporting-text">
@@ -51,15 +47,15 @@ export default () => (
       </div>
     </div>
 
-    <div className="mayash-team mdl-card mdl-shadow--4dp">
-      <div className="mdl-card__title">
+    <div className="mdl-card mdl-shadow--4dp" style={style.team}>
+      <div className="mdl-card__title" style={style.team.title}>
         <h2 className="mdl-card__title-text">Team</h2>
       </div>
       <div className="mdl-card__supporting-text" />
     </div>
 
-    <div className="mayash-customer-reviews mdl-card mdl-shadow--4dp">
-      <div className="mdl-card__title">
+    <div className="mdl-card mdl-shadow--4dp" style={style.customerReviews}>
+      <div className="mdl-card__title" style={style.customerReviews.title}>
         <h2 className="mdl-card__title-text">Customer Reviews</h2>
       </div>
       <div className="mdl-card__supporting-text" />
