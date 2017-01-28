@@ -24,6 +24,14 @@ export default () => (
         society. As there are so many challenges are out there, quality in education is one
         of the core problem.
       </div>
+      <div className="mdl-card__actions mdl-card--border">
+        <a
+          href="/introduction"
+          className="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+        >
+          More
+        </a>
+      </div>
     </div>
 
     <div className="mdl-card mdl-shadow--4dp" style={style.card}>
@@ -42,6 +50,14 @@ export default () => (
         have gone through lot of suffering and changes which has pulled us backward. We
         are committed to return that glories
       </div>
+      <div className="mdl-card__actions mdl-card--border">
+        <a
+          href="/motivation"
+          className="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+        >
+          More
+        </a>
+      </div>
     </div>
 
     <div className="mdl-card mdl-shadow--4dp" style={style.card}>
@@ -59,6 +75,14 @@ export default () => (
         As there are so many product and services related to education. Our efforts
         are to provide world-class education at your door-step.
       </div>
+      <div className="mdl-card__actions mdl-card--border">
+        <a
+          href="/product-and-services"
+          className="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+        >
+          More
+        </a>
+      </div>
     </div>
 
     <div className="mdl-card mdl-shadow--4dp" style={style.card}>
@@ -74,6 +98,14 @@ export default () => (
       </div>
       <div className="mdl-card__supporting-text" style={style.card.description}>
         We are very thankful for all your support.
+      </div>
+      <div className="mdl-card__actions mdl-card--border">
+        <a
+          href="/sponsors"
+          className="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+        >
+          More
+        </a>
       </div>
     </div>
 
@@ -91,6 +123,14 @@ export default () => (
       <div className="mdl-card__supporting-text" style={style.card.description}>
         Team.
       </div>
+      <div className="mdl-card__actions mdl-card--border">
+        <a
+          href="/team"
+          className="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+        >
+          More
+        </a>
+      </div>
     </div>
 
     <div className="mdl-card mdl-shadow--4dp" style={style.card}>
@@ -106,6 +146,14 @@ export default () => (
       </div>
       <div className="mdl-card__supporting-text" style={style.card.description}>
         Team.
+      </div>
+      <div className="mdl-card__actions mdl-card--border">
+        <a
+          href="/customer-reviews"
+          className="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+        >
+          More
+        </a>
       </div>
     </div>
 
