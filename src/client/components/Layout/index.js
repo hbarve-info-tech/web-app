@@ -32,7 +32,7 @@ class Layout extends Component {
     return (
       <div
         className="mdl-layout mdl-js-layout mdl-layout--fixed-header"
-        style={style.layout}
+        style={user.isSignedIn === true ? style.layout : {}}
       >
         <Header />
         <Drawer />
