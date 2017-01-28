@@ -230,11 +230,8 @@ const Course = {
         site_name: 'Transforming Education',
         app: '',
         initialState: '',
+        PRODUCTION: NODE_ENV === 'production',
       };
-
-      if (NODE_ENV === 'production') {
-        context.PRODUCTION = true;
-      }
 
       if (!renderProps) {
         context.app = renderToString(<NotFoundPage />);
@@ -245,21 +242,19 @@ const Course = {
       const initialState = store.getState();
 
       const { isSignedIn, id, token } = request.state;
-
-      if (isSignedIn !== 'true') {
-        return reply.redirect('/');
-      }
-
       const { user } = initialState;
-      store = configureStore({
-        ...initialState,
-        user: {
-          ...user,
-          isSignedIn: true,
-          id: parseInt(id, 10),
-          token,
-        },
-      });
+
+      if (isSignedIn === 'true') {
+        store = configureStore({
+          ...initialState,
+          user: {
+            ...user,
+            isSignedIn: true,
+            id: parseInt(id, 10),
+            token,
+          },
+        });
+      }
 
       const { courseId } = request.params;
 
@@ -333,21 +328,19 @@ const Element = {
       const initialState = store.getState();
 
       const { isSignedIn, id, token } = request.state;
-
-      if (isSignedIn !== 'true') {
-        return reply.redirect('/');
-      }
-
       const { user } = initialState;
-      store = configureStore({
-        ...initialState,
-        user: {
-          ...user,
-          isSignedIn: true,
-          id: parseInt(id, 10),
-          token,
-        },
-      });
+
+      if (isSignedIn === 'true') {
+        store = configureStore({
+          ...initialState,
+          user: {
+            ...user,
+            isSignedIn: true,
+            id: parseInt(id, 10),
+            token,
+          },
+        });
+      }
 
       const { username } = request.params;
 
@@ -420,21 +413,19 @@ const Classroom = {
       const initialState = store.getState();
 
       const { isSignedIn, id, token } = request.state;
-
-      if (isSignedIn !== 'true') {
-        return reply.redirect('/');
-      }
-
       const { user } = initialState;
-      store = configureStore({
-        ...initialState,
-        user: {
-          ...user,
-          isSignedIn: true,
-          id: parseInt(id, 10),
-          token,
-        },
-      });
+
+      if (isSignedIn === 'true') {
+        store = configureStore({
+          ...initialState,
+          user: {
+            ...user,
+            isSignedIn: true,
+            id: parseInt(id, 10),
+            token,
+          },
+        });
+      }
 
       const { username } = request.params;
 
@@ -500,31 +491,25 @@ const Others = {
 
       let store = configureStore();
       const initialState = store.getState();
+      context.initialState = JSON.stringify(initialState);
 
       const { isSignedIn, id, token } = request.state;
 
-      if (isSignedIn !== 'true') {
-        context.initialState = JSON.stringify(initialState);
-        context.app = renderToString(
-          <Provider store={store}>
-            <RouterContext {...renderProps} />
-          </Provider>,
-        );
-        return reply.view('index', context);
+      if (isSignedIn === 'true') {
+        const { user } = initialState;
+        store = configureStore({
+          ...initialState,
+          user: {
+            ...user,
+            isSignedIn: true,
+            id: parseInt(id, 10),
+            token,
+          },
+        });
+
+        context.initialState = JSON.stringify(store.getState());
       }
 
-      const { user } = initialState;
-      store = configureStore({
-        ...initialState,
-        user: {
-          ...user,
-          isSignedIn: true,
-          id: parseInt(id, 10),
-          token,
-        },
-      });
-
-      context.initialState = JSON.stringify(store.getState());
       context.app = renderToString(
         <Provider store={store}>
           <RouterContext {...renderProps} />
