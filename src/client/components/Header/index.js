@@ -24,7 +24,8 @@ class Header extends Component {
   }
 
   componentWillReceiveProps({ user }) {
-    if (user.isSignedIn === true) {
+    const signInDialog = document.getElementById('sign-in-dialog');
+    if (user.isSignedIn === true && signInDialog.hasAttribute('open')) {
       this.close();
     }
   }
@@ -128,7 +129,7 @@ class Header extends Component {
           </ul>
         </div>
 
-        <dialog className="mdl-dialog" ref="sign-in-dialog">
+        <dialog className="mdl-dialog" ref="sign-in-dialog" id="sign-in-dialog">
           <h4 className="mdl-dialog__title">Sign In</h4>
           <div className="mdl-dialog__content">
             <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
