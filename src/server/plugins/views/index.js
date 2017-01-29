@@ -46,11 +46,8 @@ const Home = {
         site_name: 'Transforming Education',
         app: '',
         initialState: '',
+        PRODUCTION: NODE_ENV === 'production',
       };
-
-      if (NODE_ENV === 'production') {
-        context.PRODUCTION = true;
-      }
 
       if (!renderProps) {
         context.app = renderToString(<NotFoundPage />);
@@ -313,11 +310,8 @@ const Element = {
         site_name: 'Transforming Education',
         app: '',
         initialState: '',
+        PRODUCTION: NODE_ENV === 'production',
       };
-
-      if (NODE_ENV === 'production') {
-        context.PRODUCTION = true;
-      }
 
       if (!renderProps) {
         context.app = renderToString(<NotFoundPage />);
