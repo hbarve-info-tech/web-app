@@ -20,7 +20,9 @@ vm: true
 
 
 # Set environment to flexible.
-env: flex
+#env: flex
+## by setting 'env' to flex it is redirecting https://mayash.xyz to website's preview route.
+## don't know why
 
 ## Service name
 # service: 'mayash-webapp'
