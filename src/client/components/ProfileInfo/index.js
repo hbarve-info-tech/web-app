@@ -36,6 +36,10 @@ const ProfileInfo = ({
         <a
           href={`/${username}`}
           style={{ color: 'black', textDecoration: 'none' }}
+          onClick={(e) => {
+            e.preventDefault();
+            browserHistory.push(`/${username}`);
+          }}
         >
           @{username}
         </a>
@@ -46,7 +50,10 @@ const ProfileInfo = ({
         <a
           className="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
           href={`/${username}/classroom`}
-          onClick={() => browserHistory.push(`/${username}/classroom`)}
+          onClick={(e) => {
+            e.preventDefault();
+            browserHistory.push(`/${username}/classroom`);
+          }}
         >
           Classroom
         </a>
