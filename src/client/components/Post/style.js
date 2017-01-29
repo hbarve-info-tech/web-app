@@ -11,6 +11,7 @@ export default {
     backgroundSize: 'cover',
   },
   postEmpty: {
+    width: '100%',
     fontSize: '16px',
     minHeight: '20px',
   },
