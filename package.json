@@ -18,7 +18,7 @@
     "build:client": "npm run build:client-babel && npm run build:client-webpack",
     "build": "npm run build:server && npm run build:client",
     "start": "cross-env NODE_ENV='production' node dist/server/index.js",
-    "clear": "rm -rf dist",
+    "clean": "rm -rf dist/* && rm -rf public/*",
     "deploy": "cross-env npm run build && gcloud app deploy app.yaml"
   },
   "repository": {
@@ -50,6 +50,7 @@
     "inert": "4.1.0",
     "isomorphic-fetch": "2.2.1",
     "joi": "10.1.0",
+    "jsdoc": "3.4.3",
     "jsonwebtoken": "7.2.1",
     "lodash": "4.17.4",
     "material-design-lite": "1.3.0",
