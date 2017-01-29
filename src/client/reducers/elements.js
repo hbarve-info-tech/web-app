@@ -73,7 +73,7 @@ const elementsReducer = (state = initialState, action) => {
         ...state,
         array: [
           ...state.array.slice(0, index),
-          elementReducer(undefined, action),
+          elementReducer(index === -1 ? undefined : state.array[index], action),
           ...state.array.slice(index + 1, state.array.length),
         ],
       };
