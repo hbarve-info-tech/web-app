@@ -3,45 +3,50 @@ import React from 'react';
 
 import style from './style';
 
-const Introduction = () => {
-  return (
-    <div style={style}>
-      <div className="mdl-card mdl-shadow--4dp" style={style.introduction}>
-        <div className="mdl-card__media">
-          <img
-            src="https://storage.googleapis.com/mayash/website/mayash-title-2.png"
-            alt=""
-            style={{
-              width: '100%',
-              minHeight: '250px',
-            }}
-          />
-        </div>
-        <div className="mdl-card__title">
-          <h2 className="mdl-card__title-text" style={style.introduction.title.heading}>
-            Introduction
-          </h2>
-        </div>
-        <div className="mdl-card__supporting-text">
-          <p>
-            <strong>Mayash</strong> is a team of IITians committed to solve the challenges of the
-            society. As there are so many challenges are out there, quality education is one
-            of the core problem.
-          </p>
-          <p>Our First services to solve education are as follows:</p>
-          <ul>
-            <li>Providing it for free or as cheap as possible.</li>
-            <li>Courses will be available for all the fields of education.</li>
-            <li>Courses will be language independent, this will provide freedom for both teacher
-              and student by removing the barrier of language.</li>
-            <li>Courses will be available for all age groups.</li>
-            <li>Knowledgeable people can contribute here.</li>
-            <li>Quality education will be made available to every corner of the country.</li>
-          </ul>
-        </div>
+const Introduction = () => (
+  <div style={style}>
+    <div className="mdl-card mdl-shadow--4dp" style={style.introduction}>
+      <div className="mdl-card__media">
+        <img
+          src="https://storage.googleapis.com/mayash/website/mayash-title-2.png"
+          alt=""
+          style={{
+            width: '100%',
+            minHeight: '250px',
+          }}
+        />
+      </div>
+      <div className="mdl-card__title">
+        <h2 className="mdl-card__title-text" style={style.introduction.title.heading}>
+          Introduction
+        </h2>
+      </div>
+      <div className="mdl-card__supporting-text">
+        <p>
+          <strong>Mayash</strong> is the platform which caters to the educational
+          system. It emphasis on improving the education system of the society.
+          The founder has formed this group to make this world/country/society a
+          better place to live. It is a leading service provider of various
+          educational courses.
+        </p>
+        <p>
+          The purpose of making this is to develop the education system within
+          the country, making people aware about the situation going in and around
+          the world motivating them to light for the justice and providing them the
+          knowledge as well as various information easily in a systematic manner.
+        </p>
+        <p>
+          The various sectors which we are covering includes the following:
+        </p>
+        <ol>
+          <li>Education transformation.</li>
+          <li>Governance.</li>
+          <li>Media</li>
+          <li>Organising Internet.</li>
+        </ol>
       </div>
     </div>
-  );
-};
+  </div>
+);
 
 export default Introduction;
