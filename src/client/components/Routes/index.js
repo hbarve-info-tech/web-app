@@ -22,6 +22,63 @@ const routes = (
     />
 
     <Route
+      path="introduction" getComponent={(nextState, callback) => {
+        require.ensure([], (require) => {
+          callback(null, require('../Introduction').default);
+        });
+      }}
+    />
+    <Route
+      path="about-us" getComponent={(nextState, callback) => {
+        require.ensure([], (require) => {
+          callback(null, require('../AboutUs').default);
+        });
+      }}
+    />
+    <Route
+      path="product-and-services" getComponent={(nextState, callback) => {
+        require.ensure([], (require) => {
+          callback(null, require('../ProductAndServices').default);
+        });
+      }}
+    />
+    <Route
+      path="team" getComponent={(nextState, callback) => {
+        require.ensure([], (require) => {
+          callback(null, require('../Team').default);
+        });
+      }}
+    />
+    <Route
+      path="sponsors" getComponent={(nextState, callback) => {
+        require.ensure([], (require) => {
+          callback(null, require('../Sponsors').default);
+        });
+      }}
+    />
+    <Route
+      path="customer-reviews" getComponent={(nextState, callback) => {
+        require.ensure([], (require) => {
+          callback(null, require('../CustomerReviews').default);
+        });
+      }}
+    />
+    <Route
+      path="contact-us" getComponent={(nextState, callback) => {
+        require.ensure([], (require) => {
+          callback(null, require('../ContactUs').default);
+        });
+      }}
+    />
+    <Route
+      path="feedback" getComponent={(nextState, callback) => {
+        require.ensure([], (require) => {
+          callback(null, require('../Feedback').default);
+        });
+      }}
+    />
+
+    <Route
       path="articles/:articleId" getComponent={(nextState, callback) => {
         require.ensure([], (require) => {
           callback(null, require('../Article').default);
