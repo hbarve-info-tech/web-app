@@ -71,8 +71,8 @@ Layout.propTypes = {
     lastUpdated: PropTypes.number,
   }).isRequired,
   fetchUser: PropTypes.func.isRequired,
-  location: PropTypes.oneOfType({
-    path: PropTypes.string.isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
   }).isRequired,
 };
 

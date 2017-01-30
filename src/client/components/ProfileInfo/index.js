@@ -32,16 +32,31 @@ const ProfileInfo = ({
       >
         {name}
       </h2>
-      <h2 className="mdl-card__subtitle-text">@{username}</h2>
+      <h2 className="mdl-card__subtitle-text">
+        <a
+          href={`/${username}`}
+          style={{ color: 'black', textDecoration: 'none' }}
+          onClick={(e) => {
+            e.preventDefault();
+            browserHistory.push(`/${username}`);
+          }}
+        >
+          @{username}
+        </a>
+      </h2>
     </div>
     { classroom ? (
       <div className="mdl-card__actions mdl-card--border">
-        <button
+        <a
           className="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-          onClick={() => browserHistory.push(`/${username}/classroom`)}
+          href={`/${username}/classroom`}
+          onClick={(e) => {
+            e.preventDefault();
+            browserHistory.push(`/${username}/classroom`);
+          }}
         >
           Classroom
-        </button>
+        </a>
       </div>
       ) : null }
   </div>

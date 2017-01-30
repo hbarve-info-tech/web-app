@@ -46,11 +46,8 @@ const Home = {
         site_name: 'Transforming Education',
         app: '',
         initialState: '',
+        PRODUCTION: NODE_ENV === 'production',
       };
-
-      if (NODE_ENV === 'production') {
-        context.PRODUCTION = true;
-      }
 
       if (!renderProps) {
         context.app = renderToString(<NotFoundPage />);
@@ -313,11 +310,8 @@ const Element = {
         site_name: 'Transforming Education',
         app: '',
         initialState: '',
+        PRODUCTION: NODE_ENV === 'production',
       };
-
-      if (NODE_ENV === 'production') {
-        context.PRODUCTION = true;
-      }
 
       if (!renderProps) {
         context.app = renderToString(<NotFoundPage />);
@@ -446,7 +440,7 @@ const Classroom = {
   },
 };
 
-const Others = {
+const Introduction = {
   handler: (request, reply) => {
     if (request.path !== request.path.toLowerCase()) {
       return reply.redirect(request.path.toLowerCase());
@@ -479,10 +473,505 @@ const Others = {
         site_name: 'Transforming Education',
         app: '',
         initialState: '',
+        PRODUCTION: NODE_ENV === 'production',
       };
-      if (NODE_ENV === 'production') {
-        context.PRODUCTION = true;
+
+      if (!renderProps) {
+        context.app = renderToString(<NotFoundPage />);
+        return reply.view('index', context);
       }
+
+      let store = configureStore();
+      const initialState = store.getState();
+      context.initialState = JSON.stringify(initialState);
+
+      const { isSignedIn, id, token } = request.state;
+
+      if (isSignedIn === 'true') {
+        const { user } = initialState;
+        store = configureStore({
+          ...initialState,
+          user: {
+            ...user,
+            isSignedIn: true,
+            id: parseInt(id, 10),
+            token,
+          },
+        });
+        
+        context.initialState = JSON.stringify(store.getState());
+      }
+
+      context.app = renderToString(
+        <Provider store={store}>
+          <RouterContext {...renderProps} />
+        </Provider>,
+      );
+      return reply.view('index', context);
+    });
+  },
+};
+const AboutUs = {
+  handler: (request, reply) => {
+    if (request.path !== request.path.toLowerCase()) {
+      return reply.redirect(request.path.toLowerCase());
+    }
+
+    match({
+      routes,
+      location: request.path,
+    }, (err, redirectLocation, renderProps) => {
+      // in case of error display the error message
+      if (err) {
+        console.log(err);
+        return reply(Boom.badImplementation());
+      }
+
+      // in case of redirect propagate the redirect to the browser
+      if (redirectLocation) {
+        // return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+        return reply.redirect(redirectLocation.pathname);
+      }
+
+      // generate the React markup for the current route
+      const context = {
+        title: 'Mayash',
+        description: 'Transforming Education.',
+        keywords: 'education, courses',
+        imageUrl: 'https://storage.googleapis.com/mayash/website/mayash-title.png',
+        type: 'website',
+        url: request.path,
+        site_name: 'Transforming Education',
+        app: '',
+        initialState: '',
+        PRODUCTION: NODE_ENV === 'production',
+      };
+
+      if (!renderProps) {
+        context.app = renderToString(<NotFoundPage />);
+        return reply.view('index', context);
+      }
+
+      let store = configureStore();
+      const initialState = store.getState();
+      context.initialState = JSON.stringify(initialState);
+
+      const { isSignedIn, id, token } = request.state;
+
+      if (isSignedIn === 'true') {
+        const { user } = initialState;
+        store = configureStore({
+          ...initialState,
+          user: {
+            ...user,
+            isSignedIn: true,
+            id: parseInt(id, 10),
+            token,
+          },
+        });
+
+        context.initialState = JSON.stringify(store.getState());
+      }
+
+      context.app = renderToString(
+        <Provider store={store}>
+          <RouterContext {...renderProps} />
+        </Provider>,
+      );
+      return reply.view('index', context);
+    });
+  },
+};
+const ProductAndServices = {
+  handler: (request, reply) => {
+    if (request.path !== request.path.toLowerCase()) {
+      return reply.redirect(request.path.toLowerCase());
+    }
+
+    match({
+      routes,
+      location: request.path,
+    }, (err, redirectLocation, renderProps) => {
+      // in case of error display the error message
+      if (err) {
+        console.log(err);
+        return reply(Boom.badImplementation());
+      }
+
+      // in case of redirect propagate the redirect to the browser
+      if (redirectLocation) {
+        // return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+        return reply.redirect(redirectLocation.pathname);
+      }
+
+      // generate the React markup for the current route
+      const context = {
+        title: 'Mayash',
+        description: 'Transforming Education.',
+        keywords: 'education, courses',
+        imageUrl: 'https://storage.googleapis.com/mayash/website/mayash-title.png',
+        type: 'website',
+        url: request.path,
+        site_name: 'Transforming Education',
+        app: '',
+        initialState: '',
+        PRODUCTION: NODE_ENV === 'production',
+      };
+
+      if (!renderProps) {
+        context.app = renderToString(<NotFoundPage />);
+        return reply.view('index', context);
+      }
+
+      let store = configureStore();
+      const initialState = store.getState();
+      context.initialState = JSON.stringify(initialState);
+
+      const { isSignedIn, id, token } = request.state;
+
+      if (isSignedIn === 'true') {
+        const { user } = initialState;
+        store = configureStore({
+          ...initialState,
+          user: {
+            ...user,
+            isSignedIn: true,
+            id: parseInt(id, 10),
+            token,
+          },
+        });
+        
+        context.initialState = JSON.stringify(store.getState());
+      }
+
+      context.app = renderToString(
+        <Provider store={store}>
+          <RouterContext {...renderProps} />
+        </Provider>,
+      );
+      return reply.view('index', context);
+    });
+  },
+};
+const Team = {
+  handler: (request, reply) => {
+    if (request.path !== request.path.toLowerCase()) {
+      return reply.redirect(request.path.toLowerCase());
+    }
+
+    match({
+      routes,
+      location: request.path,
+    }, (err, redirectLocation, renderProps) => {
+      // in case of error display the error message
+      if (err) {
+        console.log(err);
+        return reply(Boom.badImplementation());
+      }
+
+      // in case of redirect propagate the redirect to the browser
+      if (redirectLocation) {
+        // return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+        return reply.redirect(redirectLocation.pathname);
+      }
+
+      // generate the React markup for the current route
+      const context = {
+        title: 'Mayash',
+        description: 'Transforming Education.',
+        keywords: 'education, courses',
+        imageUrl: 'https://storage.googleapis.com/mayash/website/mayash-title.png',
+        type: 'website',
+        url: request.path,
+        site_name: 'Transforming Education',
+        app: '',
+        initialState: '',
+        PRODUCTION: NODE_ENV === 'production',
+      };
+
+      if (!renderProps) {
+        context.app = renderToString(<NotFoundPage />);
+        return reply.view('index', context);
+      }
+
+      let store = configureStore();
+      const initialState = store.getState();
+      context.initialState = JSON.stringify(initialState);
+
+      const { isSignedIn, id, token } = request.state;
+
+      if (isSignedIn === 'true') {
+        const { user } = initialState;
+        store = configureStore({
+          ...initialState,
+          user: {
+            ...user,
+            isSignedIn: true,
+            id: parseInt(id, 10),
+            token,
+          },
+        });
+
+        context.initialState = JSON.stringify(store.getState());
+      }
+
+      context.app = renderToString(
+        <Provider store={store}>
+          <RouterContext {...renderProps} />
+        </Provider>,
+      );
+      return reply.view('index', context);
+    });
+  },
+};
+const Sponsors = {
+  handler: (request, reply) => {
+    if (request.path !== request.path.toLowerCase()) {
+      return reply.redirect(request.path.toLowerCase());
+    }
+
+    match({
+      routes,
+      location: request.path,
+    }, (err, redirectLocation, renderProps) => {
+      // in case of error display the error message
+      if (err) {
+        console.log(err);
+        return reply(Boom.badImplementation());
+      }
+
+      // in case of redirect propagate the redirect to the browser
+      if (redirectLocation) {
+        // return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+        return reply.redirect(redirectLocation.pathname);
+      }
+
+      // generate the React markup for the current route
+      const context = {
+        title: 'Mayash',
+        description: 'Transforming Education.',
+        keywords: 'education, courses',
+        imageUrl: 'https://storage.googleapis.com/mayash/website/mayash-title.png',
+        type: 'website',
+        url: request.path,
+        site_name: 'Transforming Education',
+        app: '',
+        initialState: '',
+        PRODUCTION: NODE_ENV === 'production',
+      };
+
+      if (!renderProps) {
+        context.app = renderToString(<NotFoundPage />);
+        return reply.view('index', context);
+      }
+
+      let store = configureStore();
+      const initialState = store.getState();
+      context.initialState = JSON.stringify(initialState);
+
+      const { isSignedIn, id, token } = request.state;
+
+      if (isSignedIn === 'true') {
+        const { user } = initialState;
+        store = configureStore({
+          ...initialState,
+          user: {
+            ...user,
+            isSignedIn: true,
+            id: parseInt(id, 10),
+            token,
+          },
+        });
+
+        context.initialState = JSON.stringify(store.getState());
+      }
+
+      context.app = renderToString(
+        <Provider store={store}>
+          <RouterContext {...renderProps} />
+        </Provider>,
+      );
+      return reply.view('index', context);
+    });
+  },
+};
+const CustomerReviews = {
+  handler: (request, reply) => {
+    if (request.path !== request.path.toLowerCase()) {
+      return reply.redirect(request.path.toLowerCase());
+    }
+
+    match({
+      routes,
+      location: request.path,
+    }, (err, redirectLocation, renderProps) => {
+      // in case of error display the error message
+      if (err) {
+        console.log(err);
+        return reply(Boom.badImplementation());
+      }
+
+      // in case of redirect propagate the redirect to the browser
+      if (redirectLocation) {
+        // return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+        return reply.redirect(redirectLocation.pathname);
+      }
+
+      // generate the React markup for the current route
+      const context = {
+        title: 'Mayash',
+        description: 'Transforming Education.',
+        keywords: 'education, courses',
+        imageUrl: 'https://storage.googleapis.com/mayash/website/mayash-title.png',
+        type: 'website',
+        url: request.path,
+        site_name: 'Transforming Education',
+        app: '',
+        initialState: '',
+        PRODUCTION: NODE_ENV === 'production',
+      };
+
+      if (!renderProps) {
+        context.app = renderToString(<NotFoundPage />);
+        return reply.view('index', context);
+      }
+
+      let store = configureStore();
+      const initialState = store.getState();
+      context.initialState = JSON.stringify(initialState);
+
+      const { isSignedIn, id, token } = request.state;
+
+      if (isSignedIn === 'true') {
+        const { user } = initialState;
+        store = configureStore({
+          ...initialState,
+          user: {
+            ...user,
+            isSignedIn: true,
+            id: parseInt(id, 10),
+            token,
+          },
+        });
+
+        context.initialState = JSON.stringify(store.getState());
+      }
+
+      context.app = renderToString(
+        <Provider store={store}>
+          <RouterContext {...renderProps} />
+        </Provider>,
+      );
+      return reply.view('index', context);
+    });
+  },
+};
+const ContactUs = {
+  handler: (request, reply) => {
+    if (request.path !== request.path.toLowerCase()) {
+      return reply.redirect(request.path.toLowerCase());
+    }
+
+    match({
+      routes,
+      location: request.path,
+    }, (err, redirectLocation, renderProps) => {
+      // in case of error display the error message
+      if (err) {
+        console.log(err);
+        return reply(Boom.badImplementation());
+      }
+
+      // in case of redirect propagate the redirect to the browser
+      if (redirectLocation) {
+        // return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+        return reply.redirect(redirectLocation.pathname);
+      }
+
+      // generate the React markup for the current route
+      const context = {
+        title: 'Mayash',
+        description: 'Transforming Education.',
+        keywords: 'education, courses',
+        imageUrl: 'https://storage.googleapis.com/mayash/website/mayash-title.png',
+        type: 'website',
+        url: request.path,
+        site_name: 'Transforming Education',
+        app: '',
+        initialState: '',
+        PRODUCTION: NODE_ENV === 'production',
+      };
+
+      if (!renderProps) {
+        context.app = renderToString(<NotFoundPage />);
+        return reply.view('index', context);
+      }
+
+      let store = configureStore();
+      const initialState = store.getState();
+      context.initialState = JSON.stringify(initialState);
+
+      const { isSignedIn, id, token } = request.state;
+
+      if (isSignedIn === 'true') {
+        const { user } = initialState;
+        store = configureStore({
+          ...initialState,
+          user: {
+            ...user,
+            isSignedIn: true,
+            id: parseInt(id, 10),
+            token,
+          },
+        });
+
+        context.initialState = JSON.stringify(store.getState());
+      }
+
+      context.app = renderToString(
+        <Provider store={store}>
+          <RouterContext {...renderProps} />
+        </Provider>,
+      );
+      return reply.view('index', context);
+    });
+  },
+};
+const Feedback = {
+  handler: (request, reply) => {
+    if (request.path !== request.path.toLowerCase()) {
+      return reply.redirect(request.path.toLowerCase());
+    }
+
+    match({
+      routes,
+      location: request.path,
+    }, (err, redirectLocation, renderProps) => {
+      // in case of error display the error message
+      if (err) {
+        console.log(err);
+        return reply(Boom.badImplementation());
+      }
+
+      // in case of redirect propagate the redirect to the browser
+      if (redirectLocation) {
+        // return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+        return reply.redirect(redirectLocation.pathname);
+      }
+
+      // generate the React markup for the current route
+      const context = {
+        title: 'Mayash',
+        description: 'Transforming Education.',
+        keywords: 'education, courses',
+        imageUrl: 'https://storage.googleapis.com/mayash/website/mayash-title.png',
+        type: 'website',
+        url: request.path,
+        site_name: 'Transforming Education',
+        app: '',
+        initialState: '',
+        PRODUCTION: NODE_ENV === 'production',
+      };
 
       if (!renderProps) {
         context.app = renderToString(<NotFoundPage />);
@@ -520,9 +1009,93 @@ const Others = {
   },
 };
 
+const Others = {
+  handler: (request, reply) => {
+    if (request.path !== request.path.toLowerCase()) {
+      return reply.redirect(request.path.toLowerCase());
+    }
+
+    match({
+      routes,
+      location: request.path,
+    }, (err, redirectLocation, renderProps) => {
+      // in case of error display the error message
+      if (err) {
+        console.log(err);
+        return reply(Boom.badImplementation());
+      }
+
+      // in case of redirect propagate the redirect to the browser
+      if (redirectLocation) {
+        // return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+        return reply.redirect(redirectLocation.pathname);
+      }
+
+      // generate the React markup for the current route
+      const context = {
+        title: 'Mayash',
+        description: 'Transforming Education.',
+        keywords: 'education, courses',
+        imageUrl: 'https://storage.googleapis.com/mayash/website/mayash-title.png',
+        type: 'website',
+        url: request.path,
+        site_name: 'Transforming Education',
+        app: '',
+        initialState: '',
+        PRODUCTION: NODE_ENV === 'production',
+      };
+
+      if (!renderProps) {
+        context.app = renderToString(<NotFoundPage />);
+        return reply.view('index', context);
+      }
+
+      let store = configureStore();
+      const initialState = store.getState();
+      context.initialState = JSON.stringify(initialState);
+
+      const { isSignedIn, id, token } = request.state;
+
+      if (isSignedIn === 'true') {
+        const { user } = initialState;
+        store = configureStore({
+          ...initialState,
+          user: {
+            ...user,
+            isSignedIn: true,
+            id: parseInt(id, 10),
+            token,
+          },
+        });
+        
+        context.initialState = JSON.stringify(store.getState());
+      }
+
+      context.app = renderToString(
+        <Provider store={store}>
+          <RouterContext {...renderProps} />
+        </Provider>,
+      );
+      return reply.view('index', context);
+    });
+  },
+};
+
+
 const register = (server, options, next) => {
   server.route([
     { method: 'GET', path: '/', config: Home },
+
+    { method: 'GET', path: '/introduction', config: Introduction },
+    { method: 'GET', path: '/about-us', config: AboutUs },
+    { method: 'GET', path: '/product-and-services', config: ProductAndServices },
+
+    { method: 'GET', path: '/team', config: Team },
+    { method: 'GET', path: '/sponsors', config: Sponsors },
+
+    { method: 'GET', path: '/customer-reviews', config: CustomerReviews },
+    { method: 'GET', path: '/contact-us', config: ContactUs },
+    { method: 'GET', path: '/feedback', config: Feedback },
 
     { method: 'GET', path: '/articles/{articleId}', config: Article },
 
