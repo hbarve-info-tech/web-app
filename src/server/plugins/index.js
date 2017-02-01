@@ -14,7 +14,7 @@ import Elements from './elements';
 import Articles from './articles';
 import Courses from './courses';
 import Classroom from './classrooms';
-import Photos from './photos';
+import Images from './images';
 
 const plugins = [];
 
@@ -116,7 +116,7 @@ plugins.push({
 });
 
 plugins.push({
-  register: Photos,
+  register: Images,
   options: {},
 });
 
