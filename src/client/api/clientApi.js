@@ -23,6 +23,23 @@ export const removeLocalStore = (key) => {
   return false;
 };
 
+export const getToken = () => {
+  const user = readLocalStore('user');
+  if (user !== null) {
+    return user.token;
+  }
+  return null;
+};
+
+export const getUserId = () => {
+  const user = readLocalStore('user');
+  if (user !== null) {
+    return user.id;
+  }
+  return null;
+};
+
+
 export const readCookie = (key) => {
   const name = `${key}=`;
   const decodedCookie = decodeURIComponent(document.cookie);

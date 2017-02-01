@@ -53,6 +53,7 @@ export const ArticleUrl = Joi.string().regex(/[a-zA-Z0-9-]+/);
 export const ArticleData = Joi.object();
 
 export const ImageId = Joi.number().integer();
+export const ImageName = Joi.string().regex(/^([0-9]{16})+(.jpg|.jpeg|.png|.gif)$/);
 
 export const Semester = Joi.number().integer();
 export const Degree = Joi.string();

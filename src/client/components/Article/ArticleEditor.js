@@ -3,7 +3,40 @@ import React from 'react';
 import PropTypes from 'react/lib/ReactPropTypes';
 import Component from 'react/lib/ReactComponent';
 import { convertToRaw, convertFromRaw } from 'draft-js';
-import { Editor, createEditorState } from 'medium-draft';
+import {
+  ImageSideButton,
+  Block,
+  addNewBlock,
+  createEditorState,
+  Editor,
+} from 'medium-draft';
+
+import { fileUpload } from '../../api';
+
+class CustomImageSideButton extends ImageSideButton {
+  onChange(e) {
+    const file = e.target.files[0];
+    if (file.type.indexOf('image/') === 0) {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      fileUpload({ formData }, (data) => {
+        if (data.statusCode === 201) {
+          this.props.setEditorState(addNewBlock(
+            this.props.getEditorState(),
+            Block.IMAGE, {
+              src: data.imageUrl,
+            },
+          ));
+        }
+        else {
+          console.log(data);
+        }
+      });
+    }
+    this.props.close();
+  }
+}
 
 class ArticleEditor extends Component {
   constructor(props) {
@@ -17,6 +50,13 @@ class ArticleEditor extends Component {
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+
+    this.sideButtons = [
+      {
+        title: 'Image',
+        component: CustomImageSideButton,
+      },
+    ];
   }
 
   onChange(editorState) {
@@ -72,8 +112,10 @@ class ArticleEditor extends Component {
     return (
       <div style={{ position: 'relative' }}>
         <Editor
+          ref="editor"
           editorState={editorState}
           onChange={this.onChange}
+          sideButtons={this.sideButtons}
           editorEnabled={edit}
         />
         <div style={{ position: 'absolute', right: '0px', top: '0px' }}>
