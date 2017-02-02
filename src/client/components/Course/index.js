@@ -37,7 +37,7 @@ class CoursePage extends Component {
     if (course.statusCode === 200) {
       return (
         <div
-          className="mdl-grid mdl-shadow--4dp"
+          className="mdl-grid"
           style={style.course}
         >
           <div className="mdl-cell mdl-cell--3-col mdl-cell--3-col-tablet mdl-cell--4-col-phone">
@@ -51,6 +51,7 @@ class CoursePage extends Component {
             <ModuleList
               user={user}
               course={course}
+              createModule={this.props.createModule}
               updateModule={this.props.updateModule}
             />
           </div>
@@ -95,6 +96,7 @@ CoursePage.propTypes = {
   fetchCourse: PropTypes.func.isRequired,
   fetchModules: PropTypes.func.isRequired,
   updateModule: PropTypes.func.isRequired,
+  createModule: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => state;

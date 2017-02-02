@@ -5,6 +5,9 @@ import {
   COURSES_FETCH_START, COURSES_FETCH_ERROR, COURSES_FETCH_SUCCESS,
   COURSE_FETCH_START, COURSE_FETCH_ERROR, COURSE_FETCH_SUCCESS,
 
+  COURSE_UPDATE_START, COURSE_UPDATE_ERROR, COURSE_UPDATE_SUCCESS,
+
+  MODULE_CREATE_START, MODULE_CREATE_ERROR, MODULE_CREATE_SUCCESS,
   MODULES_FETCH_START, MODULES_FETCH_ERROR, MODULES_FETCH_SUCCESS,
   MODULE_FETCH_START, MODULE_FETCH_ERROR, MODULE_FETCH_SUCCESS,
 } from '../actions/courses';
@@ -81,6 +84,25 @@ const initialCoursesState = {
 
 const moduleReducer = (state = initialModuleState, action) => {
   switch (action.type) {
+    case MODULE_CREATE_SUCCESS: {
+      return {
+        ...state,
+        ...action.payload,
+        isCreating: false,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
+        isCreated: true,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+        isError: false,
+        error: '',
+        message: '',
+        lastUpdated: Date.now(),
+      };
+    }
+
     case MODULE_FETCH_START: {
       return {
         ...state,
@@ -212,6 +234,125 @@ const courseReducer = (state = initialCourseState, action) => {
         lastUpdated: Date.now(),
       };
     }
+
+    case COURSE_UPDATE_START: {
+      return {
+        ...state,
+        ...action.payload,
+
+        isCreating  : false,
+        isUpdating  : true,
+        isFetching  : false,
+        isDeleting  : false,
+
+        isCreated   : false,
+        isUpdated   : false,
+        isFetched   : false,
+        isDeleted   : false,
+
+        isError     : false,
+        error       : '',
+        message     : '',
+        lastUpdated : Date.now()
+      };
+    }
+    case COURSE_UPDATE_ERROR: {
+      return {
+        ...state,
+        isCreating: false,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
+
+        isCreated: false,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+
+        isError: true,
+        error: action.payload.error,
+        message: action.payload.message,
+        lastUpdated: Date.now(),
+      };
+    }
+    case COURSE_UPDATE_SUCCESS: {
+      return {
+        ...state,
+        ...action.payload,
+
+        isCreating  : false,
+        isUpdating  : false,
+        isFetching  : false,
+        isDeleting  : false,
+
+        isCreated   : false,
+        isUpdated   : true,
+        isFetched   : false,
+        isDeleted   : false,
+
+        isError     : false,
+        error       : '',
+        message     : '',
+        lastUpdated : Date.now()
+      };
+    }
+
+    case MODULE_CREATE_START: {
+      return {
+        ...state,
+        isCreating: true,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
+        isCreated: false,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+        isError: false,
+        error: '',
+        message: '',
+        lastUpdated: Date.now(),
+      };
+    }
+    case MODULE_CREATE_ERROR: {
+      return {
+        ...state,
+        isCreating: false,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
+        isCreated: false,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+        isError: true,
+        error: action.payload.error,
+        message: action.payload.message,
+        lastUpdated: Date.now(),
+      };
+    }
+    case MODULE_CREATE_SUCCESS: {
+      return {
+        ...state,
+        modules: [
+          ...state.modules,
+          moduleReducer(undefined, action),
+        ],
+        isCreating: false,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
+        isCreated: true,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+        isError: false,
+        error: '',
+        message: '',
+        lastUpdated: Date.now(),
+      };
+    }
+
 
     case MODULES_FETCH_START: {
       return {
@@ -458,6 +599,87 @@ const coursesReducer = (state = initialCoursesState, action) => {
         lastUpdated: Date.now(),
       };
     }
+
+    case COURSE_UPDATE_START: {
+      const index = state.array.findIndex(c => c.courseId === action.payload.courseId);
+
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          courseReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length),
+        ],
+        lastUpdated: Date.now(),
+      };
+    }
+    case COURSE_UPDATE_ERROR: {
+      const index = state.array.findIndex(c => c.courseId === action.payload.courseId);
+
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          courseReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length),
+        ],
+        lastUpdated: Date.now(),
+      };
+    }
+    case COURSE_UPDATE_SUCCESS: {
+      const index = state.array.findIndex(c => c.courseId === action.payload.courseId);
+
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          courseReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length),
+        ],
+        lastUpdated: Date.now(),
+      };
+    }
+
+    case MODULE_CREATE_START: {
+      const index = state.array.findIndex(c => c.courseId === action.payload.courseId);
+
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          courseReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length),
+        ],
+        lastUpdated: Date.now(),
+      };
+    }
+    case MODULE_CREATE_ERROR: {
+      const index = state.array.findIndex(c => c.courseId === action.payload.courseId);
+
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          courseReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length),
+        ],
+        lastUpdated: Date.now(),
+      };
+    }
+    case MODULE_CREATE_SUCCESS: {
+      const index = state.array.findIndex(c => c.courseId === action.payload.courseId);
+
+      return {
+        ...state,
+        array: [
+          ...state.array.slice(0, index),
+          courseReducer(state.array[index], action),
+          ...state.array.slice(index + 1, state.array.length),
+        ],
+        lastUpdated: Date.now(),
+      };
+    }
+
 
     case MODULES_FETCH_START: {
       const { courseId } = action.payload;

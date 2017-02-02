@@ -18,6 +18,10 @@ export const COURSE_UPDATE_START = 'COURSE_UPDATE_START';
 export const COURSE_UPDATE_SUCCESS = 'COURSE_UPDATE_SUCCESS';
 export const COURSE_UPDATE_ERROR = 'COURSE_UPDATE_ERROR';
 
+export const MODULE_CREATE_START = 'MODULE_CREATE_START';
+export const MODULE_CREATE_SUCCESS = 'MODULE_CREATE_SUCCESS';
+export const MODULE_CREATE_ERROR = 'MODULE_CREATE_ERROR';
+
 
 export const MODULES_FETCH = 'MODULES_FETCH';
 export const MODULES_FETCH_START = 'MODULES_FETCH_START';
@@ -111,6 +115,23 @@ export const updateCourse = ({
     }
     else if (json.statusCode >= 400) {
       dispatch(updateCourseError(json));
+    }
+  });
+};
+
+const createModuleStart = payload => ({ type: MODULE_CREATE_START, payload });
+const createModuleSuccess = payload => ({ type: MODULE_CREATE_SUCCESS, payload });
+const createModuleError = payload => ({ type: MODULE_CREATE_ERROR, payload });
+export const createModule = ({ id, token, courseId, moduleName }) => (dispatch) => {
+  dispatch(createModuleStart({ courseId }));
+
+  api.createModule({ id, token, courseId, moduleName }, (json) => {
+    // TODO: fix server API to send only 201 as statusCode for creating any thing.
+    if (json.statusCode === 201 || json.statusCode === 200) {
+      dispatch(createModuleSuccess({ courseId, ...json.payload }));
+    }
+    else if (json.statusCode >= 400) {
+      dispatch(createModuleError({ courseId, ...json }));
     }
   });
 };
