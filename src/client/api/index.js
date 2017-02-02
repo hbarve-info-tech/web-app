@@ -149,6 +149,23 @@ export const createCourse = ({ id, token, courseName }, callback) => {
     .then(json => callback(json));
 };
 
+export const createModule = ({ id, token, courseId, moduleName }, callback) => {
+  const url = `${HOST}/api/elements/${id}/courses/${courseId}/modules`;
+
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+    body: JSON.stringify({ moduleName }),
+  })
+    .then(response => response.json())
+    .then(json => callback(json));
+};
+
+
 export const getCourses = ({ id, token }, callback) => {
   const url = `${HOST}/api/elements/${id}/courses`;
 
