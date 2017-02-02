@@ -2,49 +2,52 @@
 import React from 'react';
 import PropTypes from 'react/lib/ReactPropTypes';
 
-import Edit from '../Edit';
+import CourseName from './CourseName';
+import CourseDescription from './CourseDescription';
 
 import style from './style';
 
 const CourseInfo = ({ user, course, updateCourse }) => {
-  const { id, token } = user;
-  const { courseId, authorId, courseName, description, level, standard } = course;
+  const { id, isSignedIn, token } = user;
+  const { courseId, authorId, courseName, description } = course;
 
   return (
     <div
       className="mdl-card mdl-shadow--4dp"
       style={style.courseInfo}
     >
-      <div
-        className="mdl-card__title"
-        style={style.courseInfo.title}
-      >
+      <div className="mdl-card__media">
+        <img
+          src="https://getmdl.io/assets/demos/welcome_card.jpg"
+          alt=""
+          style={{ width: '100%' }}
+        />
+      </div>
+      <div className="mdl-card__title" style={{ position: 'relative' }}>
         <h2 className="mdl-card__title-text">
-          <Edit
-            keyName="courseName"
-            keyType="text"
-            keyValue={courseName}
-            update={updateCourse}
+          {courseName}
+        </h2>
+        {isSignedIn === true && id === authorId ? (
+          <CourseName
             id={id}
             token={token}
             courseId={courseId}
-            authorId={authorId}
-            type="course"
+            courseName={courseName}
+            updateCourse={updateCourse}
           />
-        </h2>
+        ) : null}
       </div>
-      <div className="mdl-card__supporting-text">
-        <Edit
-          keyName="description"
-          keyType="text"
-          keyValue={description}
-          update={updateCourse}
-          id={id}
-          token={token}
-          courseId={courseId}
-          authorId={authorId}
-          type="course"
-        />
+      <div className="mdl-card__supporting-text" style={{ position: 'relative' }}>
+        {description || 'No description available.'}
+        {isSignedIn === true && id === authorId ? (
+          <CourseDescription
+            id={id}
+            token={token}
+            courseId={courseId}
+            description={description}
+            updateCourse={updateCourse}
+          />
+        ) : null}
       </div>
     </div>
   );

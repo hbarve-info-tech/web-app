@@ -8,6 +8,8 @@ import { Editor, createEditorState } from 'medium-draft';
 
 import Edit from '../Edit';
 
+import ModuleName from './ModuleName';
+
 import style from './style';
 
 class Module extends Component {
@@ -46,20 +48,34 @@ class Module extends Component {
   }
 
   render() {
-    const { moduleName, index, course, user } = this.props;
+    const { moduleName, moduleId, index, course, user } = this.props;
+    const { isSignedIn, id, token } = user;
+
     const { editorState, display, edit } = this.state;
 
     return (
       <div
-        className="mdl-card mdl-shadow--2dp"
+        className="mdl-card mdl-shadow--4dp"
         style={style.module}
       >
         <div
           className="mdl-card__title"
           onClick={() => this.setState({ display: display === 'none' ? 'block' : 'none' })}
         >
-          <h2 className="mdl-card__title-text">
+          <h2
+            className="mdl-card__title-text"
+          >
             {index}. {moduleName}
+            {isSignedIn === true && id === course.authorId ? (
+              <ModuleName
+                id={id}
+                token={token}
+                courseId={course.courseId}
+                moduleId={moduleId}
+                moduleName={moduleName}
+                updateModule={this.props.updateModule}
+              />
+            ) : null}
           </h2>
         </div>
         <div
@@ -74,7 +90,7 @@ class Module extends Component {
                 editorEnabled={edit}
               />
             </div>
-            {user.id === course.authorId ? (
+            {isSignedIn === true && id === course.authorId ? (
               <div style={{ position: 'absolute', right: '0px', top: '0px' }}>
                 {edit ? (
                   <button
