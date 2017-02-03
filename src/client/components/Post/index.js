@@ -38,26 +38,22 @@ const Post = ({ post, postType }) => {
       className="mdl-card mdl-shadow--4dp"
       style={style.post}
     >
-      <div
+      <div className="mdl-card__media">
+        <img
+          src="https://getmdl.io/assets/demos/welcome_card.jpg"
+          alt=""
+          style={{ width: '100%', minHeight: '100px', maxHeight: '200px' }}
+        />
+      </div>
+      <a
         className="mdl-card__title"
         style={style.postTitle}
         onClick={() => browserHistory.push(`/${postType}s/${postId}`)}
       >
         <h2 className="mdl-card__title-text">{postTitle}</h2>
-      </div>
+      </a>
       <div className="mdl-card__supporting-text">
         {postDescription}
-      </div>
-      <div className="mdl-card__menu">
-        <button
-          className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"
-          onClick={() => browserHistory.push(`/${postType}s/${postId}`)}
-        >
-          <i className="material-icons">edit</i>
-        </button>
-        <button className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-          <i className="material-icons">share</i>
-        </button>
       </div>
     </div>
   );

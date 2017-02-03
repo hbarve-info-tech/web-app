@@ -5,10 +5,7 @@ export default {
     marginBottom: '10px',
   },
   postTitle: {
-    height: '150px',
-    backgroundImage: 'url("https://getmdl.io/assets/demos/welcome_card.jpg")',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
+
   },
   postEmpty: {
     width: '100%',
