@@ -1,37 +1,8 @@
 
-import Joi from 'joi';
-
-import { elementdb } from '../../database';
-import { Id, Username } from '../../config/schema';
-
-const getElement = {
-  auth: {
-    mode: 'required',
-    strategies: ['visitor'],
-  },
-  validate: {
-    query: Joi.object({
-      id: Id,
-      username: Username,
-    }).length(1),
-  },
-  handler: (request, reply) => {
-    const { username, id } = request.query;
-    if (Username) {
-      elementdb.getElementByUsername(username, result => reply(result));
-    }
-    else {
-      elementdb.getElementById(parseInt(id, 10), result => reply(result));
-    }
-  },
-};
+import Routes from './Routes';
 
 const register = (server, options, next) => {
-  server.route([
-
-    { method: 'GET', path: '/api/elements', config: getElement },
-
-  ]);
+  server.route(Routes);
 
   next();
 };
@@ -39,7 +10,7 @@ const register = (server, options, next) => {
 register.attributes = {
   pkg: {
     name: 'Elements',
-    version: '0.0.1',
+    version: '1.0.0',
     description: 'This plugin contains all the features related to element.',
   },
 };

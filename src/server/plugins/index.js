@@ -16,6 +16,8 @@ import Courses from './courses';
 import Classroom from './classrooms';
 import Images from './images';
 
+const { NODE_ENV } = process.env;
+
 const plugins = [];
 
 // For serving Static file/folder to client.
@@ -74,6 +76,15 @@ plugins.push({
   register: HapiAuthJwt2,
   options: {},
 });
+
+if (NODE_ENV === 'development') {
+  plugins.push({
+    register: require('tv'),
+    options: {
+      endpoint: '/debug',
+    },
+  });
+}
 
 plugins.push({
   register: Traffic,
