@@ -3,17 +3,18 @@
 import * as api from '../api';
 
 // Global variables are defined here.
-export const COURSES_FETCH = 'COURSES_FETCH';
+export const COURSE_CREATE_START = 'COURSE_CREATE_START';
+export const COURSE_CREATE_SUCCESS = 'COURSE_CREATE_SUCCESS';
+export const COURSE_CREATE_ERROR = 'COURSE_CREATE_ERROR';
+
 export const COURSES_FETCH_START = 'COURSES_FETCH_START';
 export const COURSES_FETCH_SUCCESS = 'COURSES_FETCH_SUCCESS';
 export const COURSES_FETCH_ERROR = 'COURSES_FETCH_ERROR';
 
-export const COURSE_FETCH = 'COURSE_FETCH';
 export const COURSE_FETCH_START = 'COURSE_FETCH_START';
 export const COURSE_FETCH_SUCCESS = 'COURSE_FETCH_SUCCESS';
 export const COURSE_FETCH_ERROR = 'COURSE_FETCH_ERROR';
 
-export const COURSE_UPDATE = 'COURSE_UPDATE';
 export const COURSE_UPDATE_START = 'COURSE_UPDATE_START';
 export const COURSE_UPDATE_SUCCESS = 'COURSE_UPDATE_SUCCESS';
 export const COURSE_UPDATE_ERROR = 'COURSE_UPDATE_ERROR';
@@ -23,21 +24,34 @@ export const MODULE_CREATE_SUCCESS = 'MODULE_CREATE_SUCCESS';
 export const MODULE_CREATE_ERROR = 'MODULE_CREATE_ERROR';
 
 
-export const MODULES_FETCH = 'MODULES_FETCH';
 export const MODULES_FETCH_START = 'MODULES_FETCH_START';
 export const MODULES_FETCH_SUCCESS = 'MODULES_FETCH_SUCCESS';
 export const MODULES_FETCH_ERROR = 'MODULES_FETCH_ERROR';
 
-export const MODULE_FETCH = 'MODULE_FETCH';
 export const MODULE_FETCH_START = 'MODULE_FETCH_START';
 export const MODULE_FETCH_SUCCESS = 'MODULE_FETCH_SUCCESS';
 export const MODULE_FETCH_ERROR = 'MODULE_FETCH_ERROR';
 
-export const MODULE_UPDATE = 'MODULE_UPDATE';
 export const MODULE_UPDATE_START = 'MODULE_UPDATE_START';
 export const MODULE_UPDATE_SUCCESS = 'MODULE_UPDATE_SUCCESS';
 export const MODULE_UPDATE_ERROR = 'MODULE_UPDATE_ERROR';
 
+
+const createCourseStart = () => ({ type: COURSE_CREATE_START });
+const createCourseSuccess = payload => ({ type: COURSE_CREATE_SUCCESS, payload });
+const createCourseError = payload => ({ type: COURSE_CREATE_ERROR, payload });
+export const createCourse = ({ id, token, courseName }) => (dispatch) => {
+  dispatch(createCourseStart());
+
+  api.createCourse({ id, token, courseName }, (json) => {
+    if (json.statusCode === 201) {
+      dispatch(createCourseSuccess({ id, courseName, ...json.payload }));
+    }
+    else if (json.statusCode >= 400) {
+      dispatch(createCourseError({ id, ...json }));
+    }
+  });
+};
 
 const fetchCourseStart = payload => ({ type: COURSE_FETCH_START, payload });
 const fetchCourseSuccess = payload => ({ type: COURSE_FETCH_SUCCESS, payload });

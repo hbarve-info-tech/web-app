@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import actions from '../../actions';
 
 import ProfileInfo from '../ProfileInfo';
-import PostCreate from '../PostCreate';
 import Timeline from '../Timeline';
 
 class Home extends Component {
@@ -42,7 +41,6 @@ class Home extends Component {
             timelineType="article"
           />
         </div>
-        <PostCreate />
       </div>
     );
   }

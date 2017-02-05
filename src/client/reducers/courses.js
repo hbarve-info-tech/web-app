@@ -2,6 +2,7 @@
 import _ from 'lodash';
 
 import {
+  COURSE_CREATE_START, COURSE_CREATE_ERROR, COURSE_CREATE_SUCCESS,
   COURSES_FETCH_START, COURSES_FETCH_ERROR, COURSES_FETCH_SUCCESS,
   COURSE_FETCH_START, COURSE_FETCH_ERROR, COURSE_FETCH_SUCCESS,
 
@@ -170,6 +171,27 @@ const moduleReducer = (state = initialModuleState, action) => {
 
 const courseReducer = (state = initialCourseState, action) => {
   switch (action.type) {
+    case COURSE_CREATE_SUCCESS: {
+      return {
+        ...state,
+        ...action.payload,
+
+        isCreating: false,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
+
+        isCreated: true,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+
+        isError: false,
+        error: '',
+        message: '',
+        lastUpdated: Date.now(),
+      };
+    }
 
     case COURSE_FETCH_START: {
       return {
@@ -486,6 +508,71 @@ const courseReducer = (state = initialCourseState, action) => {
 
 const coursesReducer = (state = initialCoursesState, action) => {
   switch (action.type) {
+    case COURSE_CREATE_START: {
+      return {
+        ...state,
+        isCreating: true,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
+
+        isCreated: false,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+
+        isError: false,
+        error: '',
+        message: '',
+
+        lastUpdated: Date.now(),
+      };
+    }
+    case COURSE_CREATE_ERROR: {
+      return {
+        ...state,
+        isCreating: false,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
+
+        isCreated: false,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+
+        isError: true,
+        error: action.payload.error,
+        message: action.payload.message,
+
+        lastUpdated: Date.now(),
+      };
+    }
+    case COURSE_CREATE_SUCCESS: {
+      return {
+        ...state,
+        array: [
+          ...state.array,
+          courseReducer(undefined, action),
+        ],
+        isCreating: false,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
+
+        isCreated: true,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+
+        isError: false,
+        error: '',
+        message: '',
+
+        lastUpdated: Date.now(),
+      };
+    }
+
     case COURSES_FETCH_START: {
       return {
         ...state,

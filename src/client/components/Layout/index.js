@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import Header from '../Header';
 import Drawer from '../Drawer';
 import Footer from '../Footer';
+import PostCreate from '../PostCreate';
 
 import actions from '../../actions';
 
@@ -36,12 +37,10 @@ class Layout extends Component {
       >
         <Header />
         <Drawer />
-        <main
-          className="mdl-layout__content"
-        >
-          <div className="page-content">
-            {children}
-          </div>
+        <main className="mdl-layout__content">
+          <div className="page-content">{children}</div>
+
+          {user.isSignedIn === true ? <PostCreate /> : null}
 
           {/* Add spacer to push Footer down when not enough content*/}
           <div className="mdl-layout-spacer" />
