@@ -17,7 +17,8 @@ export const Name = Joi.string().min(3).max(30);
 
 export const Dob = Joi.date().min('1-1-1974');
 
-export const CircleType = Joi.string().valid('edu', 'org', 'location', 'field', 'social');
+export const ElementType = Joi.string().valid('user', 'circle');
+export const CircleType = Joi.string().valid('edu', 'org', 'location', 'field');
 
 export const Status = Joi.string().max(148);
 
