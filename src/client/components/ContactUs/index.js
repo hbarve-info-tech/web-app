@@ -9,12 +9,9 @@ const ContactUs = () => {
       <div className="mdl-card mdl-shadow--4dp" style={style.introduction}>
         <div className="mdl-card__media">
           <img
-            src="https://storage.googleapis.com/mayash/website/mayash-title-2.png"
+            src="https://storage.googleapis.com/mayash/website/mayash-contact-us.jpg"
             alt=""
-            style={{
-              width: '100%',
-              minHeight: '250px',
-            }}
+            style={{ width: '100%', minHeight: '100px' }}
           />
         </div>
         <div className="mdl-card__title">
@@ -27,9 +24,9 @@ const ContactUs = () => {
             src="https://docs.google.com/forms/d/e/1FAIpQLScmtajc-7hLPbuaihOpZcRtT8aUah02vrfKsvY1ohsZ4gvatQ/viewform?embedded=true"
             width="100%"
             height="750px"
-            frameborder="0"
-            marginheight="0"
-            marginwidth="0"
+            frameBorder={0}
+            marginHeight={0}
+            marginWidth={0}
           >
             Loading...
           </iframe>

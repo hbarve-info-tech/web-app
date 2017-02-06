@@ -4,8 +4,10 @@ import Elements from './Elements';
 import Article from './Article';
 import Course from './Course';
 import Classroom from './Classroom';
+
 import AboutUs from './AboutUs';
 import ContactUs from './ContactUs';
+import Motivation from './Motivation';
 import CustomerReviews from './CustomerReviews';
 import Introduction from './Introduction';
 import ProductAndServices from './ProductAndServices';
@@ -18,6 +20,7 @@ export default [
 
   { method: 'GET', path: '/introduction', config: Introduction },
   { method: 'GET', path: '/about-us', config: AboutUs },
+  { method: 'GET', path: '/motivation', config: Motivation },
   { method: 'GET', path: '/product-and-services', config: ProductAndServices },
   { method: 'GET', path: '/team', config: Team },
   { method: 'GET', path: '/sponsors', config: Sponsors },

@@ -19,7 +19,13 @@ const CardList = [
         have gone through lot of suffering and changes which has pulled us backward. We
         are committed to return that glories`,
     url: '/motivation',
-    imageUrl: 'https://storage.googleapis.com/mayash/website/mayash-motivation.jpg',
+    imageUrl: 'https://storage.googleapis.com/mayash/website/mayash-motivation-1.jpg',
+  },
+  {
+    title: 'About Us',
+    description: 'To-Do',
+    url: '/about-us',
+    imageUrl: 'https://storage.googleapis.com/mayash/website/mayash-about-us.jpg',
   },
   {
     title: 'Products And Services',

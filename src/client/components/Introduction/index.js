@@ -10,10 +10,7 @@ const Introduction = () => (
         <img
           src="https://storage.googleapis.com/mayash/website/mayash-title-2.png"
           alt=""
-          style={{
-            width: '100%',
-            minHeight: '250px',
-          }}
+          style={{ width: '100%', minHeight: '100px' }}
         />
       </div>
       <div className="mdl-card__title">
