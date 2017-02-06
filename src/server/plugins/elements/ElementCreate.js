@@ -7,7 +7,7 @@ import { Username, Password, Name, ElementType, CircleType, Classroom } from '..
 export default {
   auth: {
     mode: 'required',
-    strategies: ['visitor'],
+    strategies: ['admin'],
   },
   validate: {
     payload: Joi.object({
