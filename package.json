@@ -13,7 +13,7 @@
     "eslint:fix": "eslint src/server --fix && eslint src/client --fix",
     "build:webpack": "cross-env NODE_ENV='production' webpack --config=webpack/production.js",
     "build:babel": "cross-env babel src -d dist",
-    "build": "npm run build:server && npm run build:client",
+    "build": "npm run build:babel && npm run build:webpack",
     "start": "cross-env NODE_ENV='production' node dist/server/index.js",
     "clean": "rm -rf dist/* && rm -rf public/*",
     "deploy": "cross-env npm run build && gcloud app deploy app.yaml"
