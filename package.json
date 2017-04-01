@@ -1,6 +1,6 @@
 {
   "name": "mayash-webapp",
-  "version": "2.0.0",
+  "version": "3.0.0-alpha-0",
   "description": "This is a project for Mayash website",
   "main": "dist/server/index.js",
   "scripts": {
