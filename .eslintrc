@@ -7,7 +7,7 @@
   },
   "plugins": [
     "jsx-a11y",
-    "react",
+    "react"
   ],
   "rules": {
     "newline-per-chained-call": "warn",
@@ -55,6 +55,7 @@
       "warn"
     ],
     "radix": ["error", "always"],
-    "react/no-string-refs": "warn"
+    "react/no-string-refs": "warn",
+    "no-multi-assign": "warn"
   }
 }
