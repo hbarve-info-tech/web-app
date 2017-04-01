@@ -1,39 +1,41 @@
 
 import React from 'react';
+import PropTypes from 'react/lib/ReactPropTypes';
 import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
 
-const Drawer = () => (
+import Link from './Link';
+import Links from './Links';
+
+const LandingPageLinks = [
+  { urlName: 'Introduction', url: '/introduction', className: 'mdl-navigation__link' },
+  { urlName: 'Motivation', url: '/motivation', className: 'mdl-navigation__link' },
+  { urlName: 'About Us', url: '/about-us', className: 'mdl-navigation__link' },
+  { urlName: 'Product & Services', url: '/product-and-services', className: 'mdl-navigation__link' },
+  { urlName: 'Sponsors', url: '/sponsors', className: 'mdl-navigation__link' },
+  { urlName: 'Customer Reviews', url: '/customer-reviews', className: 'mdl-navigation__link' },
+  { urlName: 'Team', url: '/team', className: 'mdl-navigation__link' },
+  { urlName: 'Contact Us', url: '/contact-us', className: 'mdl-navigation__link' },
+];
+
+const Drawer = ({ user }) => (
   <div className="mdl-layout__drawer">
     <span className="mdl-layout-title">
-      <a
-        href="/"
-        onClick={(e) => {
-          e.preventDefault();
-          browserHistory.push('/');
-        }}
+      <Link
+        url={'/'}
+        urlName={'Mayash'}
         style={{ color: 'black', textDecoration: 'none' }}
-      >
-        Mayash
-      </a>
+      />
     </span>
-    <nav className="mdl-navigation">
-      <a
-        className="mdl-navigation__link"
-        href="/introduction"
-      >
-        Introduction
-      </a>
-      <a className="mdl-navigation__link" href="/about-us">About us</a>
-      <a className="mdl-navigation__link" href="/product-and-services">Product & Services</a>
-      <a className="mdl-navigation__link" href="/team">Team</a>
-      <a className="mdl-navigation__link" href="/sponsors">Sponsors</a>
-      <a className="mdl-navigation__link" href="/customer-reviews">Customer Reviews</a>
-      <a className="mdl-navigation__link" href="/contact-us">Contact Us</a>
-    </nav>
+    {!user.isSignedIn ? <Links links={LandingPageLinks} /> : null}
   </div>
 );
 
-const mapStateToProps = state => state;
+Drawer.propTypes = {
+  user: PropTypes.shape({
+    isSignedIn: PropTypes.bool.isRequired,
+  }).isRequired,
+};
+
+const mapStateToProps = state => ({ user: state.user });
 
 export default connect(mapStateToProps)(Drawer);

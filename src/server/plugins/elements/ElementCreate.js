@@ -17,7 +17,7 @@ export default {
       circleType: CircleType.when('elementType', { is: 'circle', then: Joi.required() }),
       password: Password.required(),
       classroom: Classroom.required(),
-    }).length(6),
+    }).min(5).max(6),
   },
   handler: (request, reply) => {
     elementdb.createElement(request.payload, result => reply(result));

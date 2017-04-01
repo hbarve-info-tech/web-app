@@ -82,7 +82,7 @@ export const createElement = ({
   classroom = false,
   password = '12345',
   elementType = 'circle',
-  circleType = 'field',
+  circleType,
 }, callback) => {
   const query = db.createQuery(ELEMENTS)
     .filter('username', '=', username)
@@ -123,8 +123,10 @@ export const createElement = ({
         password: crypto.createHash('sha256').update(password).digest('hex'),
         profilePic,
         elementType,
-        circleType,
       };
+      if (typeof circleType !== 'undefined') {
+        data.circleType = circleType;
+      }
       if (classroom === true) {
         data.classroom = true;
       }

@@ -41,6 +41,7 @@
     "good-http": "6.1.2",
     "good-squeeze": "5.0.1",
     "google-cloud": "0.45.2",
+    "graphql": "0.9.1",
     "handlebars": "4.0.6",
     "hapi": "16.1.0",
     "hapi-auth-jwt2": "7.2.4",
@@ -78,7 +79,7 @@
     "babel-preset-react": "6.16.0",
     "babel-preset-stage-0": "6.16.0",
     "css-loader": "0.26.1",
-    "eslint": "3.13.1",
+    "eslint": "3.15.0",
     "eslint-config-airbnb": "14.0.0",
     "eslint-plugin-import": "2.2.0",
     "eslint-plugin-jsx-a11y": "3.0.2",
@@ -88,16 +89,13 @@
     "font-loader": "0.1.2",
     "html-webpack-plugin": "2.26.0",
     "node-sass": "4.2.0",
-    "redux-devtools": "3.3.1",
-    "redux-devtools-dock-monitor": "1.1.1",
-    "redux-devtools-log-monitor": "1.2.0",
     "remote-redux-devtools": "0.5.7",
     "remotedev-server": "0.3.0-beta-3",
     "sass-loader": "4.1.1",
     "style-loader": "0.13.1",
     "tv": "6.1.0",
     "url-loader": "0.5.7",
-    "webpack": "2.2.0-rc.3",
-    "webpack-dev-server": "2.2.0-rc.0"
+    "webpack": "2.2.1",
+    "webpack-dev-server": "2.3.0"
   }
 }

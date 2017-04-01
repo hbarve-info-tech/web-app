@@ -13,7 +13,7 @@ export const Mobile = Joi.number().min(7000000000).max(9999999999).integer();
 
 export const Email = Joi.string().email();
 
-export const Name = Joi.string().min(3).max(30);
+export const Name = Joi.string().min(3).max(50);
 
 export const Dob = Joi.date().min('1-1-1974');
 

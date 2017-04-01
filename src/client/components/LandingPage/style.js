@@ -13,12 +13,12 @@ export default {
     media: {
       image: {
         width: '100%',
-        minHeight: '200px',
+        minHeight: '50px',
       },
     },
     title: {
       heading: {
-        fontSize: '33px',
+        fontSize: '31px',
       },
     },
 

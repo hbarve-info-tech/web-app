@@ -29,6 +29,13 @@ const routes = (
       }}
     />
     <Route
+      path="motivation" getComponent={(nextState, callback) => {
+        require.ensure([], (require) => {
+          callback(null, require('../Motivation').default);
+        });
+      }}
+    />
+    <Route
       path="about-us" getComponent={(nextState, callback) => {
         require.ensure([], (require) => {
           callback(null, require('../AboutUs').default);
