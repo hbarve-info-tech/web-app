@@ -9,11 +9,7 @@ import plugins from './plugins';
 const server = new Server();
 server.connection(serverConfig);
 
-server.register(plugins, {
-  routes: {
-    prefix: `/api/${require('@hbarve1/mayash-api/package.json').version}`,
-  },
-}, (error1) => {
+server.register(plugins, (error1) => {
   if (error1) {
     throw error1;
   }

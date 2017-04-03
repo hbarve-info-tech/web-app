@@ -76,6 +76,9 @@ plugins.push({
 
 plugins.push({
   register: mayashAPI,
+  routes: {
+    prefix: `/api/${require('@hbarve1/mayash-api/package.json').version}`,
+  },
   options: {},
 });
 
