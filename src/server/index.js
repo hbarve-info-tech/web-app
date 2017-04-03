@@ -2,6 +2,7 @@
 import { Server } from 'hapi';
 import Hoek from 'hoek';
 import Handlebars from 'handlebars';
+import path from 'path';
 
 import { server as serverConfig } from './config';
 import plugins from './plugins';
@@ -16,9 +17,9 @@ server.register(plugins, (error1) => {
   console.log('All plugins are added.');
 
   server.views({
-    engines: { html: Handlebars },
-    relativeTo: `${__dirname}/../../`,
-    path: 'public',
+    engines: { hbs: Handlebars },
+    relativeTo: `${__dirname}/../../node_modules/@hbarve1/mayash-views`,
+    path: 'templates',
   });
 
   // Finally server is starting here.

@@ -17,6 +17,7 @@
   "dependencies": {
     "@hbarve1/mayash-api": "0.0.0-alpha-0",
     "@hbarve1/mayash-auth": "0.0.0-alpha-2",
+    "@hbarve1/mayash-views": "0.0.0-aplha-0",
     "bell": "8.4.0",
     "boom": "4.2.0",
     "cross-env": "3.1.4",

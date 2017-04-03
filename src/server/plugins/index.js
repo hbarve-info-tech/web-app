@@ -9,6 +9,7 @@ import HapiAuthJwt2 from 'hapi-auth-jwt2';
 
 import mayashAuth from '@hbarve1/mayash-auth';
 import mayashAPI from '@hbarve1/mayash-api';
+import mayashViews from '@hbarve1/mayash-views';
 
 const plugins = [];
 
@@ -79,6 +80,11 @@ plugins.push({
   routes: {
     prefix: `/api/${require('@hbarve1/mayash-api/package.json').version}`,
   },
+  options: {},
+});
+
+plugins.push({
+  register: mayashViews,
   options: {},
 });
 
