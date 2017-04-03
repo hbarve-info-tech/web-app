@@ -62,7 +62,7 @@ automatic_scaling:
 env_variables:
   NODE_ENV: 'production'
   PROJECT_ID: 'mayash-webapp'
-  HAPI_AUTH_TOKEN_KEY: '1267341C6F7D8BF45#50G[fdwo]4]y62'
+  TOKEN_KEY: '1267341C6F7D8BF45#50G[fdwo]4]y62'
 
 
 # [END runtime]
