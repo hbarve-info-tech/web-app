@@ -7,6 +7,7 @@ import Vision from 'vision';
 import Good from 'good';
 import HapiAuthJwt2 from 'hapi-auth-jwt2';
 
+import mayashAuth from '@hbarve1/mayash-auth';
 import mayashAPI from '@hbarve1/mayash-api';
 
 const plugins = [];
@@ -65,6 +66,11 @@ plugins.push({
 
 plugins.push({
   register: HapiAuthJwt2,
+  options: {},
+});
+
+plugins.push({
+  register: mayashAuth,
   options: {},
 });
 
