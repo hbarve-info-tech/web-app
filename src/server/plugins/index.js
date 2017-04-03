@@ -7,6 +7,8 @@ import Vision from 'vision';
 import Good from 'good';
 import HapiAuthJwt2 from 'hapi-auth-jwt2';
 
+import mayashAPI from '@hbarve1/mayash-api';
+
 const plugins = [];
 
 // For serving Static file/folder to client.
@@ -63,6 +65,11 @@ plugins.push({
 
 plugins.push({
   register: HapiAuthJwt2,
+  options: {},
+});
+
+plugins.push({
+  register: mayashAPI,
   options: {},
 });
 
