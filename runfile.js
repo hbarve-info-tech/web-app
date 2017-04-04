@@ -10,31 +10,11 @@ const task = {
     run('rm -rf dist');
     run('mkdir dist');
   },
-  'build:webpack': () => {
-    run('cross-env NODE_ENV="production" webpack --config=webpack/production.js');
-  },
-  'build:client': () => {
-    run('cross-env babel src/client -d dist/client');
-  },
-  'build:server': () => {
-    run('cross-env babel src/server -d dist/server');
-  },
   build: () => {
-    task['build:clean']();
-    task['build:server']();
-    task['build:client']();
-  },
-  'dev:redux': () => {
-    run('cross-env babel-node redux/index.js');
-  },
-  'dev:client': () => {
-    run('cross-env NODE_ENV="development" babel-node webpack/devServer.js');
-  },
-  'dev:server': () => {
-    run('cross-env NODE_ENV="development" TOKEN_KEY="test-token" nodemon src/server/index.js --exec babel-node');
+    run('cross-env babel src -d dist');
   },
   dev: () => {
-    run('cross-env NODE_ENV="development" TOKEN_KEY="test-token" babel-node src/server/index.js');
+    run('NODE_ENV="development" TOKEN_KEY="test-token" nodemon src/server.js --exec babel-node');
   },
   eslint: (path = 'src') => {
     run(`eslint ${path}`);
@@ -52,7 +32,7 @@ const task = {
     run('gcloud app deploy app.yaml');
   },
   start: () => {
-    run('cross-env NODE_ENV="production" node dist/server/index.js');
+    run('node dist/server.js');
   },
 };
 
