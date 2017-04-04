@@ -16,11 +16,9 @@
 
 # App engine language.
 runtime: nodejs
-vm: true
-
 
 # Set environment to flexible.
-#env: flex
+env: flex
 ## by setting 'env' to flex it is redirecting https://mayash.xyz to website's preview route.
 ## don't know why
 
@@ -33,10 +31,10 @@ vm: true
 #  name: 'network_name'
 
 # Resource Settings
-#resources:
-#  cpu: 2
-#  memory_gb: 1.3
-#  disk_size_gb: 10
+resources:
+  cpu: 1
+  memory_gb: 1
+  disk_size_gb: 10
 #  volumes:
 #  - name: ramdisk1
 #    volume_type: tmpfs
@@ -54,16 +52,13 @@ vm: true
 automatic_scaling:
   min_num_instances: 1
   max_num_instances: 5
-#  cool_down_period_sec: 120 # default value
-#  cpu_utilization:
-#    target_utilization: 0.5
+  cool_down_period_sec: 120 # default value
+  cpu_utilization:
+    target_utilization: 0.5
 
 # Environment Variables
 env_variables:
-  NODE_ENV: 'production'
-  PROJECT_ID: 'mayash-webapp'
   TOKEN_KEY: '1267341C6F7D8BF45#50G[fdwo]4]y62'
-
 
 # [END runtime]
 
