@@ -19,7 +19,7 @@ server.register(plugins, (error1) => {
 
   server.views({
     engines: { hbs: Handlebars },
-    relativeTo: `${__dirname}/../../node_modules/@hbarve1/mayash-views`,
+    relativeTo: `${__dirname}/../node_modules/@hbarve1/mayash-views`,
     path: 'templates',
   });
 
