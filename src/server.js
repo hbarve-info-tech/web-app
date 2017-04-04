@@ -2,13 +2,14 @@
 import { Server } from 'hapi';
 import Hoek from 'hoek';
 import Handlebars from 'handlebars';
-import path from 'path';
 
-import { server as serverConfig } from './config';
 import plugins from './plugins';
 
 const server = new Server();
-server.connection(serverConfig);
+server.connection({
+  host: process.env.IP || '0.0.0.0',
+  port: process.env.PORT || 5000,
+});
 
 server.register(plugins, (error1) => {
   if (error1) {
