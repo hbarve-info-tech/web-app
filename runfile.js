@@ -27,7 +27,7 @@ const task = {
     run('');
   },
   deploy: () => {
-    task.test();
+    // task.test();
     task.build();
     run('gcloud app deploy app.yaml');
   },
