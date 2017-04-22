@@ -8,6 +8,19 @@ import { connect } from 'react-redux';
 
 import actions from '../../actions';
 
+const Title = () => (
+  <a
+    href="/"
+    onClick={(e) => {
+      e.preventDefault();
+      browserHistory.push('/');
+    }}
+    style={{ color: 'white', textDecoration: 'none' }}
+  >
+    Mayash
+  </a>
+);
+
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -72,16 +85,7 @@ class Header extends Component {
         <div className="mdl-layout__header-row">
 
           <span className="mdl-layout-title">
-            <a
-              href="/"
-              onClick={(e) => {
-                e.preventDefault();
-                browserHistory.push('/');
-              }}
-              style={{ color: 'white', textDecoration: 'none' }}
-            >
-              Mayash
-            </a>
+            <Title/>
           </span>
 
           <div className="mdl-layout-spacer" />
