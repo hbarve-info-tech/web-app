@@ -31,11 +31,10 @@ class Layout extends Component {
 
     return (
       <div
-        className="mdl-layout mdl-js-layout mdl-layout--fixed-header"
+        className="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--no-drawer-button"
         style={user.isSignedIn === true ? style.layout : {}}
       >
         <Header />
-        <Drawer />
         <main
           className="mdl-layout__content"
         >
@@ -71,8 +70,8 @@ Layout.propTypes = {
     lastUpdated: PropTypes.number,
   }).isRequired,
   fetchUser: PropTypes.func.isRequired,
-  location: PropTypes.oneOfType({
-    path: PropTypes.string.isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
   }).isRequired,
 };
 
