@@ -32,15 +32,16 @@ class Layout extends Component {
 
     return (
       <div
-        className="mdl-layout mdl-js-layout mdl-layout--fixed-header"
+        className="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--no-drawer-button"
         style={user.isSignedIn === true ? style.layout : {}}
       >
         <Header />
-        <Drawer />
-        <main className="mdl-layout__content">
-          <div className="page-content">{children}</div>
-
-          {user.isSignedIn === true ? <PostCreate /> : null}
+        <main
+          className="mdl-layout__content"
+        >
+          <div className="page-content">
+            {children}
+          </div>
 
           {/* Add spacer to push Footer down when not enough content*/}
           <div className="mdl-layout-spacer" />
