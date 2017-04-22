@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import actions from '../../actions';
 
 import ProfileInfo from '../ProfileInfo';
+import Create from '../Create';
 import Timeline from '../Timeline';
 
 class Home extends Component {
@@ -18,12 +19,11 @@ class Home extends Component {
 
   componentDidMount() {
     const { id, token } = this.props.user;
-    this.props.fetchArticles({ id, token });
+    this.props.getPosts({ id, token });
   }
 
   render() {
-    const { user } = this.props;
-    const articles = this.props.articles.array;
+    const { user, posts } = this.props;
 
     return (
       <div className="mdl-grid">
@@ -36,9 +36,10 @@ class Home extends Component {
           />
         </div>
         <div className="mdl-cell mdl-cell--8-col mdl-cell--5-col-tablet mdl-cell--4-col-phone">
+          <Create type="post"/>
           <Timeline
-            posts={articles}
-            timelineType="article"
+            posts={posts}
+            type="post"
           />
         </div>
       </div>
@@ -61,11 +62,9 @@ Home.propTypes = {
     error: PropTypes.string,
     message: PropTypes.string,
     lastUpdated: PropTypes.number,
-  }).isRequired,
-  fetchArticles: PropTypes.func.isRequired,
-  articles: PropTypes.shape({
-    array: PropTypes.array.isRequired,
-  }).isRequired,
+  }),
+  getPosts: PropTypes.func,
+  posts: PropTypes.array,
 };
 
 const mapStateToProps = state => state;

@@ -6,9 +6,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import Header from '../Header';
-import Drawer from '../Drawer';
 import Footer from '../Footer';
-import PostCreate from '../PostCreate';
 
 import actions from '../../actions';
 
