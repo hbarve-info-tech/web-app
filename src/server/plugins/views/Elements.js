@@ -78,7 +78,7 @@ export default {
 
       const { username } = request.params;
 
-      store.dispatch(actions.fetchElement({ username, token }));
+      store.dispatch(actions.getElement({ username, token }));
 
       const unsubscribe = store.subscribe(() => {
         unsubscribe();

@@ -14,16 +14,25 @@ class ElementPage extends Component {
   componentDidMount() {
     const { token } = this.props.user;
     const { username } = this.props.routeParams;
-    const element = this.props.elements.array.find(e => e.username === username);
+    const element = this.props.elements.find(e => e.username === username);
     if (element.isFetched) {
-      this.props.fetchArticles({ id: element.id, token });
+      this.props.getPosts({ id: element.id, token });
     }
   }
   
   render() {
     const { username } = this.props.routeParams;
-    const element = this.props.elements.array.find(e => e.username === username);
-    const posts = this.props.articles.array.filter(a => a.authorId === element.id);
+    const element = this.props.elements.find(e => e.username === username);
+
+    if (element.statusCode === 404) {
+      return (
+        <div>
+          Not Found...
+        </div>
+      );
+    }
+
+    const posts = this.props.posts.filter(a => a.authorId === element.id);
     
     return (
       <div className="mdl-grid">
@@ -38,7 +47,7 @@ class ElementPage extends Component {
         <div className="mdl-cell mdl-cell--8-col mdl-cell--5-col-tablet mdl-cell--4-col-phone">
           <Timeline
             posts={posts}
-            timelineType="article"
+            type="post"
           />
         </div>
       </div>
@@ -53,9 +62,7 @@ ElementPage.propTypes = {
   user: PropTypes.shape({
     token: PropTypes.string.isRequired,
   }).isRequired,
-  elements: PropTypes.shape({
-    array: PropTypes.arrayOf(PropTypes.object.isRequired),
-  }).isRequired,
+  elements: PropTypes.array.isRequired,
   articles: PropTypes.shape({
     array: PropTypes.array.isRequired,
   }).isRequired,
