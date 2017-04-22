@@ -11,6 +11,7 @@ import Auth from './auth';
 import Views from './views';
 import User from './user';
 import Elements from './elements';
+import Posts from './posts';
 import Articles from './articles';
 import Courses from './courses';
 import Classroom from './classrooms';
@@ -108,6 +109,11 @@ plugins.push({
 
 plugins.push({
   register: Elements,
+  options: {},
+});
+
+plugins.push({
+  register: Posts,
   options: {},
 });
 
