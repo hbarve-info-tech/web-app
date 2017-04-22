@@ -60,4 +60,10 @@ export const Semester = Joi.number().integer();
 export const Degree = Joi.string();
 export const Next = Joi.string();
 
+// These are for posts.
+export const PostType = Joi.string().valid('tweet', 'article', 'report');
+
+export const Title = Joi.string().min(3).max(148);
+export const PostData = Joi.object();
+
 // Cover rest all the things here.
