@@ -5,7 +5,7 @@ import { browserHistory } from 'react-router';
 
 import style from './style';
 
-const Post = ({ postId, authorId, title, description, data, type }) => {
+const CoursePost = ({ courseId, authorId, title, description, data }) => {
   return (
     <div
       className="mdl-card mdl-shadow--4dp"
@@ -14,7 +14,7 @@ const Post = ({ postId, authorId, title, description, data, type }) => {
       <a
         className="mdl-card__title"
         style={style.postTitle}
-        onClick={() => browserHistory.push(`/posts/${postId}`)}
+        onClick={() => browserHistory.push(`/courses/${courseId}`)}
       >
         <h2 className="mdl-card__title-text">{title}</h2>
       </a>
@@ -27,16 +27,11 @@ const Post = ({ postId, authorId, title, description, data, type }) => {
   );
 };
 
-Post.propTypes = {
+CoursePost.propTypes = {
   authorId: PropTypes.number,
-  postId: PropTypes.number,
+  courseId: PropTypes.number,
   title: PropTypes.string,
-  data: PropTypes.shape({}),
   description: PropTypes.string,
-  type: PropTypes.oneOf([
-    'post',
-    'course',
-  ]),
 };
 
-export default Post;
+export default CoursePost;
