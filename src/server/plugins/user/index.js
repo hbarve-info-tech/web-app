@@ -54,13 +54,16 @@ const signIn = {
         .digest('hex');
 
       if (orgUser.password === hashedPassword) {
-        jwt.sign({
+        const userInfo = {
           id: orgUser.id,
           username: orgUser.username,
           password: orgUser.password,
-        }, Token.key, {
+        };
+        const options = {
           expiresIn: '10 days',
-        }, (err, token) => {
+        };
+
+        jwt.sign(userInfo, Token.key, options, (err, token) => {
           if (err) {
             console.log(err);
 
@@ -70,16 +73,18 @@ const signIn = {
             });
           }
 
+          const { id, username, name, profilePic, classroom } = orgUser;
+
+          const payload = { id, username, name, profilePic, token };
+
+          if (classroom === true) {
+            payload.classroom = true;
+          }
+
           return reply({
             statusCode: 200,
             message: 'Sign In Successful.',
-            payload: {
-              id: orgUser.id,
-              username: orgUser.username,
-              name: orgUser.name,
-              profilePic: orgUser.profilePic,
-              token,
-            },
+            payload,
           });
         });
       }
