@@ -3,28 +3,45 @@ import React from 'react';
 import PropTypes from 'react/lib/ReactPropTypes';
 
 import Post from '../Post';
+import CoursePost from '../Post/CoursePost';
+import LoadingPost from '../Post/LoadingPost';
+import EmptyPost from '../Post/EmptyPost';
 
 import style from './style';
 
-const Timeline = ({ posts, timelineType }) => {
-  const postType = timelineType;
+const Timeline = ({ posts, courses, type }) => {
+  if (type === 'course') {
+    return (
+      <div style={style.timeline}>
+        {courses.length ? courses.map(course => (
+          <CoursePost
+            {...course}
+            key={course.courseId}
+          />
+        )) : <EmptyPost /> }
+      </div>
+    );
+  }
 
   return (
     <div style={style.timeline}>
       {posts.length ? posts.map(post => (
         <Post
-          post={post}
-          postType={postType}
-          key={postType === 'article' ? post.articleId : post.courseId}
+          {...post}
+          key={post.postId}
         />
-      )) : <Post postType="emptyPost" /> }
+      )) : <EmptyPost /> }
     </div>
   );
 };
 
 Timeline.propTypes = {
-  posts: PropTypes.array.isRequired,
-  timelineType: PropTypes.string.isRequired,
+  posts: PropTypes.array,
+  courses: PropTypes.array,
+  type: PropTypes.oneOf([
+    'post',
+    'course'
+  ]).isRequired,
 };
 
 export default Timeline;
