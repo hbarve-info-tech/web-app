@@ -31,10 +31,7 @@ class Layout extends Component {
     const { children, user, location } = this.props;
 
     return (
-      <div
-        className="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--no-drawer-button"
-        style={user.isSignedIn === true ? style.layout : {}}
-      >
+      <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--no-drawer-button">
         <Header />
         <main
           className="mdl-layout__content"
