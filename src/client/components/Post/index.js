@@ -38,13 +38,6 @@ const Post = ({ post, postType }) => {
       className="mdl-card mdl-shadow--4dp"
       style={style.post}
     >
-      <div className="mdl-card__media">
-        <img
-          src="https://getmdl.io/assets/demos/welcome_card.jpg"
-          alt=""
-          style={{ width: '100%', minHeight: '100px', maxHeight: '200px' }}
-        />
-      </div>
       <a
         className="mdl-card__title"
         style={style.postTitle}
