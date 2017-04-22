@@ -14,7 +14,7 @@ class ClassroomPage extends Component {
   componentDidMount() {
     const { token } = this.props.user;
     const { username } = this.props.routeParams;
-    const element = this.props.elements.array.find(e => e.username === username);
+    const element = this.props.elements.find(e => e.username === username);
     if (element.isFetched && element.classroom) {
       const { id } = element;
       if (element.elementType === 'user') {
@@ -28,7 +28,7 @@ class ClassroomPage extends Component {
 
   render() {
     const { username } = this.props.routeParams;
-    const element = this.props.elements.array.find(e => e.username === username);
+    const element = this.props.elements.find(e => e.username === username);
 
     if (element.classroom !== true) {
       return (
@@ -41,7 +41,7 @@ class ClassroomPage extends Component {
       );
     }
 
-    const posts = this.props.courses.array.filter((course) => {
+    const courses = this.props.courses.array.filter((course) => {
       if (element.elementType === 'user') {
         return course.authorId === element.id;
       }
@@ -60,8 +60,8 @@ class ClassroomPage extends Component {
         </div>
         <div className="mdl-cell mdl-cell--8-col mdl-cell--5-col-tablet mdl-cell--4-col-phone">
           <Timeline
-            posts={posts}
-            timelineType="course"
+            courses={courses}
+            type="course"
           />
         </div>
       </div>
@@ -76,9 +76,7 @@ ClassroomPage.propTypes = {
   user: PropTypes.shape({
     token: PropTypes.string.isRequired,
   }).isRequired,
-  elements: PropTypes.shape({
-    array: PropTypes.arrayOf(PropTypes.object.isRequired),
-  }).isRequired,
+  elements: PropTypes.array.isRequired,
   courses: PropTypes.shape({
     array: PropTypes.array.isRequired,
   }).isRequired,
