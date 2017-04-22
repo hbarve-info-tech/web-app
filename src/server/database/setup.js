@@ -5,6 +5,7 @@ import { gcloud } from '../config';
 const { projectId } = gcloud;
 
 export const ELEMENTS = 'elements';
+export const POSTS = 'posts';
 export const ARTICLES = 'articles';
 export const COURSES = 'courses';
 export const MODULES = 'modules';
