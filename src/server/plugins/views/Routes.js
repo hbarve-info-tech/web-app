@@ -18,13 +18,6 @@ import Others from './Others';
 export default [
   { method: 'GET', path: '/', config: Home },
 
-  { method: 'GET', path: '/introduction', config: Introduction },
-  { method: 'GET', path: '/about-us', config: AboutUs },
-  { method: 'GET', path: '/motivation', config: Motivation },
-  { method: 'GET', path: '/product-and-services', config: ProductAndServices },
-  { method: 'GET', path: '/team', config: Team },
-  { method: 'GET', path: '/sponsors', config: Sponsors },
-  { method: 'GET', path: '/customer-reviews', config: CustomerReviews },
   { method: 'GET', path: '/contact-us', config: ContactUs },
 
   { method: 'GET', path: '/articles/{articleId}', config: Article },
