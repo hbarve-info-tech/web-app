@@ -19,7 +19,7 @@ export const signIn = (payload, callback) => {
     .then(json => callback(json));
 };
 
-export const getUser = ({ id, token }, callback) => {
+export const getElementById = ({ id, token }, callback) => {
   const url = `${HOST}/api/elements/${id}`;
 
   fetch(url, {
@@ -51,6 +51,6 @@ export const getElement = ({ id, username, token }, callback) => {
 
 export default {
   signIn,
-  getUser,
+  getElementById,
   getElement,
 };

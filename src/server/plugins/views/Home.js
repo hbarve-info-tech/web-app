@@ -71,12 +71,12 @@ export default {
       return reply.view('index', context);
     }
 
-    const { user } = initialState;
+    const { elements } = initialState;
     store = configureStore({
       ...initialState,
       elements: [
         {
-          ...user,
+          ...elements[0],
           isSignedIn: true,
           id: parseInt(id, 10),
           username,
@@ -85,25 +85,20 @@ export default {
       ],
     });
 
-    store.dispatch(actions.getUser({id: parseInt(id, 10), token}));
+    store.dispatch(actions.getElement({ id: parseInt(id, 10), token }));
 
-    let count = 0;
     const unsubscribe = store.subscribe(() => {
-      count += 1;
+      unsubscribe();
 
-      if (count === 2) {
-        unsubscribe();
+      context.app = renderToString(
+        <Provider store={store}>
+          <RouterContext {...renderProps} />
+        </Provider>,
+      );
 
-        context.app = renderToString(
-          <Provider store={store}>
-            <RouterContext {...renderProps} />
-          </Provider>,
-        );
+      context.initialState = JSON.stringify(store.getState());
 
-        context.initialState = JSON.stringify(store.getState());
-
-        return reply.view('index', context);
-      }
+      return reply.view('index', context);
     });
   }),
 };

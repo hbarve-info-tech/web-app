@@ -2,9 +2,8 @@
 import {
   ELEMENT_GET_START, ELEMENT_GET_SUCCESS, ELEMENT_GET_ERROR,
   USER_SIGN_IN_START, USER_SIGN_IN_ERROR, USER_SIGN_IN_SUCCESS,
-  // USER_FETCH_START, USER_FETCH_SUCCESS, USER_FETCH_ERROR,
   USER_SIGN_OUT,
-} from '../actions/elements';
+} from '../constants/elements';
 
 import { writeLocalStore, writeCookie,
   removeLocalStore, removeAllCookies } from '../api/clientApi';
@@ -80,6 +79,7 @@ const elementsReducer = (state = initialElementsState, action) => {
 
           lastUpdated: Date.now(),
         },
+        ...state.slice(1, state.length)
       ];
     }
     case USER_SIGN_IN_ERROR: {
@@ -98,6 +98,7 @@ const elementsReducer = (state = initialElementsState, action) => {
 
           lastUpdated: Date.now(),
         },
+        ...state.slice(1, state.length)
       ];
     }
     case USER_SIGN_IN_SUCCESS: {
@@ -126,6 +127,7 @@ const elementsReducer = (state = initialElementsState, action) => {
 
           lastUpdated: Date.now(),
         },
+        ...state.slice(1, state.length)
       ];
     }
 
