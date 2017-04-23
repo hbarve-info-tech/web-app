@@ -16,9 +16,9 @@ class ElementPage extends Component {
     const element = this.props.elements.find(e => e.username === username);
     const { token } = this.props.elements[0];
 
-    // if (element.isFetched) {
-    //   this.props.getPosts({ id: element.id, token });
-    // }
+    if (element.isFetched) {
+      this.props.getPosts({ id: element.id, token });
+    }
   }
   
   render() {
@@ -33,7 +33,7 @@ class ElementPage extends Component {
       );
     }
 
-    // const posts = this.props.posts.filter(a => a.authorId === element.id);
+    const posts = this.props.posts.filter(a => a.authorId === element.id);
     
     return (
       <div className="mdl-grid">
@@ -46,10 +46,7 @@ class ElementPage extends Component {
           />
         </div>
         <div className="mdl-cell mdl-cell--8-col mdl-cell--5-col-tablet mdl-cell--4-col-phone">
-          {/*<Timeline*/}
-            {/*posts={posts}*/}
-            {/*type="post"*/}
-          {/*/>*/}
+          <Timeline posts={posts} type="post"/>
         </div>
       </div>
     );
@@ -61,6 +58,7 @@ ElementPage.propTypes = {
     username: PropTypes.string.isRequired,
   }).isRequired,
   elements: PropTypes.array.isRequired,
+  posts: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = state => state;

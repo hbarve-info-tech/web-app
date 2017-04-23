@@ -38,35 +38,6 @@ export const getPosts = ({ id, token }, callback) => {
     .then(json => callback(json));
 };
 
-export const createPost = ({ id, token, postType, title, description, data }, callback) => {
-  const url = `${HOST}/api/elements/${id}/posts`;
-
-  const body = {
-    postType,
-    title,
-  };
-
-  if (typeof description === 'string') {
-    body.description = description;
-  }
-
-  if (typeof data === 'object') {
-    body.data = data;
-  }
-
-  fetch(url, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: token,
-    },
-    body: JSON.stringify(body),
-  })
-    .then(response => response.json())
-    .then(json => callback(json));
-};
-
 export const updatePost = ({ id, token, postId, title, description, data }, callback) => {
   const url = `${HOST}/api/elements/${id}/articles/${postId}`;
   const payload = {};
@@ -112,7 +83,6 @@ export const deletePost = ({ id, token, postId }, callback) => {
 export default {
   getPost,
   getPosts,
-  createPost,
   updatePost,
   deletePost,
 };

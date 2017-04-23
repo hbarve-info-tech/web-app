@@ -19,11 +19,12 @@ class Home extends Component {
 
   componentDidMount() {
     const { id, token } = this.props.elements[0];
-    // this.props.getPosts({ id, token });
+    this.props.getPosts({ id, token });
   }
 
   render() {
-    const { elements, posts } = this.props;
+    const { elements } = this.props;
+    const posts = this.props.posts.filter(a => a.authorId === elements[0].id);
 
     return (
       <div className="mdl-grid">
@@ -31,11 +32,8 @@ class Home extends Component {
           <ProfileInfo {...elements[0]} />
         </div>
         <div className="mdl-cell mdl-cell--8-col mdl-cell--5-col-tablet mdl-cell--4-col-phone">
-          <Create type="post"/>
-          {/*<Timeline*/}
-            {/*posts={posts}*/}
-            {/*type="post"*/}
-          {/*/>*/}
+          <Create type="post" />
+          <Timeline posts={posts} type="post" />
         </div>
       </div>
     );
@@ -44,6 +42,7 @@ class Home extends Component {
 
 Home.propTypes = {
   elements: PropTypes.array,
+  posts: PropTypes.array,
   create: PropTypes.object,
 };
 

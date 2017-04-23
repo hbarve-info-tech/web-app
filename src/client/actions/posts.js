@@ -47,18 +47,7 @@ export const getPosts = ({ id, token }) => (dispatch) => {
   });
 };
 
-const createPostStart = () => ({ type: POST_CREATE_START });
-const createPostSuccess = payload => ({ type: POST_CREATE_SUCCESS, payload });
-const createPostError = payload => ({ type: POST_CREATE_ERROR, payload });
-export const createPost = ({ id, token, postType, title, description, data }) => (dispatch) => {
-  dispatch(createPostStart());
-
-  api.createPost({ id, token, postType, title, description, data }, (json) => {
-    if (json.statusCode === 201) {
-      dispatch(createPostSuccess({ ...json.payload, postType, title, description, data }));
-    }
-    else if (json.statusCode >= 400) {
-      dispatch(createPostError(json));
-    }
-  });
+export default {
+  getPosts,
+  getPost,
 };
