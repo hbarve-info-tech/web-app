@@ -65,3 +65,7 @@ export const createModule = ({ id, token, courseId, moduleName }, callback) => {
     .then(response => response.json())
     .then(json => callback(json));
 };
+
+export default {
+  createPost,
+};

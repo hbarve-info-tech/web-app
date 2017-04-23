@@ -1,5 +1,7 @@
 
-import { POST_CREATE_START, POST_CREATE_ERROR, POST_CREATE_SUCCESS,
+import {
+  RESET_CREATE,
+  POST_CREATE_START, POST_CREATE_ERROR, POST_CREATE_SUCCESS,
   COURSE_CREATE_START, COURSE_CREATE_ERROR, COURSE_CREATE_SUCCESS,
   MODULE_CREATE_START, MODULE_CREATE_ERROR, MODULE_CREATE_SUCCESS,
 } from '../actions/create';
@@ -97,6 +99,18 @@ export default (state = initialState, action) => {
       return {
         ...initialState,
       };
+    }
+
+    case RESET_CREATE: {
+      if (action.payload === 'post') {
+        return {
+          ...state,
+          post: {
+            ...initialState.post,
+          }
+        }
+      }
+      return state;
     }
 
     default:

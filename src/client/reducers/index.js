@@ -1,7 +1,7 @@
 
 import { combineReducers } from 'redux';
 // import user from './user';
-// import create from './create';
+import create from './create';
 import elements from './elements';
 // import posts from './posts';
 // import articles from './articles';
@@ -9,7 +9,7 @@ import elements from './elements';
 
 export default combineReducers({
   // user,
-  // create,
+  create,
   elements,
   // posts,
   // articles,

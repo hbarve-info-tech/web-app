@@ -31,7 +31,7 @@ class Home extends Component {
           <ProfileInfo {...elements[0]} />
         </div>
         <div className="mdl-cell mdl-cell--8-col mdl-cell--5-col-tablet mdl-cell--4-col-phone">
-          {/*<Create type="post"/>*/}
+          <Create type="post"/>
           {/*<Timeline*/}
             {/*posts={posts}*/}
             {/*type="post"*/}
@@ -44,6 +44,7 @@ class Home extends Component {
 
 Home.propTypes = {
   elements: PropTypes.array,
+  create: PropTypes.object,
 };
 
 const mapStateToProps = state => state;

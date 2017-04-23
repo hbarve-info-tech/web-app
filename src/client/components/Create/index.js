@@ -19,6 +19,7 @@ class Create extends Component {
       valid: false,
       message: '',
       title: EditorState.createEmpty(),
+      titleLength: 0,
       description: EditorState.createEmpty(),
       data: EditorState.createEmpty(),
     };
@@ -29,15 +30,17 @@ class Create extends Component {
 
   onChange = (title) => {
     const titleText = convertToString(convertToRaw(title.getCurrentContent()));
+    const titleLength = titleText.length;
 
     this.setState({
       title,
-      valid: titleText.length > 0 && titleText.length < 148,
+      titleLength,
+      valid: titleLength > 0 && titleLength < 148,
     });
   };
   onSubmit = (e) => {
     e.preventDefault();
-    const { id, token } = this.props.user;
+    const { id, token } = this.props.elements[0];
     const { title, description, data } = this.state;
 
     const params = {
@@ -58,12 +61,20 @@ class Create extends Component {
       this.setState({message: 'Successfully Created.'});
       setTimeout(() => {
         this.props.resetCreate();
+        this.setState({
+          valid: false,
+          message: '',
+          title: EditorState.createEmpty(),
+          titleLength: 0,
+          description: EditorState.createEmpty(),
+          data: EditorState.createEmpty(),
+        });
       }, 1000);
     }
   }
 
   render() {
-    const { title, valid, message } = this.state;
+    const { title, titleLength, valid, message } = this.state;
 
     return (
       <div className="mdl-card mdl-shadow--4dp" style={style}>
@@ -74,7 +85,13 @@ class Create extends Component {
             placeholder="Post title goes here..."
           />
         </div>
+        {message.length > 0 ? (
+          <div className="mdl-card__supporting-text">
+            <div>{message}</div>
+          </div>
+        ) : null}
         <div className="mdl-card__actions mdl-card--border" style={{display: 'flex', alignItems: 'center'}}>
+          <p>{titleLength}/148</p>
           <button
             className="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--colored"
             onClick={this.onSubmit}
@@ -83,7 +100,6 @@ class Create extends Component {
           >
             Create
           </button>
-          <div>{message}</div>
         </div>
       </div>
     );
@@ -95,22 +111,7 @@ Create.propTypes = {
     'post',
     'course'
   ]).isRequired,
-  user: PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-    username: PropTypes.string,
-    classroom: PropTypes.bool,
-    token: PropTypes.string,
-    profilePic: PropTypes.string,
-    isSigningIn: PropTypes.bool,
-    isSignedIn: PropTypes.bool,
-    isFetching: PropTypes.bool,
-    isFetched: PropTypes.bool,
-    isError: PropTypes.bool,
-    error: PropTypes.string,
-    message: PropTypes.string,
-    lastUpdated: PropTypes.number,
-  }),
+  elements: PropTypes.array.isRequired,
   create: PropTypes.object,
   posts: PropTypes.array,
   courses: PropTypes.array,

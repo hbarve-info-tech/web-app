@@ -1,6 +1,7 @@
 
-import api from '../api/post';
+import api from '../api/create';
 
+export const RESET_CREATE = 'RESET_CREATE';
 
 export const POST_CREATE_START = 'POST_CREATE_START';
 export const POST_CREATE_SUCCESS = 'POST_CREATE_SUCCESS';
@@ -65,4 +66,12 @@ export const createModule = ({ id, token, courseId, moduleName }) => (dispatch) 
       dispatch(createModuleError({ courseId, ...json }));
     }
   });
+};
+
+
+export const resetCreate = () => ({ type: RESET_CREATE, payload: 'post' });
+
+export default {
+  createPost,
+  resetCreate,
 };

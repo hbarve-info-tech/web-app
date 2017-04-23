@@ -111,11 +111,11 @@ plugins.push({
   register: Elements,
   options: {},
 });
-//
-// plugins.push({
-//   register: Posts,
-//   options: {},
-// });
+
+plugins.push({
+  register: Posts,
+  options: {},
+});
 //
 // plugins.push({
 //   register: Articles,
