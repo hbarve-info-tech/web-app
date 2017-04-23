@@ -1,16 +1,16 @@
 
-import * as user from './user';
+// import * as user from './user';
 import * as elements from './elements';
-import * as posts from './posts';
-import * as articles from './articles';
-import * as courses from './courses';
-import * as classroom from './classroom';
+// import * as posts from './posts';
+// import * as articles from './articles';
+// import * as courses from './courses';
+// import * as classroom from './classroom';
 
 export default {
-  ...user,
+  // ...user,
   ...elements,
-  ...posts,
-  ...articles,
-  ...courses,
-  ...classroom,
+  // ...posts,
+  // ...articles,
+  // ...courses,
+  // ...classroom,
 };

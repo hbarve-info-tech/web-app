@@ -1,5 +1,13 @@
 
-import { ELEMENT_GET_START, ELEMENT_GET_SUCCESS, ELEMENT_GET_ERROR } from '../actions/elements';
+import {
+  ELEMENT_GET_START, ELEMENT_GET_SUCCESS, ELEMENT_GET_ERROR,
+  USER_SIGN_IN_START, USER_SIGN_IN_ERROR, USER_SIGN_IN_SUCCESS,
+  // USER_FETCH_START, USER_FETCH_SUCCESS, USER_FETCH_ERROR,
+  USER_SIGN_OUT,
+} from '../actions/elements';
+
+import { writeLocalStore, writeCookie,
+  removeLocalStore, removeAllCookies } from '../api/clientApi';
 
 export const initialElementState = {
   isFetching: false,
@@ -56,6 +64,78 @@ const elementReducer = (state = initialElementState, action) => {
 
 const elementsReducer = (state = initialElementsState, action) => {
   switch (action.type) {
+    case USER_SIGN_IN_START: {
+      return [
+        {
+          ...state[0],
+          isSigningIn: true,
+          isSignedIn: false,
+
+          isFetching: false,
+          isFetched: false,
+
+          isError: false,
+          error: '',
+          message: '',
+
+          lastUpdated: Date.now(),
+        },
+      ];
+    }
+    case USER_SIGN_IN_ERROR: {
+      return [
+        {
+          ...state[0],
+          isSigningIn: true,
+          isSignedIn: false,
+
+          isFetching: false,
+          isFetched: false,
+
+          isError: true,
+          error: action.payload.error,
+          message: action.payload.message,
+
+          lastUpdated: Date.now(),
+        },
+      ];
+    }
+    case USER_SIGN_IN_SUCCESS: {
+      const { payload } = action;
+
+      writeLocalStore('user', payload);
+      writeCookie('isSignedIn', true);
+      writeCookie('id', payload.id);
+      writeCookie('token', payload.token);
+
+      return [
+        {
+          ...state[0],
+          ...payload,
+          ...state[0],
+          isSigningIn: false,
+          isSignedIn: true,
+
+          isFetching: false,
+          isFetched: false,
+
+          isError: false,
+          error: '',
+          message: '',
+
+          lastUpdated: Date.now(),
+        },
+      ];
+    }
+
+    case USER_SIGN_OUT: {
+      removeAllCookies();
+      removeLocalStore('user');
+
+      window.location.href = '/';
+      return initialElementsState;
+    }
+
     case ELEMENT_GET_START: {
       const { username, id } = action.payload;
       let index = -1;

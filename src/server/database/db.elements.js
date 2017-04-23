@@ -6,6 +6,39 @@ import db, { ELEMENTS } from './setup';
 // elementType = ['user', 'circle']
 // circle = ['field', 'location', 'org', 'edu']
 
+export const signInByUsername = (username, callback) => {
+  const query = db.createQuery(ELEMENTS)
+    .filter('username', '=', username);
+
+  db.runQuery(query, (error, elements) => {
+    if (error) {
+      console.log(error);
+
+      return callback({
+        statusCode: 500,
+        error: 'Database server error.',
+        message: 'Database server error.',
+      });
+    }
+
+    if (elements.length === 0) {
+      return callback({
+        statusCode: 404,
+        error: 'User does not exists.',
+        message: 'User does not exists.',
+      });
+    }
+
+    const payload = { ...elements[0], id: elements[0].id.id };
+
+    return callback({
+      statusCode: 200,
+      message: 'Successful.',
+      payload,
+    });
+  });
+};
+
 export const getElementById = (id, callback) => {
   db.get(db.key([ELEMENTS, id]), (err, element) => {
     if (err) {

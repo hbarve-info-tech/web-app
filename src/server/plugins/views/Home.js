@@ -74,15 +74,17 @@ export default {
     const { user } = initialState;
     store = configureStore({
       ...initialState,
-      user: {
-        ...user,
-        isSignedIn: true,
-        id: parseInt(id, 10),
-        token,
-      },
+      elements: [
+        {
+          ...user,
+          isSignedIn: true,
+          id: parseInt(id, 10),
+          token,
+        },
+      ],
     });
 
-    store.dispatch(actions.fetchUser({ id: parseInt(id, 10), token }));
+    store.dispatch(actions.getUser({ id: parseInt(id, 10), token }));
 
     let count = 0;
     const unsubscribe = store.subscribe(() => {

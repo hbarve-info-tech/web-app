@@ -36,7 +36,8 @@ class Header extends Component {
     this.signIn = this.signIn.bind(this);
   }
 
-  componentWillReceiveProps({ user }) {
+  componentWillReceiveProps({ elements }) {
+    const user = elements[0];
     const signInDialog = document.getElementById('sign-in-dialog');
     if (user.isSignedIn === true && signInDialog.hasAttribute('open')) {
       this.close();

@@ -20,7 +20,7 @@ export const signIn = (payload, callback) => {
 };
 
 export const getUser = ({ id, token }, callback) => {
-  const url = `${HOST}/api/users/${id}`;
+  const url = `${HOST}/api/elements/${id}`;
 
   fetch(url, {
     method: 'GET',
@@ -47,4 +47,10 @@ export const getElement = ({ id, username, token }, callback) => {
   })
     .then(response => response.json())
     .then(json => callback(json));
+};
+
+export default {
+  signIn,
+  getUser,
+  getElement,
 };

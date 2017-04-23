@@ -102,39 +102,39 @@ plugins.push({
   options: {},
 });
 
-plugins.push({
-  register: User,
-  options: {},
-});
+// plugins.push({
+//   register: User,
+//   options: {},
+// });
 
 plugins.push({
   register: Elements,
   options: {},
 });
-
-plugins.push({
-  register: Posts,
-  options: {},
-});
-
-plugins.push({
-  register: Articles,
-  options: {},
-});
-
-plugins.push({
-  register: Courses,
-  options: {},
-});
-
-plugins.push({
-  register: Classroom,
-  options: {},
-});
-
-plugins.push({
-  register: Images,
-  options: {},
-});
+//
+// plugins.push({
+//   register: Posts,
+//   options: {},
+// });
+//
+// plugins.push({
+//   register: Articles,
+//   options: {},
+// });
+//
+// plugins.push({
+//   register: Courses,
+//   options: {},
+// });
+//
+// plugins.push({
+//   register: Classroom,
+//   options: {},
+// });
+//
+// plugins.push({
+//   register: Images,
+//   options: {},
+// });
 
 export default plugins;
