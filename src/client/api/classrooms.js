@@ -19,3 +19,7 @@ export const getClassroomCourses = ({ id, token }, callback) => {
     .then(response => response.json())
     .then(json => callback(json));
 };
+
+export default {
+  getClassroomCourses,
+};

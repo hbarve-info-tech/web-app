@@ -126,15 +126,15 @@ plugins.push({
   register: Courses,
   options: {},
 });
-//
-// plugins.push({
-//   register: Classroom,
-//   options: {},
-// });
-//
-// plugins.push({
-//   register: Images,
-//   options: {},
-// });
+
+plugins.push({
+  register: Classroom,
+  options: {},
+});
+
+plugins.push({
+  register: Images,
+  options: {},
+});
 
 export default plugins;
