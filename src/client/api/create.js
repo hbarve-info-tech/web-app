@@ -34,7 +34,7 @@ export const createPost = ({ id, token, postType, title, description, data }, ca
     .then(json => callback(json));
 };
 
-export const createCourse = ({ id, token, courseName }, callback) => {
+export const createCourse = ({ id, token, title }, callback) => {
   const url = `${HOST}/api/elements/${id}/courses`;
 
   fetch(url, {
@@ -44,7 +44,7 @@ export const createCourse = ({ id, token, courseName }, callback) => {
       'Content-Type': 'application/json',
       Authorization: token,
     },
-    body: JSON.stringify({ courseName }),
+    body: JSON.stringify({ title }),
   })
     .then(response => response.json())
     .then(json => callback(json));
@@ -68,4 +68,5 @@ export const createModule = ({ id, token, courseId, moduleName }, callback) => {
 
 export default {
   createPost,
+  createCourse,
 };

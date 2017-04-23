@@ -61,26 +61,29 @@ export default {
       let store = configureStore();
       const initialState = store.getState();
 
-      const { isSignedIn, id, token } = request.state;
-      const { user } = initialState;
+      const { isSignedIn, id, username, token } = request.state;
+      const { elements } = initialState;
 
       if (isSignedIn === 'true') {
         store = configureStore({
           ...initialState,
-          user: {
-            ...user,
-            isSignedIn: true,
-            id: parseInt(id, 10),
-            token,
-          },
+          elements: [
+            {
+              ...elements[0],
+              isSignedIn: true,
+              id: parseInt(id, 10),
+              username,
+              token,
+            }
+          ],
         });
       }
 
-      const { username } = request.params;
-
-      store.dispatch(actions.getElement({ username, token }));
+      store.dispatch(actions.getElement({ username: request.params.username, token }));
 
       const unsubscribe = store.subscribe(() => {
+        unsubscribe();
+
         context.app = renderToString(
           <Provider store={store}>
             <RouterContext {...renderProps} />
@@ -88,7 +91,6 @@ export default {
         );
 
         context.initialState = JSON.stringify(store.getState());
-        unsubscribe();
         return reply.view('index', context);
       });
     });

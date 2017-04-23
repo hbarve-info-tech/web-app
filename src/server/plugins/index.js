@@ -122,10 +122,10 @@ plugins.push({
 //   options: {},
 // });
 //
-// plugins.push({
-//   register: Courses,
-//   options: {},
-// });
+plugins.push({
+  register: Courses,
+  options: {},
+});
 //
 // plugins.push({
 //   register: Classroom,

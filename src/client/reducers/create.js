@@ -71,17 +71,34 @@ export default (state = initialState, action) => {
 
     case COURSE_CREATE_START: {
       return {
-        ...initialState,
+        ...state,
+        course: {
+          ...state.course,
+          isCreating: true,
+        },
       };
     }
     case COURSE_CREATE_ERROR: {
       return {
-        ...initialState,
+        ...state,
+        course: {
+          ...state.course,
+          isCreating: false,
+          isError: true,
+          ...action.payload,
+        },
       };
     }
     case COURSE_CREATE_SUCCESS: {
       return {
-        ...initialState,
+        ...state,
+        course: {
+          ...state.course,
+          isCreating: false,
+          isCreated: true,
+          isError: false,
+          ...action.payload,
+        },
       };
     }
 
@@ -110,6 +127,16 @@ export default (state = initialState, action) => {
           }
         }
       }
+
+      if (action.payload === 'course') {
+        return {
+          ...state,
+          course: {
+            ...initialState.course,
+          }
+        }
+      }
+
       return state;
     }
 

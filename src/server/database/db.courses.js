@@ -83,7 +83,7 @@ export const createCourseById = (id, payload, callback) => {
       }
 
       return callback({
-        statusCode: 200,
+        statusCode: 201,
         message: 'Success',
         payload: { authorId, courseId },
       });

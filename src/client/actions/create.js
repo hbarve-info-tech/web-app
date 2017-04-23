@@ -37,12 +37,12 @@ export const createPost = ({ id, token, postType, title, description, data }) =>
 const createCourseStart = () => ({ type: COURSE_CREATE_START });
 const createCourseSuccess = payload => ({ type: COURSE_CREATE_SUCCESS, payload });
 const createCourseError = payload => ({ type: COURSE_CREATE_ERROR, payload });
-export const createCourse = ({ id, token, courseName }) => (dispatch) => {
+export const createCourse = ({ id, token, title }) => (dispatch) => {
   dispatch(createCourseStart());
 
-  api.createCourse({ id, token, courseName }, (json) => {
+  api.createCourse({ id, token, title }, (json) => {
     if (json.statusCode === 201) {
-      dispatch(createCourseSuccess({ id, courseName, ...json.payload }));
+      dispatch(createCourseSuccess({ id, title, ...json.payload }));
     }
     else if (json.statusCode >= 400) {
       dispatch(createCourseError({ id, ...json }));
@@ -69,9 +69,14 @@ export const createModule = ({ id, token, courseId, moduleName }) => (dispatch) 
 };
 
 
-export const resetCreate = () => ({ type: RESET_CREATE, payload: 'post' });
+/**
+ * This will reset Create store for creating new post or course.
+ * @param payload {string} - value much be 'post' or 'course'
+ */
+export const resetCreate = (payload = 'post') => ({ type: RESET_CREATE, payload });
 
 export default {
   createPost,
+  createCourse,
   resetCreate,
 };
