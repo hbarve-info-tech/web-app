@@ -19,10 +19,10 @@ class ClassroomPage extends Component {
     if (element.isFetched && element.classroom) {
       const { id } = element;
       if (element.elementType === 'user') {
-        this.props.fetchCourses({ id, token });
+        this.props.getCourses({ id, token });
       }
       else {
-        this.props.fetchClassroomCourses({ id, token });
+        this.props.getClassroomCourses({ id, token });
       }
     }
   }

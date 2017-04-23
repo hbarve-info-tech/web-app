@@ -2,64 +2,43 @@
 // Import library here.
 import api from '../api/courses';
 
-export const COURSES_FETCH_START = 'COURSES_FETCH_START';
-export const COURSES_FETCH_SUCCESS = 'COURSES_FETCH_SUCCESS';
-export const COURSES_FETCH_ERROR = 'COURSES_FETCH_ERROR';
+import {
+  COURSES_GET_START, COURSES_GET_ERROR, COURSES_GET_SUCCESS,
+  COURSE_GET_START, COURSE_GET_ERROR, COURSE_GET_SUCCESS,
+  COURSE_UPDATE_START, COURSE_UPDATE_SUCCESS, COURSE_UPDATE_ERROR,
+  MODULES_GET_START, MODULES_GET_SUCCESS, MODULES_GET_ERROR,
+  MODULE_GET_START, MODULE_GET_SUCCESS, MODULE_GET_ERROR,
+  MODULE_UPDATE_START, MODULE_UPDATE_SUCCESS, MODULE_UPDATE_ERROR,
+} from '../constants/courses';
 
-export const COURSE_FETCH_START = 'COURSE_FETCH_START';
-export const COURSE_FETCH_SUCCESS = 'COURSE_FETCH_SUCCESS';
-export const COURSE_FETCH_ERROR = 'COURSE_FETCH_ERROR';
-
-export const COURSE_UPDATE_START = 'COURSE_UPDATE_START';
-export const COURSE_UPDATE_SUCCESS = 'COURSE_UPDATE_SUCCESS';
-export const COURSE_UPDATE_ERROR = 'COURSE_UPDATE_ERROR';
-
-export const MODULE_CREATE_START = 'MODULE_CREATE_START';
-export const MODULE_CREATE_SUCCESS = 'MODULE_CREATE_SUCCESS';
-export const MODULE_CREATE_ERROR = 'MODULE_CREATE_ERROR';
-
-
-export const MODULES_FETCH_START = 'MODULES_FETCH_START';
-export const MODULES_FETCH_SUCCESS = 'MODULES_FETCH_SUCCESS';
-export const MODULES_FETCH_ERROR = 'MODULES_FETCH_ERROR';
-
-export const MODULE_FETCH_START = 'MODULE_FETCH_START';
-export const MODULE_FETCH_SUCCESS = 'MODULE_FETCH_SUCCESS';
-export const MODULE_FETCH_ERROR = 'MODULE_FETCH_ERROR';
-
-export const MODULE_UPDATE_START = 'MODULE_UPDATE_START';
-export const MODULE_UPDATE_SUCCESS = 'MODULE_UPDATE_SUCCESS';
-export const MODULE_UPDATE_ERROR = 'MODULE_UPDATE_ERROR';
-
-
-const fetchCourseStart = payload => ({ type: COURSE_FETCH_START, payload });
-const fetchCourseSuccess = payload => ({ type: COURSE_FETCH_SUCCESS, payload });
-const fetchCourseError = payload => ({ type: COURSE_FETCH_ERROR, payload });
-export const fetchCourse = ({ courseId, token }) => (dispatch) => {
-  dispatch(fetchCourseStart({ courseId: parseInt(courseId, 10) }));
+const getCourseStart = payload => ({ type: COURSE_GET_START, payload });
+const getCourseSuccess = payload => ({ type: COURSE_GET_SUCCESS, payload });
+const getCourseError = payload => ({ type: COURSE_GET_ERROR, payload });
+export const getCourse = ({ courseId, token }) => (dispatch) => {
+  dispatch(getCourseStart({ courseId: parseInt(courseId, 10) }));
 
   api.getCourse({ courseId, token }, (json) => {
     if (json.statusCode === 200) {
-      dispatch(fetchCourseSuccess({ ...json.payload, courseId: parseInt(courseId, 10) }));
+      dispatch(getCourseSuccess({ ...json.payload, courseId: parseInt(courseId, 10) }));
     }
     else if (json.statusCode >= 400) {
-      dispatch(fetchCourseError({ courseId: parseInt(courseId, 10), ...json }));
+      dispatch(getCourseError({ courseId: parseInt(courseId, 10), ...json }));
     }
   });
 };
 
-export const fetchCoursesStart = payload => ({ type: COURSES_FETCH_START, payload });
-export const fetchCoursesSuccess = payload => ({ type: COURSES_FETCH_SUCCESS, payload });
-export const fetchCoursesError = payload => ({ type: COURSES_FETCH_ERROR, payload });
-export const fetchCourses = ({ id, token }) => (dispatch) => {
-  dispatch(fetchCoursesStart({ id }));
+export const getCoursesStart = payload => ({ type: COURSES_GET_START, payload });
+export const getCoursesSuccess = payload => ({ type: COURSES_GET_SUCCESS, payload });
+export const getCoursesError = payload => ({ type: COURSES_GET_ERROR, payload });
+export const getCourses = ({ id, token }) => (dispatch) => {
+  dispatch(getCoursesStart({ id }));
 
   api.getCourses({ id, token }, (json) => {
     if (json.statusCode === 200) {
-      dispatch(fetchCoursesSuccess(json.payload));
+      dispatch(getCoursesSuccess(json.payload));
     }
     else if (json.statusCode >= 400) {
-      dispatch(fetchCoursesError(json));
+      dispatch(getCoursesError(json));
     }
   });
 };
@@ -112,52 +91,35 @@ export const updateCourse = ({
   });
 };
 
-const createModuleStart = payload => ({ type: MODULE_CREATE_START, payload });
-const createModuleSuccess = payload => ({ type: MODULE_CREATE_SUCCESS, payload });
-const createModuleError = payload => ({ type: MODULE_CREATE_ERROR, payload });
-export const createModule = ({ id, token, courseId, moduleName }) => (dispatch) => {
-  dispatch(createModuleStart({ courseId }));
 
-  api.createModule({ id, token, courseId, moduleName }, (json) => {
-    // TODO: fix server API to send only 201 as statusCode for creating any thing.
-    if (json.statusCode === 201 || json.statusCode === 200) {
-      dispatch(createModuleSuccess({ courseId, ...json.payload }));
-    }
-    else if (json.statusCode >= 400) {
-      dispatch(createModuleError({ courseId, ...json }));
-    }
-  });
-};
-
-
-const fetchModuleStart = payload => ({ type: MODULE_FETCH_START, payload });
-const fetchModuleSuccess = payload => ({ type: MODULE_FETCH_SUCCESS, payload });
-const fetchModuleError = payload => ({ type: MODULE_FETCH_ERROR, payload });
-export const fetchModule = ({ courseId, moduleId, token }) => (dispatch) => {
-  dispatch(fetchModuleStart({ courseId, moduleId }));
+const getModuleStart = payload => ({ type: MODULE_GET_START, payload });
+const getModuleSuccess = payload => ({ type: MODULE_GET_SUCCESS, payload });
+const getModuleError = payload => ({ type: MODULE_GET_ERROR, payload });
+export const getModule = ({ courseId, moduleId, token }) => (dispatch) => {
+  dispatch(getModuleStart({ courseId, moduleId }));
 
   api.getModule({ courseId, moduleId, token }, (json) => {
     if (json.statusCode === 200) {
-      dispatch(fetchModuleSuccess(json.payload));
+      dispatch(getModuleSuccess(json.payload));
     }
     else if (json.statusCode >= 400) {
-      dispatch(fetchModuleError(json));
+      dispatch(getModuleError(json));
     }
   });
 };
 
-const fetchModulesStart = payload => ({ type: MODULES_FETCH_START, payload });
-const fetchModulesSuccess = payload => ({ type: MODULES_FETCH_SUCCESS, payload });
-const fetchModulesError = payload => ({ type: MODULES_FETCH_ERROR, payload });
-export const fetchModules = ({ courseId, token }) => (dispatch) => {
-  dispatch(fetchModulesStart({ courseId }));
+const getModulesStart = payload => ({ type: MODULES_GET_START, payload });
+const getModulesSuccess = payload => ({ type: MODULES_GET_SUCCESS, payload });
+const getModulesError = payload => ({ type: MODULES_GET_ERROR, payload });
+export const getModules = ({ courseId, token }) => (dispatch) => {
+  dispatch(getModulesStart({ courseId }));
 
   api.getModules({ courseId, token }, (json) => {
     if (json.statusCode === 200) {
-      dispatch(fetchModulesSuccess({ courseId, modules: json.payload }));
+      dispatch(getModulesSuccess({ courseId, modules: json.payload }));
     }
     else if (json.statusCode >= 400) {
-      dispatch(fetchModulesError(json));
+      dispatch(getModulesError(json));
     }
   });
 };
@@ -205,11 +167,11 @@ export const updateModule = ({
 
 export default {
 
-  fetchCourse,
-  fetchModule,
+  getCourse,
+  getModule,
 
-  fetchCourses,
-  fetchModules,
+  getCourses,
+  getModules,
 
   updateCourse,
   updateModule,

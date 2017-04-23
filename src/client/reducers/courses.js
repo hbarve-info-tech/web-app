@@ -2,8 +2,8 @@
 import _ from 'lodash';
 
 import {
-  COURSES_FETCH_SUCCESS,
-  COURSE_FETCH_SUCCESS,
+  COURSES_GET_SUCCESS,
+  COURSE_GET_SUCCESS,
 } from '../constants/courses';
 
 const initialModuleState = {
@@ -66,7 +66,7 @@ const moduleReducer = (state = initialModuleState, action) => {
       };
     }
 
-    case MODULE_FETCH_START: {
+    case MODULE_GET_START: {
       return {
         ...state,
         isCreating: false,
@@ -85,7 +85,7 @@ const moduleReducer = (state = initialModuleState, action) => {
         lastUpdated: Date.now(),
       };
     }
-    case MODULE_FETCH_ERROR: {
+    case MODULE_GET_ERROR: {
       return {
         ...state,
         isCreating: false,
@@ -104,7 +104,7 @@ const moduleReducer = (state = initialModuleState, action) => {
         lastUpdated: Date.now(),
       };
     }
-    case MODULE_FETCH_SUCCESS: {
+    case MODULE_GET_SUCCESS: {
       return {
         ...state,
         ...action.payload,
@@ -133,7 +133,7 @@ const moduleReducer = (state = initialModuleState, action) => {
 
 const courseReducer = (state = initialCourseState, action) => {
   switch (action.type) {
-    case COURSE_FETCH_SUCCESS: {
+    case COURSE_GET_SUCCESS: {
       return {
         ...state,
         ...action.payload,
@@ -161,10 +161,10 @@ const courseReducer = (state = initialCourseState, action) => {
 
 const coursesReducer = (state = [], action) => {
   switch (action.type) {
-    case COURSES_FETCH_SUCCESS: {
+    case COURSES_GET_SUCCESS: {
       const { payload } = action;
 
-      let courses = payload.map(c => courseReducer(undefined, {type: COURSE_FETCH_SUCCESS, payload: c }));
+      let courses = payload.map(c => courseReducer(undefined, {type: COURSE_GET_SUCCESS, payload: c }));
 
       courses = [
         ...state,
