@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 import {
   COURSES_GET_SUCCESS,
-  COURSE_GET_SUCCESS,
+  COURSE_GET_START, COURSE_GET_ERROR, COURSE_GET_SUCCESS,
 } from '../constants/courses';
 
 const initialModuleState = {
@@ -174,6 +174,16 @@ const coursesReducer = (state = [], action) => {
       courses = _.uniqBy(courses, 'courseId');
 
       return courses;
+    }
+
+    case COURSE_GET_START: {
+      return state;
+    }
+    case COURSE_GET_ERROR: {
+      return state;
+    }
+    case COURSE_GET_SUCCESS: {
+      return state;
     }
 
     default:

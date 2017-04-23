@@ -20,40 +20,42 @@ class CoursePage extends Component {
   }
 
   componentDidMount() {
-    const { token } = this.props.user;
+    const { isSignedIn, token } = this.props.elements[0];
     const { courseId } = this.props.routeParams;
-    const course = this.props.courses.array.find(a => a.courseId === parseInt(courseId, 10));
+    const course = this.props.courses.find(a => a.courseId === parseInt(courseId, 10));
 
     if (course.isFetched && !course.isModulesFetched) {
-      this.props.fetchModules({ courseId, token });
+      // this.props.fetchModules({ courseId, token });
     }
   }
 
   render() {
     const { courseId } = this.props.routeParams;
-    const { user } = this.props;
-    const course = this.props.courses.array.find(a => a.courseId === parseInt(courseId, 10));
+    const user = this.props.elements[0];
+    const course = this.props.courses.find(a => a.courseId === parseInt(courseId, 10));
 
     if (course.statusCode === 200) {
+      console.log(course);
+
       return (
         <div
           className="mdl-grid"
           style={style.course}
         >
           <div className="mdl-cell mdl-cell--3-col mdl-cell--3-col-tablet mdl-cell--4-col-phone">
-            <CourseInfo
-              course={course}
-              user={user}
-              updateCourse={this.props.updateCourse}
-            />
+            {/*<CourseInfo*/}
+              {/*course={course}*/}
+              {/*user={user}*/}
+              {/*updateCourse={this.props.updateCourse}*/}
+            {/*/>*/}
           </div>
           <div className="mdl-cell mdl-cell--7-col mdl-cell--5-col-tablet mdl-cell--4-col-phone" >
-            <ModuleList
-              user={user}
-              course={course}
-              createModule={this.props.createModule}
-              updateModule={this.props.updateModule}
-            />
+            {/*<ModuleList*/}
+              {/*user={user}*/}
+              {/*course={course}*/}
+              {/*createModule={this.props.createModule}*/}
+              {/*updateModule={this.props.updateModule}*/}
+            {/*/>*/}
           </div>
         </div>
       );
@@ -71,24 +73,8 @@ class CoursePage extends Component {
 }
 
 CoursePage.propTypes = {
-  user: PropTypes.shape({
-    token: PropTypes.string.isRequired,
-  }).isRequired,
-  courses: PropTypes.shape({
-    array: PropTypes.arrayOf(PropTypes.object),
-    isCreating: PropTypes.bool,
-    isUpdating: PropTypes.bool,
-    isFetching: PropTypes.bool,
-    isDeleting: PropTypes.bool,
-    isCreated: PropTypes.bool,
-    isUpdated: PropTypes.bool,
-    isFetched: PropTypes.bool,
-    isDeleted: PropTypes.bool,
-    isError: PropTypes.bool,
-    error: PropTypes.string,
-    message: PropTypes.string,
-    lastUpdated: PropTypes.number,
-  }).isRequired,
+  elements: PropTypes.array.isRequired,
+  courses: PropTypes.array.isRequired,
   routeParams: PropTypes.shape({
     courseId: PropTypes.string.isRequired,
   }).isRequired,

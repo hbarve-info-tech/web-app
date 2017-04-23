@@ -78,7 +78,7 @@ export default {
 
       const { courseId } = request.params;
 
-      store.dispatch(actions.fetchCourse({ courseId, token }));
+      store.dispatch(actions.getCourse({ courseId, token }));
 
       const unsubscribe = store.subscribe(() => {
         unsubscribe();
