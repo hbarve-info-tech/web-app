@@ -27,10 +27,10 @@ export const signOut = () => ({ type: USER_SIGN_OUT });
 const getElementStart = payload => ({ type: ELEMENT_GET_START, payload });
 const getElementSuccess = payload => ({ type: ELEMENT_GET_SUCCESS, payload });
 const getElementError = payload => ({ type: ELEMENT_GET_ERROR, payload });
-export const getElement = ({ id, token }) => (dispatch) => {
+export const getElement = ({ id, username, token }) => (dispatch) => {
   dispatch(getElementStart({ id }));
 
-  api.getElementById({ id, token }, (json) => {
+  api.getElement({ id, username, token }, (json) => {
     if (json.statusCode === 200) {
       dispatch(getElementSuccess(json.payload));
     }

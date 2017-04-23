@@ -17,7 +17,7 @@ export default {
   },
   handler: (request, reply) => {
     const { username, id } = request.query;
-    if (Username) {
+    if (typeof username !== 'undefined') {
       elementdb.getElementByUsername(username, result => reply(result));
     }
     else {
