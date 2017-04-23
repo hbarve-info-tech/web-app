@@ -59,7 +59,7 @@ export default {
     let store = configureStore();
     const initialState = store.getState();
 
-    const { isSignedIn, id, token } = request.state;
+    const { isSignedIn, id, username, token } = request.state;
 
     if (isSignedIn !== 'true') {
       context.initialState = JSON.stringify(initialState);
@@ -79,12 +79,13 @@ export default {
           ...user,
           isSignedIn: true,
           id: parseInt(id, 10),
+          username,
           token,
         },
       ],
     });
 
-    store.dispatch(actions.getUser({ id: parseInt(id, 10), token }));
+    store.dispatch(actions.getUser({id: parseInt(id, 10), token}));
 
     let count = 0;
     const unsubscribe = store.subscribe(() => {

@@ -12,12 +12,13 @@ import Timeline from '../Timeline';
 
 class ElementPage extends Component {
   componentDidMount() {
-    const { token } = this.props.user;
     const { username } = this.props.routeParams;
     const element = this.props.elements.find(e => e.username === username);
-    if (element.isFetched) {
-      this.props.getPosts({ id: element.id, token });
-    }
+    const { token } = this.props.elements[0];
+
+    // if (element.isFetched) {
+    //   this.props.getPosts({ id: element.id, token });
+    // }
   }
   
   render() {
@@ -32,7 +33,7 @@ class ElementPage extends Component {
       );
     }
 
-    const posts = this.props.posts.filter(a => a.authorId === element.id);
+    // const posts = this.props.posts.filter(a => a.authorId === element.id);
     
     return (
       <div className="mdl-grid">
@@ -45,10 +46,10 @@ class ElementPage extends Component {
           />
         </div>
         <div className="mdl-cell mdl-cell--8-col mdl-cell--5-col-tablet mdl-cell--4-col-phone">
-          <Timeline
-            posts={posts}
-            type="post"
-          />
+          {/*<Timeline*/}
+            {/*posts={posts}*/}
+            {/*type="post"*/}
+          {/*/>*/}
         </div>
       </div>
     );
@@ -59,14 +60,7 @@ ElementPage.propTypes = {
   routeParams: PropTypes.shape({
     username: PropTypes.string.isRequired,
   }).isRequired,
-  user: PropTypes.shape({
-    token: PropTypes.string.isRequired,
-  }).isRequired,
   elements: PropTypes.array.isRequired,
-  articles: PropTypes.shape({
-    array: PropTypes.array.isRequired,
-  }).isRequired,
-  fetchArticles: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => state;

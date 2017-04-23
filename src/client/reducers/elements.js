@@ -106,6 +106,7 @@ const elementsReducer = (state = initialElementsState, action) => {
       writeLocalStore('user', payload);
       writeCookie('isSignedIn', true);
       writeCookie('id', payload.id);
+      writeCookie('username', payload.username);
       writeCookie('token', payload.token);
 
       return [
