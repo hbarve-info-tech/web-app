@@ -70,7 +70,7 @@ class ClassroomPage extends Component {
             classroom={element.classroom || false}
           />
         </div>
-        <div className="mdl-cell mdl-cell--8-col mdl-cell--5-col-tablet mdl-cell--4-col-phone">
+        <div className="mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet mdl-cell--4-col-phone">
           <CreateCourse type="course"/>
           <Timeline courses={courses} type="course"/>
         </div>

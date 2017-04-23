@@ -38,14 +38,9 @@ class ElementPage extends Component {
     return (
       <div className="mdl-grid">
         <div className="mdl-cell mdl-cell--2-col mdl-cell--2-col-tablet mdl-cell--4-col-phone">
-          <ProfileInfo
-            name={element.name}
-            username={element.username}
-            profilePic={element.profilePic}
-            classroom={element.classroom || false}
-          />
+          <ProfileInfo {...element} />
         </div>
-        <div className="mdl-cell mdl-cell--8-col mdl-cell--5-col-tablet mdl-cell--4-col-phone">
+        <div className="mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet mdl-cell--4-col-phone">
           <Timeline posts={posts} type="post"/>
         </div>
       </div>

@@ -31,7 +31,7 @@ class Home extends Component {
         <div className="mdl-cell mdl-cell--2-col mdl-cell--2-col-tablet mdl-cell--4-col-phone">
           <ProfileInfo {...elements[0]} />
         </div>
-        <div className="mdl-cell mdl-cell--8-col mdl-cell--5-col-tablet mdl-cell--4-col-phone">
+        <div className="mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet mdl-cell--4-col-phone">
           <Create type="post" />
           <Timeline posts={posts} type="post" />
         </div>
