@@ -19,7 +19,7 @@ class Home extends Component {
 
   componentDidMount() {
     const { id, token } = this.props.user;
-    this.props.getPosts({ id, token });
+    // this.props.getPosts({ id, token });
   }
 
   render() {

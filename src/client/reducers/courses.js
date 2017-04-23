@@ -62,26 +62,6 @@ const initialCourseState = {
   message: '',
   lastUpdated: Date.now(),
 };
-const initialCoursesState = {
-  array: [],
-
-  isCreating: false,
-  isUpdating: false,
-  isFetching: false,
-  isDeleting: false,
-
-  isCreated: false,
-  isUpdated: false,
-  isFetched: false,
-  isDeleted: false,
-
-  statusCode: 200,
-  isError: false,
-  error: '',
-  message: '',
-
-  lastUpdated: Date.now(),
-};
 
 const moduleReducer = (state = initialModuleState, action) => {
   switch (action.type) {
@@ -506,113 +486,24 @@ const courseReducer = (state = initialCourseState, action) => {
   }
 };
 
-const coursesReducer = (state = initialCoursesState, action) => {
+const coursesReducer = (state = [], action) => {
   switch (action.type) {
-    case COURSE_CREATE_START: {
-      return {
-        ...state,
-        isCreating: true,
-        isUpdating: false,
-        isFetching: false,
-        isDeleting: false,
-
-        isCreated: false,
-        isUpdated: false,
-        isFetched: false,
-        isDeleted: false,
-
-        isError: false,
-        error: '',
-        message: '',
-
-        lastUpdated: Date.now(),
-      };
-    }
-    case COURSE_CREATE_ERROR: {
-      return {
-        ...state,
-        isCreating: false,
-        isUpdating: false,
-        isFetching: false,
-        isDeleting: false,
-
-        isCreated: false,
-        isUpdated: false,
-        isFetched: false,
-        isDeleted: false,
-
-        isError: true,
-        error: action.payload.error,
-        message: action.payload.message,
-
-        lastUpdated: Date.now(),
-      };
-    }
     case COURSE_CREATE_SUCCESS: {
-      return {
-        ...state,
-        array: [
-          ...state.array,
-          courseReducer(undefined, action),
-        ],
-        isCreating: false,
-        isUpdating: false,
-        isFetching: false,
-        isDeleting: false,
-
-        isCreated: true,
-        isUpdated: false,
-        isFetched: false,
-        isDeleted: false,
-
-        isError: false,
-        error: '',
-        message: '',
-
-        lastUpdated: Date.now(),
-      };
+      return [
+        ...state.array,
+        courseReducer(undefined, action),
+      ];
     }
 
     case COURSES_FETCH_START: {
-      return {
+      return [
         ...state,
-        isCreating: false,
-        isUpdating: false,
-        isFetching: true,
-        isDeleting: false,
-
-        isCreated: false,
-        isUpdated: false,
-        isFetched: false,
-        isDeleted: false,
-
-        isError: false,
-        error: '',
-        message: '',
-
-        lastUpdated: Date.now(),
-      };
+      ];
     }
     case COURSES_FETCH_ERROR: {
-      return {
+      return [
         ...state,
-        isCreating: false,
-        isUpdating: false,
-        isFetching: false,
-        isDeleting: false,
-
-        isCreated: false,
-        isUpdated: false,
-        isFetched: false,
-        isDeleted: false,
-
-        statusCode: action.payload.statusCode,
-        isError: true,
-        error: action.payload.error,
-        message: action.payload.message,
-
-        lastUpdated: Date.now(),
-      };
+      ];
     }
     case COURSES_FETCH_SUCCESS: {
       const fetchedCourses = action.payload.map((course) => {
@@ -626,232 +517,161 @@ const coursesReducer = (state = initialCoursesState, action) => {
       array = array.map(course => ({ ...course, courseId: parseInt(course.courseId, 10) }));
       array = _.uniqBy(array, 'courseId');
 
-      return {
-        ...state,
-        array,
-        isCreating: false,
-        isUpdating: false,
-        isFetching: false,
-        isDeleting: false,
-
-        isCreated: false,
-        isUpdated: false,
-        isFetched: true,
-        isDeleted: false,
-
-        statusCode: 200,
-        isError: false,
-        error: '',
-        message: '',
-
-        lastUpdated: Date.now(),
-      };
+      return [
+        ...array,
+      ];
     }
 
     case COURSE_FETCH_START: {
-      return {
-        ...state,
-        array: [
-          ...state.array,
-          courseReducer(undefined, action),
-        ],
-        lastUpdated: Date.now(),
-      };
+      return [
+        ...state.array,
+        courseReducer(undefined, action),
+      ];
     }
     case COURSE_FETCH_ERROR: {
       const { courseId } = action.payload;
-      const index = state.array.findIndex(c => c.courseId === parseInt(courseId, 10));
+      const index = state.findIndex(c => c.courseId === parseInt(courseId, 10));
 
-      return {
-        ...state,
-        array: [
-          ...state.array.slice(0, index),
-          courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length),
-        ],
-        lastUpdated: Date.now(),
-      };
+      return [
+        ...state.slice(0, index),
+        courseReducer(state[index], action),
+        ...state.slice(index + 1, state.length),
+      ];
     }
     case COURSE_FETCH_SUCCESS: {
       const { courseId } = action.payload;
-      const index = state.array.findIndex(c => c.courseId === parseInt(courseId, 10));
+      const index = state.findIndex(c => c.courseId === parseInt(courseId, 10));
 
-      return {
-        ...state,
-        array: [
-          ...state.array.slice(0, index),
-          courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length),
-        ],
-        lastUpdated: Date.now(),
-      };
+      return [
+        ...state.slice(0, index),
+        courseReducer(state[index], action),
+        ...state.slice(index + 1, state.length),
+      ];
     }
 
     case COURSE_UPDATE_START: {
-      const index = state.array.findIndex(c => c.courseId === action.payload.courseId);
+      const { courseId } = action.payload;
+      const index = state.findIndex(c => c.courseId === courseId);
 
-      return {
-        ...state,
-        array: [
-          ...state.array.slice(0, index),
-          courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length),
-        ],
-        lastUpdated: Date.now(),
-      };
+      return [
+        ...state.slice(0, index),
+        courseReducer(state[index], action),
+        ...state.slice(index + 1, state.length),
+      ];
     }
     case COURSE_UPDATE_ERROR: {
-      const index = state.array.findIndex(c => c.courseId === action.payload.courseId);
+      const { courseId } = action.payload;
+      const index = state.findIndex(c => c.courseId === courseId);
 
-      return {
-        ...state,
-        array: [
-          ...state.array.slice(0, index),
-          courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length),
-        ],
-        lastUpdated: Date.now(),
-      };
+      return [
+        ...state.slice(0, index),
+        courseReducer(state[index], action),
+        ...state.slice(index + 1, state.length),
+      ];
     }
     case COURSE_UPDATE_SUCCESS: {
-      const index = state.array.findIndex(c => c.courseId === action.payload.courseId);
+      const { courseId } = action.payload;
+      const index = state.findIndex(c => c.courseId === courseId);
 
-      return {
-        ...state,
-        array: [
-          ...state.array.slice(0, index),
-          courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length),
-        ],
-        lastUpdated: Date.now(),
-      };
+      return [
+        ...state.slice(0, index),
+        courseReducer(state[index], action),
+        ...state.slice(index + 1, state.length),
+      ];
     }
 
     case MODULE_CREATE_START: {
-      const index = state.array.findIndex(c => c.courseId === action.payload.courseId);
+      const { courseId } = action.payload;
+      const index = state.findIndex(c => c.courseId === courseId);
 
-      return {
-        ...state,
-        array: [
-          ...state.array.slice(0, index),
-          courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length),
-        ],
-        lastUpdated: Date.now(),
-      };
+      return [
+        ...state.slice(0, index),
+        courseReducer(state[index], action),
+        ...state.slice(index + 1, state.length),
+      ];
     }
     case MODULE_CREATE_ERROR: {
-      const index = state.array.findIndex(c => c.courseId === action.payload.courseId);
+      const { courseId } = action.payload;
+      const index = state.findIndex(c => c.courseId === courseId);
 
-      return {
-        ...state,
-        array: [
-          ...state.array.slice(0, index),
-          courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length),
-        ],
-        lastUpdated: Date.now(),
-      };
+      return [
+        ...state.slice(0, index),
+        courseReducer(state[index], action),
+        ...state.slice(index + 1, state.length),
+      ];
     }
     case MODULE_CREATE_SUCCESS: {
-      const index = state.array.findIndex(c => c.courseId === action.payload.courseId);
+      const { courseId } = action.payload;
+      const index = state.findIndex(c => c.courseId === courseId);
 
-      return {
-        ...state,
-        array: [
-          ...state.array.slice(0, index),
-          courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length),
-        ],
-        lastUpdated: Date.now(),
-      };
+      return [
+        ...state.slice(0, index),
+        courseReducer(state[index], action),
+        ...state.slice(index + 1, state.length),
+      ];
     }
 
 
     case MODULES_FETCH_START: {
       const { courseId } = action.payload;
-      const index = state.array.findIndex(c => c.courseId === parseInt(courseId, 10));
+      const index = state.findIndex(c => c.courseId === courseId);
 
-      return {
-        ...state,
-        array: [
-          ...state.array.slice(0, index),
-          courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length),
-        ],
-        lastUpdated: Date.now(),
-      };
+      return [
+        ...state.slice(0, index),
+        courseReducer(state[index], action),
+        ...state.slice(index + 1, state.length),
+      ];
     }
     case MODULES_FETCH_ERROR: {
       const { courseId } = action.payload;
-      const index = state.array.findIndex(c => c.courseId === parseInt(courseId, 10));
+      const index = state.findIndex(c => c.courseId === parseInt(courseId, 10));
 
-      return {
-        ...state,
-        array: [
-          ...state.array.slice(0, index),
-          courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length),
-        ],
-        lastUpdated: Date.now(),
-      };
+      return [
+        ...state.slice(0, index),
+        courseReducer(state[index], action),
+        ...state.slice(index + 1, state.length),
+      ];
     }
     case MODULES_FETCH_SUCCESS: {
       const { courseId } = action.payload;
-      const index = state.array.findIndex(c => c.courseId === parseInt(courseId, 10));
+      const index = state.findIndex(c => c.courseId === parseInt(courseId, 10));
 
-      return {
-        ...state,
-        array: [
-          ...state.array.slice(0, index),
-          courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length),
-        ],
-        lastUpdated: Date.now(),
-      };
+      return [
+        ...state.slice(0, index),
+        courseReducer(state[index], action),
+        ...state.slice(index + 1, state.length),
+      ];
     }
 
     case MODULE_FETCH_START: {
       const { courseId } = action.payload;
-      const index = state.array.findIndex(c => c.courseId === parseInt(courseId, 10));
+      const index = state.findIndex(c => c.courseId === parseInt(courseId, 10));
 
-      return {
-        ...state,
-        array: [
-          ...state.array.slice(0, index),
-          courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length),
-        ],
-        lastUpdated: Date.now(),
-      };
+      return [
+        ...state.slice(0, index),
+        courseReducer(state[index], action),
+        ...state.slice(index + 1, state.length),
+      ];
     }
     case MODULE_FETCH_ERROR: {
       const { courseId } = action.payload;
-      const index = state.array.findIndex(c => c.courseId === parseInt(courseId, 10));
+      const index = state.findIndex(c => c.courseId === parseInt(courseId, 10));
 
-      return {
-        ...state,
-        array: [
-          ...state.array.slice(0, index),
-          courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length),
-        ],
-        lastUpdated: Date.now(),
-      };
+      return [
+        ...state.slice(0, index),
+        courseReducer(state[index], action),
+        ...state.slice(index + 1, state.length),
+      ];
     }
     case MODULE_FETCH_SUCCESS: {
       const { courseId } = action.payload;
-      const index = state.array.findIndex(c => c.courseId === parseInt(courseId, 10));
+      const index = state.findIndex(c => c.courseId === parseInt(courseId, 10));
 
-      return {
-        ...state,
-        array: [
-          ...state.array.slice(0, index),
-          courseReducer(state.array[index], action),
-          ...state.array.slice(index + 1, state.array.length),
-        ],
-        lastUpdated: Date.now(),
-      };
+      return [
+        ...state.slice(0, index),
+        courseReducer(state[index], action),
+        ...state.slice(index + 1, state.length),
+      ];
     }
 
     default:
