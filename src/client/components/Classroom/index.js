@@ -29,6 +29,7 @@ class ClassroomPage extends Component {
 
   render() {
     const { username } = this.props.routeParams;
+    const user = this.props.elements[0];
     const element = this.props.elements.find(e => e.username === username);
 
     if (element.statusCode === 404) {
@@ -63,15 +64,10 @@ class ClassroomPage extends Component {
     return (
       <div className="mdl-grid">
         <div className="mdl-cell mdl-cell--2-col mdl-cell--2-col-tablet mdl-cell--4-col-phone">
-          <ProfileInfo
-            name={element.name}
-            username={element.username}
-            profilePic={element.profilePic}
-            classroom={element.classroom || false}
-          />
+          <ProfileInfo {...element} />
         </div>
         <div className="mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet mdl-cell--4-col-phone">
-          <CreateCourse type="course"/>
+          {user.isSignedIn && user.id === element.id ? (<CreateCourse type="course"/>) : null}
           <Timeline courses={courses} type="course"/>
         </div>
       </div>
