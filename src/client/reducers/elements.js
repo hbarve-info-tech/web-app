@@ -5,13 +5,20 @@ export const initialElementState = {
   isFetching: false,
   isFetched: false,
 
-  statusCode: 200,
+  statusCode: null,
   isError: false,
   error: '',
 
   message: '',
   lastUpdated: Date.now(),
 };
+export const initialElementsState = [
+  {
+    ...initialElementState,
+    isSignedIn: false,
+    isSigningIn: false,
+  },
+];
 
 const elementReducer = (state = initialElementState, action) => {
   switch (action.type) {
@@ -47,7 +54,7 @@ const elementReducer = (state = initialElementState, action) => {
   }
 };
 
-const elementsReducer = (state = [], action) => {
+const elementsReducer = (state = initialElementsState, action) => {
   switch (action.type) {
     case ELEMENT_GET_START: {
       const { username, id } = action.payload;

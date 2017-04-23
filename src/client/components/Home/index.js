@@ -18,29 +18,24 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    const { id, token } = this.props.user;
+    const { id, token } = this.props.elements[0];
     // this.props.getPosts({ id, token });
   }
 
   render() {
-    const { user, posts } = this.props;
+    const { elements, posts } = this.props;
 
     return (
       <div className="mdl-grid">
         <div className="mdl-cell mdl-cell--2-col mdl-cell--2-col-tablet mdl-cell--4-col-phone">
-          <ProfileInfo
-            name={user.name}
-            username={user.username}
-            profilePic={user.profilePic}
-            classroom={user.classroom || false}
-          />
+          <ProfileInfo {...elements[0]} />
         </div>
         <div className="mdl-cell mdl-cell--8-col mdl-cell--5-col-tablet mdl-cell--4-col-phone">
-          <Create type="post"/>
-          <Timeline
-            posts={posts}
-            type="post"
-          />
+          {/*<Create type="post"/>*/}
+          {/*<Timeline*/}
+            {/*posts={posts}*/}
+            {/*type="post"*/}
+          {/*/>*/}
         </div>
       </div>
     );
@@ -48,23 +43,7 @@ class Home extends Component {
 }
 
 Home.propTypes = {
-  user: PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-    username: PropTypes.string,
-    token: PropTypes.string,
-    profilePic: PropTypes.string,
-    isSigningIn: PropTypes.bool,
-    isSignedIn: PropTypes.bool,
-    isFetching: PropTypes.bool,
-    isFetched: PropTypes.bool,
-    isError: PropTypes.bool,
-    error: PropTypes.string,
-    message: PropTypes.string,
-    lastUpdated: PropTypes.number,
-  }),
-  getPosts: PropTypes.func,
-  posts: PropTypes.array,
+  elements: PropTypes.array,
 };
 
 const mapStateToProps = state => state;

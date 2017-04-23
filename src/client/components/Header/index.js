@@ -78,7 +78,7 @@ class Header extends Component {
 
   render() {
     const { username, password, invalid } = this.state;
-    const { user } = this.props;
+    const user = this.props.elements[0];
 
     return (
       <header className="mdl-layout__header">
@@ -192,27 +192,12 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-  user: PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-    username: PropTypes.string,
-    token: PropTypes.string,
-    profilePic: PropTypes.string,
-    isSigningIn: PropTypes.bool,
-    isSignedIn: PropTypes.bool,
-    isFetching: PropTypes.bool,
-    isFetched: PropTypes.bool,
-    isError: PropTypes.bool,
-    error: PropTypes.string,
-    message: PropTypes.string,
-    lastUpdated: PropTypes.number,
-  }).isRequired,
+  elements: PropTypes.array.isRequired,
   signIn: PropTypes.func.isRequired,
   signOut: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({ user: state.user });
-
+const mapStateToProps = state => state;
 const mapDispatchToProps = (dispatch) => {
   const { signIn, signOut } = actions;
   return bindActionCreators({ signIn, signOut }, dispatch);
