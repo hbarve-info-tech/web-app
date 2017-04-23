@@ -145,11 +145,25 @@ const elementsReducer = (state = initialElementsState, action) => {
 
       index = state.findIndex(e => e.username === username || e.id === id);
 
-      return [
-        ...state.slice(0, index),
-        elementReducer(index === -1 ? undefined : state[index], action),
-        ...state.slice(index + 1, state.length),
-      ];
+      if (index === -1) {
+        return [
+          ...state.slice(0, state.length),
+          elementReducer(undefined, action),
+        ];
+      }
+      else if (index === 0) {
+        return [
+          elementReducer(state[index], action),
+          ...state.slice(1, state.length),
+        ];
+      }
+      else {
+        return [
+          ...state.slice(0, index),
+          elementReducer(index === -1 ? undefined : state[index], action),
+          ...state.slice(index + 1, state.length),
+        ];
+      }
     }
     case ELEMENT_GET_ERROR: {
       const { username, id } = action.payload;
@@ -157,11 +171,25 @@ const elementsReducer = (state = initialElementsState, action) => {
 
       index = state.findIndex(e => e.username === username || e.id === id);
 
-      return [
-        ...state.slice(0, index),
-        elementReducer(state[index], action),
-        ...state.slice(index + 1, state.length),
-      ];
+      if (index === -1) {
+        return [
+          ...state.slice(0, state.length),
+          elementReducer(undefined, action),
+        ];
+      }
+      else if (index === 0) {
+        return [
+          elementReducer(state[index], action),
+          ...state.slice(1, state.length),
+        ];
+      }
+      else {
+        return [
+          ...state.slice(0, index),
+          elementReducer(index === -1 ? undefined : state[index], action),
+          ...state.slice(index + 1, state.length),
+        ];
+      }
     }
     case ELEMENT_GET_SUCCESS: {
       const { username, id } = action.payload;
@@ -169,11 +197,25 @@ const elementsReducer = (state = initialElementsState, action) => {
 
       index = state.findIndex(e => e.username === username || e.id === id);
 
-      return [
-        ...state.slice(0, index),
-        elementReducer(state[index], action),
-        ...state.slice(index + 1, state.length),
-      ];
+      if (index === -1) {
+        return [
+          ...state.slice(0, state.length),
+          elementReducer(undefined, action),
+        ];
+      }
+      else if (index === 0) {
+        return [
+          elementReducer(state[index], action),
+          ...state.slice(1, state.length),
+        ];
+      }
+      else {
+        return [
+          ...state.slice(0, index),
+          elementReducer(index === -1 ? undefined : state[index], action),
+          ...state.slice(index + 1, state.length),
+        ];
+      }
     }
 
     default:
