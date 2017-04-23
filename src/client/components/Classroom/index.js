@@ -16,20 +16,31 @@ class ClassroomPage extends Component {
     const { token } = this.props.elements[0];
     const { username } = this.props.routeParams;
     const element = this.props.elements.find(e => e.username === username);
-    // if (element.isFetched && element.classroom) {
-    //   const { id } = element;
-    //   if (element.elementType === 'user') {
-    //     this.props.fetchCourses({ id, token });
-    //   }
-    //   else {
-    //     this.props.fetchClassroomCourses({ id, token });
-    //   }
-    // }
+    if (element.isFetched && element.classroom) {
+      const { id } = element;
+      if (element.elementType === 'user') {
+        this.props.fetchCourses({ id, token });
+      }
+      else {
+        this.props.fetchClassroomCourses({ id, token });
+      }
+    }
   }
 
   render() {
     const { username } = this.props.routeParams;
     const element = this.props.elements.find(e => e.username === username);
+
+    if (element.statusCode === 404) {
+      return (
+        <div className="mdl-grid">
+          <div className="mdl-cell mdl-cell--8-col mdl-cell--6-col-tablet mdl-cell--4-col-phone">
+            Not Found...
+          </div>
+          <div className="mdl-cell mdl-cell--4-col mdl-cell--2-col-tablet mdl-cell--4-col-phone" />
+        </div>
+      );
+    }
 
     if (element.classroom !== true) {
       return (
@@ -42,12 +53,12 @@ class ClassroomPage extends Component {
       );
     }
 
-    // const courses = this.props.courses.array.filter((course) => {
-    //   if (element.elementType === 'user') {
-    //     return course.authorId === element.id;
-    //   }
-    //   return course.circleId === element.id;
-    // });
+    const courses = this.props.courses.filter((course) => {
+      if (element.elementType === 'user') {
+        return course.authorId === element.id;
+      }
+      return course.circleId === element.id;
+    });
 
     return (
       <div className="mdl-grid">
@@ -61,10 +72,7 @@ class ClassroomPage extends Component {
         </div>
         <div className="mdl-cell mdl-cell--8-col mdl-cell--5-col-tablet mdl-cell--4-col-phone">
           <CreateCourse type="course"/>
-          {/*<Timeline*/}
-            {/*courses={courses}*/}
-            {/*type="course"*/}
-          {/*/>*/}
+          <Timeline courses={courses} type="course"/>
         </div>
       </div>
     );

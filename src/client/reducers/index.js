@@ -5,7 +5,7 @@ import create from './create';
 import elements from './elements';
 import posts from './posts';
 // import articles from './articles';
-// import courses from './courses';
+import courses from './courses';
 
 export default combineReducers({
   // user,
@@ -13,5 +13,5 @@ export default combineReducers({
   elements,
   posts,
   // articles,
-  // courses,
+  courses,
 });

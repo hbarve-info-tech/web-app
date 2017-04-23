@@ -1,5 +1,5 @@
 
-import api from '../api/post';
+import api from '../api/posts';
 
 // Global variables are defined here.
 export const POSTS_GET_START = 'POSTS_GET_START';

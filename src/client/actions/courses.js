@@ -1,11 +1,6 @@
 
 // Import library here.
-import * as api from '../api';
-
-// Global variables are defined here.
-export const COURSE_CREATE_START = 'COURSE_CREATE_START';
-export const COURSE_CREATE_SUCCESS = 'COURSE_CREATE_SUCCESS';
-export const COURSE_CREATE_ERROR = 'COURSE_CREATE_ERROR';
+import api from '../api/courses';
 
 export const COURSES_FETCH_START = 'COURSES_FETCH_START';
 export const COURSES_FETCH_SUCCESS = 'COURSES_FETCH_SUCCESS';
@@ -36,22 +31,6 @@ export const MODULE_UPDATE_START = 'MODULE_UPDATE_START';
 export const MODULE_UPDATE_SUCCESS = 'MODULE_UPDATE_SUCCESS';
 export const MODULE_UPDATE_ERROR = 'MODULE_UPDATE_ERROR';
 
-
-const createCourseStart = () => ({ type: COURSE_CREATE_START });
-const createCourseSuccess = payload => ({ type: COURSE_CREATE_SUCCESS, payload });
-const createCourseError = payload => ({ type: COURSE_CREATE_ERROR, payload });
-export const createCourse = ({ id, token, courseName }) => (dispatch) => {
-  dispatch(createCourseStart());
-
-  api.createCourse({ id, token, courseName }, (json) => {
-    if (json.statusCode === 201) {
-      dispatch(createCourseSuccess({ id, courseName, ...json.payload }));
-    }
-    else if (json.statusCode >= 400) {
-      dispatch(createCourseError({ id, ...json }));
-    }
-  });
-};
 
 const fetchCourseStart = payload => ({ type: COURSE_FETCH_START, payload });
 const fetchCourseSuccess = payload => ({ type: COURSE_FETCH_SUCCESS, payload });
@@ -222,4 +201,17 @@ export const updateModule = ({
       dispatch(updateModuleError({ ...payload, ...json }));
     }
   });
+};
+
+export default {
+
+  fetchCourse,
+  fetchModule,
+
+  fetchCourses,
+  fetchModules,
+
+  updateCourse,
+  updateModule,
+
 };
