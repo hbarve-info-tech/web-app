@@ -10,6 +10,7 @@ import actions from '../../actions';
 import Error from '../Error';
 import CourseIntroduction from './CourseIntroduction';
 import Modules from './Modules';
+import Discussions from './Discussions';
 import CourseInfo from './CourseInfo';
 import ModuleList from './ModuleList';
 
@@ -65,7 +66,7 @@ class CoursePage extends Component {
               <Modules user={user} course={course} />
             </div>
             <div className="mdl-tabs__panel" id="discussion">
-
+              <Discussions/>
             </div>
             <div className="mdl-tabs__panel" id="test-yourself">
 
