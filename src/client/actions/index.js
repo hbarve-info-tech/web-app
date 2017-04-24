@@ -3,7 +3,7 @@ import elements from './elements';
 import create from './create';
 import posts from './posts';
 import courses from './courses';
-import classroom from './classroom';
+import classroom from './classrooms';
 
 export default {
   ...elements,
