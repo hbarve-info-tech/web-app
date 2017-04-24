@@ -6,3 +6,4 @@
 /backup/
 /public/
 /src/server/plugins/photos/temp_images/*
+/src/client/reducers/temp.js

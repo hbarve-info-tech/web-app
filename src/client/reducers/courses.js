@@ -4,6 +4,8 @@ import _ from 'lodash';
 import {
   COURSES_GET_SUCCESS,
   COURSE_GET_START, COURSE_GET_ERROR, COURSE_GET_SUCCESS,
+  MODULES_GET_START, MODULES_GET_ERROR, MODULES_GET_SUCCESS,
+  MODULE_GET_START, MODULE_GET_ERROR, MODULE_GET_SUCCESS,
 } from '../constants/courses';
 
 const initialModuleState = {
@@ -29,6 +31,7 @@ const initialModuleState = {
   lastUpdated: Date.now(),
 };
 const initialCourseState = {
+  modules: [],
   isUpdating: false,
   isFetching: false,
   isDeleting: false,
@@ -36,6 +39,9 @@ const initialCourseState = {
   isUpdated: false,
   isFetched: false,
   isDeleted: false,
+
+  isModulesFetching: false,
+  isModulesFetched: false,
 
   statusCode: null,
   isError: false,
@@ -47,25 +53,6 @@ const initialCourseState = {
 
 const moduleReducer = (state = initialModuleState, action) => {
   switch (action.type) {
-    case MODULE_CREATE_SUCCESS: {
-      return {
-        ...state,
-        ...action.payload,
-        isCreating: false,
-        isUpdating: false,
-        isFetching: false,
-        isDeleting: false,
-        isCreated: true,
-        isUpdated: false,
-        isFetched: false,
-        isDeleted: false,
-        isError: false,
-        error: '',
-        message: '',
-        lastUpdated: Date.now(),
-      };
-    }
-
     case MODULE_GET_START: {
       return {
         ...state,
@@ -195,6 +182,88 @@ const courseReducer = (state = initialCourseState, action) => {
       };
     }
 
+    case MODULES_GET_START: {
+      return {
+        ...state,
+        isCreating: false,
+        isUpdating: false,
+        isFetching: true,
+        isDeleting: false,
+
+        isCreated: false,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+
+        isModulesFetching: true,
+        isModulesFetched: false,
+
+        statusCode: 200,
+        isError: false,
+        error: '',
+        message: '',
+        lastUpdated: Date.now(),
+      };
+    }
+    case MODULES_GET_ERROR: {
+      return {
+        ...state,
+        isCreating: false,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
+
+        isCreated: false,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+
+        statusCode: action.payload.statusCode,
+        isError: true,
+        error: action.payload.error,
+        message: action.payload.message,
+        lastUpdated: Date.now(),
+      };
+    }
+    case MODULES_GET_SUCCESS: {
+      let modules = [
+        ...state.modules,
+        ...action.payload.modules.map(module => moduleReducer(undefined, {
+          type: MODULE_GET_SUCCESS,
+          payload: module,
+        })),
+      ];
+
+      modules = modules.map(m => ({
+        ...m,
+        moduleId: parseInt(m.moduleId, 10),
+        courseId: parseInt(m.courseId, 10),
+      }));
+      modules = _.uniqBy(modules, 'moduleId');
+
+      return {
+        ...state,
+        modules,
+        isCreating: false,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
+
+        isCreated: false,
+        isUpdated: false,
+        isFetched: true,
+        isDeleted: false,
+
+        isModulesFetching: false,
+        isModulesFetched: true,
+
+        isError: false,
+        error: '',
+        message: '',
+        lastUpdated: Date.now(),
+      };
+    }
+
     default:
       return state;
   }
@@ -234,6 +303,38 @@ const coursesReducer = (state = [], action) => {
       ];
     }
     case COURSE_GET_SUCCESS: {
+      const { courseId } = action.payload;
+      const index = state.findIndex(c => c.courseId === parseInt(courseId, 10));
+
+      return [
+        ...state.slice(0, index),
+        courseReducer(state[index], action),
+        ...state.slice(index + 1, state.length),
+      ];
+    }
+
+
+    case MODULES_GET_START: {
+      const { courseId } = action.payload;
+      const index = state.findIndex(c => c.courseId === courseId);
+
+      return [
+        ...state.slice(0, index),
+        courseReducer(state[index], action),
+        ...state.slice(index + 1, state.length),
+      ];
+    }
+    case MODULES_GET_ERROR: {
+      const { courseId } = action.payload;
+      const index = state.findIndex(c => c.courseId === parseInt(courseId, 10));
+
+      return [
+        ...state.slice(0, index),
+        courseReducer(state[index], action),
+        ...state.slice(index + 1, state.length),
+      ];
+    }
+    case MODULES_GET_SUCCESS: {
       const { courseId } = action.payload;
       const index = state.findIndex(c => c.courseId === parseInt(courseId, 10));
 

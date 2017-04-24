@@ -87,7 +87,7 @@ ModuleName.propTypes = {
   courseId: PropTypes.number.isRequired,
   moduleId: PropTypes.number.isRequired,
   moduleName: PropTypes.string.isRequired,
-  updateModule: PropTypes.func.isRequired,
+  updateModule: PropTypes.func,
 };
 
 export default ModuleName;

@@ -112,14 +112,14 @@ const getModulesStart = payload => ({ type: MODULES_GET_START, payload });
 const getModulesSuccess = payload => ({ type: MODULES_GET_SUCCESS, payload });
 const getModulesError = payload => ({ type: MODULES_GET_ERROR, payload });
 export const getModules = ({ courseId, token }) => (dispatch) => {
-  dispatch(getModulesStart({ courseId }));
+  dispatch(getModulesStart({ courseId: parseInt(courseId, 10) }));
 
-  api.getModules({ courseId, token }, (json) => {
+  api.getModules({ courseId: parseInt(courseId, 10) , token }, (json) => {
     if (json.statusCode === 200) {
-      dispatch(getModulesSuccess({ courseId, modules: json.payload }));
+      dispatch(getModulesSuccess({ courseId: parseInt(courseId, 10) , modules: json.payload }));
     }
     else if (json.statusCode >= 400) {
-      dispatch(getModulesError(json));
+      dispatch(getModulesError({ courseId: parseInt(courseId, 10), ...json }));
     }
   });
 };

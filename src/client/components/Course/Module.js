@@ -123,7 +123,7 @@ Module.propTypes = {
   moduleData: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   course: PropTypes.object.isRequired,
-  updateModule: PropTypes.func.isRequired,
+  updateModule: PropTypes.func,
 };
 
 export default Module;
