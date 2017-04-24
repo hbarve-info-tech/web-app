@@ -2,8 +2,11 @@
 import Joi from 'joi';
 
 import { coursedb } from '../../database';
-import { Id, CourseId, ModuleId, CourseName, Level,
-  Description, Standard, ModuleName, ModuleData } from '../../config/schema';
+import {
+  Id, CourseId, ModuleId,
+  Title, CourseName, Level,
+  Description, Standard, ModuleName, ModuleData
+} from '../../config/schema';
 
 const getCourses = {
   auth: {
@@ -86,9 +89,7 @@ const createCourse = {
       id: Id.required(),
     }),
     payload: Joi.object({
-      courseName: CourseName.required(),
-      level: Level,
-      standard: Standard,
+      title: Title.required(),
       description: Description,
     }),
   },

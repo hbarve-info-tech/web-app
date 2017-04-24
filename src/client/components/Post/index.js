@@ -5,68 +5,38 @@ import { browserHistory } from 'react-router';
 
 import style from './style';
 
-const Post = ({ post, postType }) => {
-  let postId;
-  let postTitle;
-  let postDescription;
-
-  if (postType === 'emptyPost') {
-    return (
-      <div
-        className="mdl-card mdl-shadow--4dp"
-        style={style.postEmpty}
-      >
-        <div className="mdl-card__title">
-          <h2 className="mdl-card__title-text">There is no posts.</h2>
-        </div>
-      </div>
-    );
-  }
-  else if (postType === 'article') {
-    postId = post.articleId;
-    postTitle = post.articleName;
-    postDescription = post.description;
-  }
-  else if (postType === 'course') {
-    postId = post.courseId;
-    postTitle = post.courseName;
-    postDescription = post.description;
-  }
-
+const Post = ({ postId, authorId, title, description, data, type }) => {
   return (
     <div
       className="mdl-card mdl-shadow--4dp"
       style={style.post}
     >
-      <div className="mdl-card__media">
-        <img
-          src="https://getmdl.io/assets/demos/welcome_card.jpg"
-          alt=""
-          style={{ width: '100%', minHeight: '100px', maxHeight: '200px' }}
-        />
-      </div>
       <a
         className="mdl-card__title"
         style={style.postTitle}
-        onClick={() => browserHistory.push(`/${postType}s/${postId}`)}
+        onClick={() => browserHistory.push(`/posts/${postId}`)}
       >
-        <h2 className="mdl-card__title-text">{postTitle}</h2>
+        <h2 className="mdl-card__title-text">{title}</h2>
       </a>
-      <div className="mdl-card__supporting-text">
-        {postDescription}
-      </div>
+      {description ? (
+        <div className="mdl-card__supporting-text">
+          {description}
+        </div>
+      ) : null}
     </div>
   );
 };
 
 Post.propTypes = {
-  post: PropTypes.shape({
-    articleId: PropTypes.number,
-    articleName: PropTypes.string,
-    articleData: PropTypes.shape({}),
-    description: PropTypes.string,
-  }),
-  postType: PropTypes.string.isRequired,
+  authorId: PropTypes.number,
+  postId: PropTypes.number,
+  title: PropTypes.string,
+  data: PropTypes.shape({}),
+  description: PropTypes.string,
+  type: PropTypes.oneOf([
+    'post',
+    'course',
+  ]),
 };
 
 export default Post;

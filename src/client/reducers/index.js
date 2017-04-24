@@ -1,13 +1,14 @@
 
 import { combineReducers } from 'redux';
-import user from './user';
+
+import create from './create';
 import elements from './elements';
-import articles from './articles';
+import posts from './posts';
 import courses from './courses';
 
 export default combineReducers({
-  user,
+  create,
   elements,
-  articles,
+  posts,
   courses,
 });

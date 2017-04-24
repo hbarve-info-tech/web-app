@@ -2,6 +2,7 @@
 import Boom from 'boom';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
+import { AppContainer } from 'react-hot-loader';
 import { match, RouterContext } from 'react-router';
 import { Provider } from 'react-redux';
 
@@ -59,7 +60,7 @@ export default {
     let store = configureStore();
     const initialState = store.getState();
 
-    const { isSignedIn, id, token } = request.state;
+    const { isSignedIn, id, username, token } = request.state;
 
     if (isSignedIn !== 'true') {
       context.initialState = JSON.stringify(initialState);
@@ -71,36 +72,36 @@ export default {
       return reply.view('index', context);
     }
 
-    const { user } = initialState;
+    const { elements } = initialState;
     store = configureStore({
       ...initialState,
-      user: {
-        ...user,
-        isSignedIn: true,
-        id: parseInt(id, 10),
-        token,
-      },
+      elements: [
+        {
+          ...elements[0],
+          isSignedIn: true,
+          id: parseInt(id, 10),
+          username,
+          token,
+        },
+      ],
     });
 
-    store.dispatch(actions.fetchUser({ id: parseInt(id, 10), token }));
+    store.dispatch(actions.getElement({ id: parseInt(id, 10), token }));
 
-    let count = 0;
     const unsubscribe = store.subscribe(() => {
-      count += 1;
+      unsubscribe();
 
-      if (count === 2) {
-        unsubscribe();
-
-        context.app = renderToString(
+      context.app = renderToString(
+        <AppContainer>
           <Provider store={store}>
             <RouterContext {...renderProps} />
-          </Provider>,
-        );
+          </Provider>
+        </AppContainer>,
+      );
 
-        context.initialState = JSON.stringify(store.getState());
+      context.initialState = JSON.stringify(store.getState());
 
-        return reply.view('index', context);
-      }
+      return reply.view('index', context);
     });
   }),
 };

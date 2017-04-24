@@ -1,26 +1,49 @@
 
-import * as api from '../api';
+import api from '../api/elements';
+import {
+  ELEMENT_GET_START, ELEMENT_GET_ERROR, ELEMENT_GET_SUCCESS,
+  USER_SIGN_IN_START, USER_SIGN_IN_ERROR, USER_SIGN_IN_SUCCESS,
+  USER_SIGN_OUT,
+} from '../constants/elements';
 
-// Global variables are defined here.
-// These constants are for fetching element's data from server.
-export const ELEMENT_FETCH = 'ELEMENT_FETCH';
-export const ELEMENT_FETCH_START = 'ELEMENT_FETCH_START';
-export const ELEMENT_FETCH_SUCCESS = 'ELEMENT_FETCH_SUCCESS';
-export const ELEMENT_FETCH_ERROR = 'ELEMENT_FETCH_ERROR';
+const signInStart = () => ({ type: USER_SIGN_IN_START });
+const signInSuccess = payload => ({ type: USER_SIGN_IN_SUCCESS, payload });
+const signInError = payload => ({ type: USER_SIGN_IN_ERROR, payload });
+export const signIn = payload => (dispatch) => {
+  dispatch(signInStart());
 
+  api.signIn(payload, (success) => {
+    if (success.statusCode === 200) {
+      dispatch(signInSuccess(success.payload));
+    }
+    else if (success.statusCode >= 400) {
+      dispatch(signInError(success));
+    }
+  });
+};
 
-export const fetchElementStart = payload => ({ type: ELEMENT_FETCH_START, payload });
-export const fetchElementSuccess = payload => ({ type: ELEMENT_FETCH_SUCCESS, payload });
-export const fetchElementError = payload => ({ type: ELEMENT_FETCH_ERROR, payload });
-export const fetchElement = ({ id, username, token }) => (dispatch) => {
-  dispatch(fetchElementStart({ id, username }));
+export const signOut = () => ({ type: USER_SIGN_OUT });
+
+const getElementStart = payload => ({ type: ELEMENT_GET_START, payload });
+const getElementSuccess = payload => ({ type: ELEMENT_GET_SUCCESS, payload });
+const getElementError = payload => ({ type: ELEMENT_GET_ERROR, payload });
+export const getElement = ({ id, username, token }) => (dispatch) => {
+  dispatch(getElementStart({ id, username }));
 
   api.getElement({ id, username, token }, (json) => {
     if (json.statusCode === 200) {
-      dispatch(fetchElementSuccess(json.payload));
+      dispatch(getElementSuccess(json.payload));
     }
     else if (json.statusCode >= 400) {
-      dispatch(fetchElementError(json));
+      dispatch(getElementError({ id, username, ...json }));
     }
   });
+};
+
+
+export default {
+  signIn,
+  signOut,
+
+  getElement,
 };

@@ -1,6 +1,6 @@
 
 import * as api from '../api';
-import { fetchElementStart, fetchElementSuccess, fetchElementError } from './elements';
+import { getElementStart, getElementSuccess, getElementError } from './elements';
 
 // Global variables are defined here.
 // These constants are for user Signing In.
@@ -40,16 +40,16 @@ const fetchUserSuccess = payload => ({ type: USER_FETCH_SUCCESS, payload });
 const fetchUserError = payload => ({ type: USER_FETCH_ERROR, payload });
 export const fetchUser = ({ id, token }) => (dispatch) => {
   dispatch(fetchUserStart());
-  dispatch(fetchElementStart({ id: parseInt(id, 10) }));
+  dispatch(getElementStart({ id: parseInt(id, 10) }));
 
   api.fetchUser({ id, token }, (json) => {
     if (json.statusCode === 200) {
       dispatch(fetchUserSuccess(json.payload));
-      dispatch(fetchElementSuccess(json.payload));
+      dispatch(getElementSuccess(json.payload));
     }
     else if (json.statusCode >= 400) {
       dispatch(fetchUserError(json));
-      dispatch(fetchElementError(json));
+      dispatch(getElementError(json));
     }
   });
 };

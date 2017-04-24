@@ -8,27 +8,40 @@ import { connect } from 'react-redux';
 import actions from '../../actions';
 
 import ProfileInfo from '../ProfileInfo';
+import CreateCourse from '../Create/CreateCourse';
 import Timeline from '../Timeline';
 
 class ClassroomPage extends Component {
   componentDidMount() {
-    const { token } = this.props.user;
+    const { token } = this.props.elements[0];
     const { username } = this.props.routeParams;
-    const element = this.props.elements.array.find(e => e.username === username);
+    const element = this.props.elements.find(e => e.username === username);
     if (element.isFetched && element.classroom) {
       const { id } = element;
       if (element.elementType === 'user') {
-        this.props.fetchCourses({ id, token });
+        this.props.getCourses({ id, token });
       }
       else {
-        this.props.fetchClassroomCourses({ id, token });
+        this.props.getClassroomCourses({ id, token });
       }
     }
   }
 
   render() {
     const { username } = this.props.routeParams;
-    const element = this.props.elements.array.find(e => e.username === username);
+    const user = this.props.elements[0];
+    const element = this.props.elements.find(e => e.username === username);
+
+    if (element.statusCode === 404) {
+      return (
+        <div className="mdl-grid">
+          <div className="mdl-cell mdl-cell--8-col mdl-cell--6-col-tablet mdl-cell--4-col-phone">
+            Not Found...
+          </div>
+          <div className="mdl-cell mdl-cell--4-col mdl-cell--2-col-tablet mdl-cell--4-col-phone" />
+        </div>
+      );
+    }
 
     if (element.classroom !== true) {
       return (
@@ -41,7 +54,7 @@ class ClassroomPage extends Component {
       );
     }
 
-    const posts = this.props.courses.array.filter((course) => {
+    const courses = this.props.courses.filter((course) => {
       if (element.elementType === 'user') {
         return course.authorId === element.id;
       }
@@ -51,18 +64,11 @@ class ClassroomPage extends Component {
     return (
       <div className="mdl-grid">
         <div className="mdl-cell mdl-cell--2-col mdl-cell--2-col-tablet mdl-cell--4-col-phone">
-          <ProfileInfo
-            name={element.name}
-            username={element.username}
-            profilePic={element.profilePic}
-            classroom={element.classroom || false}
-          />
+          <ProfileInfo {...element} />
         </div>
-        <div className="mdl-cell mdl-cell--8-col mdl-cell--5-col-tablet mdl-cell--4-col-phone">
-          <Timeline
-            posts={posts}
-            timelineType="course"
-          />
+        <div className="mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet mdl-cell--4-col-phone">
+          {user.isSignedIn && user.id === element.id ? (<CreateCourse type="course"/>) : null}
+          <Timeline courses={courses} type="course"/>
         </div>
       </div>
     );
@@ -73,17 +79,9 @@ ClassroomPage.propTypes = {
   routeParams: PropTypes.shape({
     username: PropTypes.string.isRequired,
   }).isRequired,
-  user: PropTypes.shape({
-    token: PropTypes.string.isRequired,
-  }).isRequired,
-  elements: PropTypes.shape({
-    array: PropTypes.arrayOf(PropTypes.object.isRequired),
-  }).isRequired,
-  courses: PropTypes.shape({
-    array: PropTypes.array.isRequired,
-  }).isRequired,
-  fetchCourses: PropTypes.func.isRequired,
-  fetchClassroomCourses: PropTypes.func.isRequired,
+  elements: PropTypes.array.isRequired,
+  // fetchCourses: PropTypes.func,
+  // fetchClassroomCourses: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => state;

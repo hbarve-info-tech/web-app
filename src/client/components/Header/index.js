@@ -8,6 +8,19 @@ import { connect } from 'react-redux';
 
 import actions from '../../actions';
 
+const Title = () => (
+  <a
+    href="/"
+    onClick={(e) => {
+      e.preventDefault();
+      browserHistory.push('/');
+    }}
+    style={{ color: 'white', textDecoration: 'none' }}
+  >
+    Mayash
+  </a>
+);
+
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -23,7 +36,8 @@ class Header extends Component {
     this.signIn = this.signIn.bind(this);
   }
 
-  componentWillReceiveProps({ user }) {
+  componentWillReceiveProps({ elements }) {
+    const user = elements[0];
     const signInDialog = document.getElementById('sign-in-dialog');
     if (user.isSignedIn === true && signInDialog.hasAttribute('open')) {
       this.close();
@@ -65,23 +79,14 @@ class Header extends Component {
 
   render() {
     const { username, password, invalid } = this.state;
-    const { user } = this.props;
+    const user = this.props.elements[0];
 
     return (
       <header className="mdl-layout__header">
         <div className="mdl-layout__header-row">
 
           <span className="mdl-layout-title">
-            <a
-              href="/"
-              onClick={(e) => {
-                e.preventDefault();
-                browserHistory.push('/');
-              }}
-              style={{ color: 'white', textDecoration: 'none' }}
-            >
-              Mayash
-            </a>
+            <Title/>
           </span>
 
           <div className="mdl-layout-spacer" />
@@ -188,27 +193,12 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-  user: PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-    username: PropTypes.string,
-    token: PropTypes.string,
-    profilePic: PropTypes.string,
-    isSigningIn: PropTypes.bool,
-    isSignedIn: PropTypes.bool,
-    isFetching: PropTypes.bool,
-    isFetched: PropTypes.bool,
-    isError: PropTypes.bool,
-    error: PropTypes.string,
-    message: PropTypes.string,
-    lastUpdated: PropTypes.number,
-  }).isRequired,
+  elements: PropTypes.array.isRequired,
   signIn: PropTypes.func.isRequired,
   signOut: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({ user: state.user });
-
+const mapStateToProps = state => state;
 const mapDispatchToProps = (dispatch) => {
   const { signIn, signOut } = actions;
   return bindActionCreators({ signIn, signOut }, dispatch);

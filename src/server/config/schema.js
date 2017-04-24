@@ -5,8 +5,6 @@ export const Id = Joi.number().integer();
 
 export const Username = Joi.string().min(2).max(20).lowercase().trim().token();
 
-export const PostId = Joi.string().length(24);
-
 export const Password = Joi.string().regex(/[a-zA-Z0-9]+/).min(5).max(30);
 
 export const Mobile = Joi.number().min(7000000000).max(9999999999).integer();
@@ -59,5 +57,13 @@ export const ImageName = Joi.string().regex(/^([0-9]{16})+(.jpg|.jpeg|.png|.gif)
 export const Semester = Joi.number().integer();
 export const Degree = Joi.string();
 export const Next = Joi.string();
+
+// These are for posts.
+export const PostId = Joi.number().integer();
+
+export const PostType = Joi.string().valid('tweet', 'article', 'report');
+
+export const Title = Joi.string().min(3).max(148);
+export const PostData = Joi.object();
 
 // Cover rest all the things here.

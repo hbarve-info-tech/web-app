@@ -3,6 +3,7 @@ export default {
   post: {
     width: '100%',
     marginBottom: '10px',
+    minHeight: '50px',
   },
   postTitle: {
 

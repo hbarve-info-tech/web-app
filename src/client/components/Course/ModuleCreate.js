@@ -92,7 +92,7 @@ class ModuleCreate extends Component {
 ModuleCreate.propTypes = {
   user: PropTypes.object.isRequired,
   course: PropTypes.object.isRequired,
-  createModule: PropTypes.func.isRequired,
+  createModule: PropTypes.func,
 };
 
 export default ModuleCreate;
