@@ -30,9 +30,9 @@ const routes = (
     />
 
     <Route
-      path="articles/:articleId" getComponent={(nextState, callback) => {
+      path="posts/:postId" getComponent={(nextState, callback) => {
         require.ensure([], (require) => {
-          callback(null, require('../Article').default);
+          callback(null, require('../PostPage').default);
         });
       }}
     />

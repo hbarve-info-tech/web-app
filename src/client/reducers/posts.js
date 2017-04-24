@@ -85,6 +85,7 @@ const postReducer = (state = {}, action) => {
         isFetched: true,
         isDeleted: false,
 
+        statusCode: 200,
         isError: false,
         error: '',
         message: '',
@@ -139,7 +140,7 @@ export const postsReducer = (state = [], action) => {
     }
     case POST_GET_SUCCESS: {
       const { postId } = action.payload;
-      const index = state.array.findIndex(a => a.postId === postId);
+      const index = state.findIndex(a => a.postId === postId);
 
       return [
         ...state.slice(0, index),

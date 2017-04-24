@@ -2,6 +2,7 @@
 import Home from './Home';
 import Elements from './Elements';
 import Article from './Article';
+import Post from './Post';
 import Course from './Course';
 import Classroom from './Classroom';
 
@@ -21,6 +22,7 @@ export default [
   { method: 'GET', path: '/contact-us', config: ContactUs },
 
   { method: 'GET', path: '/articles/{articleId}', config: Article },
+  { method: 'GET', path: '/posts/{postId}', config: Post },
   { method: 'GET', path: '/courses/{courseId}', config: Course },
 
   { method: 'GET', path: '/{username}', config: Elements },
