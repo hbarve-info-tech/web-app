@@ -133,6 +133,47 @@ const moduleReducer = (state = initialModuleState, action) => {
 
 const courseReducer = (state = initialCourseState, action) => {
   switch (action.type) {
+    case COURSE_GET_START: {
+      return {
+        ...state,
+        ...action.payload,
+
+        isCreating: false,
+        isUpdating: false,
+        isFetching: true,
+        isDeleting: false,
+
+        isCreated: false,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+
+        statusCode: null,
+        isError: false,
+        error: '',
+        message: '',
+        lastUpdated: Date.now(),
+      };
+    }
+    case COURSE_GET_ERROR: {
+      return {
+        ...state,
+        ...action.payload,
+
+        isCreating: false,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
+
+        isCreated: false,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+
+        isError: true,
+        lastUpdated: Date.now(),
+      };
+    }
     case COURSE_GET_SUCCESS: {
       return {
         ...state,
@@ -177,13 +218,30 @@ const coursesReducer = (state = [], action) => {
     }
 
     case COURSE_GET_START: {
-      return state;
+      return [
+        ...state,
+        courseReducer(undefined, action),
+      ];
     }
     case COURSE_GET_ERROR: {
-      return state;
+      const { courseId } = action.payload;
+      const index = state.findIndex(c => c.courseId === parseInt(courseId, 10));
+
+      return [
+        ...state.slice(0, index),
+        courseReducer(state[index], action),
+        ...state.slice(index + 1, state.length),
+      ];
     }
     case COURSE_GET_SUCCESS: {
-      return state;
+      const { courseId } = action.payload;
+      const index = state.findIndex(c => c.courseId === parseInt(courseId, 10));
+
+      return [
+        ...state.slice(0, index),
+        courseReducer(state[index], action),
+        ...state.slice(index + 1, state.length),
+      ];
     }
 
     default:
