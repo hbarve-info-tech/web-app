@@ -2,6 +2,7 @@
 import Boom from 'boom';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
+import { AppContainer } from 'react-hot-loader';
 import { match, RouterContext } from 'react-router';
 import { Provider } from 'react-redux';
 
@@ -91,9 +92,11 @@ export default {
       unsubscribe();
 
       context.app = renderToString(
-        <Provider store={store}>
-          <RouterContext {...renderProps} />
-        </Provider>,
+        <AppContainer>
+          <Provider store={store}>
+            <RouterContext {...renderProps} />
+          </Provider>
+        </AppContainer>,
       );
 
       context.initialState = JSON.stringify(store.getState());
