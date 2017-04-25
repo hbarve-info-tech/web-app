@@ -18,6 +18,7 @@ class Post extends Component {
     const { title, description, data } = props.post;
 
     this.state = {
+      edit: false,
       title: EditorState.createWithContent(ContentState.createFromText(title)),
       description: EditorState.createWithContent(ContentState.createFromText(description || '')),
       data: typeof data === 'undefined' ? EditorState.createEmpty() : EditorState.createWithContent(convertFromRaw(data)),
@@ -25,6 +26,8 @@ class Post extends Component {
   }
 
   render() {
+    const { edit } = this.state;
+
     return (
       <div
         className="mdl-card mdl-shadow--4dp"
@@ -35,7 +38,7 @@ class Post extends Component {
             <Editor
               editorState={this.state.title}
               onChange={(title) => this.setState({title})}
-              readOnly={true}
+              readOnly={!edit}
             />
           </h2>
         </div>
@@ -43,25 +46,22 @@ class Post extends Component {
           <Editor
             editorState={this.state.description}
             onChange={(description) => this.setState({description})}
-            readOnly={true}
+            readOnly={!edit}
           />
         </div>
         <div className="mdl-card__supporting-text">
           <Editor
             editorState={this.state.data}
             onChange={(data) => this.setState({data})}
-            readOnly={true}
+            readOnly={!edit}
           />
         </div>
         <div className="mdl-card__menu">
-          <button className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-            <i className="material-icons">edit</i>
-          </button>
-          <button className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-            <i className="material-icons">save</i>
-          </button>
-          <button className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-            <i className="material-icons">share</i>
+          <button
+            className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"
+            onClick={() => this.setState({edit: !edit})}
+          >
+            <i className="material-icons">{edit ? 'save' : 'edit'}</i>
           </button>
         </div>
       </div>
