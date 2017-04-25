@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import actions from '../../actions';
 
 import ProfileInfo from '../ProfileInfo';
-import Create from '../Create';
+import CreatePost from '../Create/CreatePost';
 import Timeline from '../Timeline';
 
 class Home extends Component {
@@ -32,7 +32,7 @@ class Home extends Component {
           <ProfileInfo {...elements[0]} />
         </div>
         <div className="mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet mdl-cell--4-col-phone">
-          <Create type="post" />
+          <CreatePost />
           <Timeline posts={posts} type="post" />
         </div>
       </div>
