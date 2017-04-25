@@ -6,7 +6,7 @@ import { match, RouterContext } from 'react-router';
 import { Provider } from 'react-redux';
 import Joi from 'joi';
 
-import { ArticleId, PostId } from '../../config/schema';
+import { PostId } from '../../config/schema';
 
 import actions from '../../../client/actions';
 
@@ -91,6 +91,17 @@ export default {
 
         context.initialState = JSON.stringify(store.getState());
         unsubscribe();
+
+        const post = store.getState().posts[0];
+
+        if (post.statusCode === 200) {
+          context.title = post.title;
+        }
+
+        if (post.statusCode >= 300 && post.statusCode <=500) {
+          context.title = `Status Code: ${post.statusCode}, ${post.error}`;
+        }
+
         return reply.view('index', context);
       });
     });

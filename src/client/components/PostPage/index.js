@@ -10,7 +10,7 @@ import actions from '../../actions';
 import Post from './Post';
 import Error from '../Error';
 
-class ArticlePage extends Component {
+class PostPage extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -20,13 +20,14 @@ class ArticlePage extends Component {
     const { postId } = this.props.routeParams;
     const post = this.props.posts.find(p => p.postId === parseInt(postId, 10));
 
-    if (!post && !(post.statusCode === 200 || post.statusCode === 201)) {
+    if (typeof post !== 'undefined' && post.statusCode < 300 && post.statusCode >= 200) {
       return (
         <div className="mdl-grid">
-          <div className="mdl-cell mdl-cell--8-col mdl-cell--6-col-tablet mdl-cell--4-col-phone">
-            <Error {...post} />
+          <div
+            className="mdl-cell mdl-cell--12-col mdl-cell--2-offset-desktop mdl-cell--8-col-desktop mdl-cell--8-col-tablet mdl-cell--0-offset-phone mdl-cell--4-col-phone"
+          >
+            <Post post={post} />
           </div>
-          <div className="mdl-cell mdl-cell--4-col mdl-cell--2-col-tablet mdl-cell--4-col-phone" />
         </div>
       );
     }
@@ -36,14 +37,14 @@ class ArticlePage extends Component {
         <div
           className="mdl-cell mdl-cell--12-col mdl-cell--2-offset-desktop mdl-cell--8-col-desktop mdl-cell--8-col-tablet mdl-cell--0-offset-phone mdl-cell--4-col-phone"
         >
-          <Post post={post} />
+          <Error {...post} />
         </div>
       </div>
     );
   }
 }
 
-ArticlePage.propTypes = {
+PostPage.propTypes = {
   routeParams: PropTypes.shape({
     postId: PropTypes.string.isRequired,
   }).isRequired,
@@ -54,4 +55,4 @@ ArticlePage.propTypes = {
 const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(ArticlePage);
+export default connect(mapStateToProps, mapDispatchToProps)(PostPage);

@@ -130,7 +130,7 @@ export const postsReducer = (state = [], action) => {
     }
     case POST_GET_ERROR: {
       const { postId } = action.payload;
-      const index = state.array.findIndex(a => a.postId === parseInt(postId, 10));
+      const index = state.findIndex(a => a.postId === parseInt(postId, 10));
 
       return [
         ...state.slice(0, index),
