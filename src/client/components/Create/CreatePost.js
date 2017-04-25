@@ -108,7 +108,7 @@ class CreatePost extends Component {
       title: convertToString(convertToRaw(title.getCurrentContent())),
     };
     if (postType === 'article') {
-      params.data = data;
+      params.data = convertToRaw(data.getCurrentContent());
     }
 
     this.props.createPost(params);
@@ -118,6 +118,13 @@ class CreatePost extends Component {
     const { post } = create;
     if (post.isCreating === true) {
       this.setState({message: 'Creating Post...'});
+    }
+    if (post.isError === true) {
+      this.setState({message: post.message});
+      setTimeout(() => {
+        this.props.resetCreate();
+        this.setState({message: ''});
+      }, 1000);
     }
     if (post.isCreated === true) {
       this.setState({message: 'Successfully Created.'});

@@ -18,9 +18,9 @@ class ArticlePage extends Component {
 
   render() {
     const { postId } = this.props.routeParams;
-    const post = this.props.posts.find(a => a.postId === parseInt(postId, 10));
+    const post = this.props.posts.find(p => p.postId === parseInt(postId, 10));
 
-    if (post && post.statusCode !== 200) {
+    if (!post && !(post.statusCode === 200 || post.statusCode === 201)) {
       return (
         <div className="mdl-grid">
           <div className="mdl-cell mdl-cell--8-col mdl-cell--6-col-tablet mdl-cell--4-col-phone">

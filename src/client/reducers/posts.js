@@ -22,7 +22,7 @@ const postReducer = (state = {}, action) => {
         isFetched: false,
         isDeleted: false,
 
-        statusCode: 200,
+        statusCode: 201,
         isError: false,
         error: '',
         message: '',

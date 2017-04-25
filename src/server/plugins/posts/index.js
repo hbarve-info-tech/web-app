@@ -49,7 +49,8 @@ const createPost = {
     payload: Joi.object({
       postType: PostType.required(),
       title: Title.required(),
-      description: Description.when('postType', { is: 'article', then: Joi.required() }),
+      description: Description,
+      // description: Description.when('postType', { is: 'article', then: Joi.required() }),
       data: PostData.when('postType', { is: 'article', then: Joi.required() }),
     }),
   },
