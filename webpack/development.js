@@ -19,8 +19,6 @@ module.exports = {
       'react-redux',
       'redux',
       'redux-thunk',
-      'medium-draft',
-      'isomorphic-fetch',
     ],
   },
   output: {
