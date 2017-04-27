@@ -5,6 +5,7 @@ import classNames from 'classnames';
 export const Tab = ({
   children,
   href = '',
+  isActive = false,
   onClick = e => e.preventDefault(),
   className,
   style,
@@ -12,7 +13,9 @@ export const Tab = ({
 }) => (
   <a
     href={`#${href}`}
-    className={classNames('mdl-tabs__tab', className)}
+    className={classNames('mdl-tabs__tab', {
+      'is-active': isActive,
+    }, className)}
     onClick={onClick}
     style={style}
   >
