@@ -48,7 +48,7 @@ export const updatePost = ({ id, token, postId, title, description, data }, call
   if (typeof description === 'string') {
     payload.description = description;
   }
-  if (typeof data === 'string') {
+  if (typeof data === 'object') {
     payload.data = data;
   }
 

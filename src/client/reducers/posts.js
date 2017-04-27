@@ -5,7 +5,7 @@ import {
   POST_CREATE_SUCCESS,
   POSTS_GET_START, POSTS_GET_ERROR, POSTS_GET_SUCCESS,
   POST_GET_START, POST_GET_ERROR, POST_GET_SUCCESS,
-} from '../actions/posts';
+} from '../constants/posts';
 
 const postReducer = (state = {}, action) => {
   switch (action.type) {

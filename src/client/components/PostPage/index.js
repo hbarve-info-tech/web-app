@@ -19,6 +19,7 @@ class PostPage extends Component {
   render() {
     const { postId } = this.props.routeParams;
     const post = this.props.posts.find(p => p.postId === parseInt(postId, 10));
+    const user = this.props.elements[0];
 
     if (typeof post !== 'undefined' && post.statusCode < 300 && post.statusCode >= 200) {
       return (
@@ -26,7 +27,11 @@ class PostPage extends Component {
           <div
             className="mdl-cell mdl-cell--12-col mdl-cell--2-offset-desktop mdl-cell--8-col-desktop mdl-cell--8-col-tablet mdl-cell--0-offset-phone mdl-cell--4-col-phone"
           >
-            <Post post={post} />
+            <Post
+              user={user}
+              post={post}
+              updatePost={this.props.updatePost}
+            />
           </div>
         </div>
       );
@@ -50,6 +55,7 @@ PostPage.propTypes = {
   }).isRequired,
   elements: PropTypes.array.isRequired,
   posts: PropTypes.array.isRequired,
+  updatePost: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => state;
