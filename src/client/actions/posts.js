@@ -1,18 +1,12 @@
 
 import api from '../api/posts';
 
-// Global variables are defined here.
-export const POSTS_GET_START = 'POSTS_GET_START';
-export const POSTS_GET_SUCCESS = 'POSTS_GET_SUCCESS';
-export const POSTS_GET_ERROR = 'POSTS_GET_ERROR';
-
-export const POST_GET_START = 'POST_GET_START';
-export const POST_GET_SUCCESS = 'POST_GET_SUCCESS';
-export const POST_GET_ERROR = 'POST_GET_ERROR';
-
-export const POST_CREATE_START = 'POST_CREATE_START';
-export const POST_CREATE_SUCCESS = 'POST_CREATE_SUCCESS';
-export const POST_CREATE_ERROR = 'POST_CREATE_ERROR';
+import {
+  POSTS_GET_START, POSTS_GET_SUCCESS, POSTS_GET_ERROR,
+  POST_GET_START, POST_GET_SUCCESS,  POST_GET_ERROR,
+  POST_UPDATE_START, POST_UPDATE_SUCCESS, POST_UPDATE_ERROR,
+  POST_DELETE_START, POST_DELETE_SUCCESS, POST_DELETE_ERROR,
+} from '../constants/posts';
 
 
 const getPostStart = payload => ({ type: POST_GET_START, payload });
@@ -47,7 +41,27 @@ export const getPosts = ({ id, token }) => (dispatch) => {
   });
 };
 
+
+const updatePostStart = payload => ({ type: POST_GET_START, payload });
+const updatePostSuccess = payload => ({ type: POST_GET_SUCCESS, payload });
+const updatePostError = payload => ({ type: POST_GET_ERROR, payload });
+export const updatePost = ({ postId, token, ...restProps }) => (dispatch) => {
+  dispatch(updatePostStart({ postId: parseInt(postId, 10) }));
+
+  api.updatePost({ postId: parseInt(postId, 10), token, ...restProps }, (json) => {
+    if (json.statusCode === 200) {
+      dispatch(updatePostSuccess(json.payload));
+    }
+    else if (json.statusCode >= 400) {
+      dispatch(updatePostError({ postId: parseInt(postId, 10), ...json }));
+    }
+  });
+};
+
+
 export default {
   getPosts,
   getPost,
+
+  updatePost,
 };

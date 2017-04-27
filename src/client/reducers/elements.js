@@ -50,6 +50,7 @@ const elementReducer = (state = initialElementState, action) => {
       return {
         ...state,
         ...action.payload,
+        statusCode: 200,
         isFetching: false,
         isFetched: true,
         lastUpdated: Date.now(),

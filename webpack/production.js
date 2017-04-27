@@ -16,8 +16,6 @@ module.exports = {
       'react-redux',
       'redux',
       'redux-thunk',
-      'medium-draft',
-      'isomorphic-fetch',
     ],
   },
   output: {
@@ -31,37 +29,20 @@ module.exports = {
       {
         test: /(\.js|\.jsx)$/,
         exclude: /(node_modules)/,
-        use: [
-          {
-            loader: 'babel-loader',
-            query: {
-              presets: ['es2015', 'stage-0', 'react'],
-              plugins: ['react-html-attrs', 'transform-class-properties', 'transform-decorators-legacy'],
-            },
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['es2015', 'stage-0', 'react'],
+            cacheDirectory: true,
           },
-        ],
+        },
       },
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract({
-          fallbackLoader: 'style-loader',
-          loader: 'css-loader',
-        }),
-      },
+        loaders: ['style-loader', 'css-loader'] },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract({
-          fallbackLoader: 'style-loader',
-          loader: 'css-loader!sass-loader',
-        }),
-      },
-      {
-        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: 'url-loader?limit=10000&mimetype=application/font-woff',
-      },
-      {
-        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: 'file-loader',
+        loaders: ['style-loader', 'css-loader', 'sass-loader'],
       },
     ],
   },

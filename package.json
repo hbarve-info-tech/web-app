@@ -97,7 +97,7 @@
     "style-loader": "0.13.1",
     "tv": "6.1.0",
     "url-loader": "0.5.7",
-    "webpack": "2.2.1",
-    "webpack-dev-server": "2.3.0"
+    "webpack": "2.4.1",
+    "webpack-dev-server": "2.4.4"
   }
 }

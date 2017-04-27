@@ -29,6 +29,7 @@ export const getPostByPostId = (postId, callback) => {
 
     return callback({
       statusCode: 404,
+      error: 'Post does not exists.',
       message: 'Post does not exists.',
     });
   });

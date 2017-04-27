@@ -5,7 +5,7 @@ import {
   POST_CREATE_SUCCESS,
   POSTS_GET_START, POSTS_GET_ERROR, POSTS_GET_SUCCESS,
   POST_GET_START, POST_GET_ERROR, POST_GET_SUCCESS,
-} from '../actions/posts';
+} from '../constants/posts';
 
 const postReducer = (state = {}, action) => {
   switch (action.type) {
@@ -22,7 +22,7 @@ const postReducer = (state = {}, action) => {
         isFetched: false,
         isDeleted: false,
 
-        statusCode: 200,
+        statusCode: 201,
         isError: false,
         error: '',
         message: '',
@@ -130,7 +130,7 @@ export const postsReducer = (state = [], action) => {
     }
     case POST_GET_ERROR: {
       const { postId } = action.payload;
-      const index = state.array.findIndex(a => a.postId === parseInt(postId, 10));
+      const index = state.findIndex(a => a.postId === parseInt(postId, 10));
 
       return [
         ...state.slice(0, index),

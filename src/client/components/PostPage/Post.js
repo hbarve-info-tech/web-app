@@ -10,7 +10,22 @@ import {
   ContentState,
 } from 'draft-js';
 
+import {
+  convertToString,
+} from '../../../lib/mayash-editor';
+
 import style from './style';
+
+const EditButton = ({ edit, onClick, savePost }) => {
+  return (
+    <button
+      className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"
+      onClick={onClick}
+    >
+      <i className="material-icons">{edit ? 'save' : 'edit'}</i>
+    </button>
+  );
+};
 
 class Post extends Component {
   constructor(props) {
@@ -18,24 +33,46 @@ class Post extends Component {
     const { title, description, data } = props.post;
 
     this.state = {
+      edit: false,
       title: EditorState.createWithContent(ContentState.createFromText(title)),
       description: EditorState.createWithContent(ContentState.createFromText(description || '')),
       data: typeof data === 'undefined' ? EditorState.createEmpty() : EditorState.createWithContent(convertFromRaw(data)),
     };
+
+    this.onClick = this.onClick.bind(this);
   }
 
+  savePost = () => {
+    const { title, description, data, user } = this.props;
+    console.log(user)
+
+    const params = {
+
+    };
+
+  };
+
+  onClick = () => {
+    const { edit } = this.state;
+    this.setState({edit: !edit});
+  };
+
   render() {
+    const { edit } = this.state;
+    const { post, user } = this.props;
+
+
     return (
       <div
         className="mdl-card mdl-shadow--4dp"
-        style={style.article}
+        style={style.container}
       >
         <div className="mdl-card__title">
           <h2 className="mdl-card__title-text">
             <Editor
               editorState={this.state.title}
               onChange={(title) => this.setState({title})}
-              readOnly={true}
+              readOnly={!edit}
             />
           </h2>
         </div>
@@ -43,26 +80,18 @@ class Post extends Component {
           <Editor
             editorState={this.state.description}
             onChange={(description) => this.setState({description})}
-            readOnly={true}
+            readOnly={!edit}
           />
         </div>
         <div className="mdl-card__supporting-text">
           <Editor
             editorState={this.state.data}
             onChange={(data) => this.setState({data})}
-            readOnly={true}
+            readOnly={!edit}
           />
         </div>
         <div className="mdl-card__menu">
-          <button className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-            <i className="material-icons">edit</i>
-          </button>
-          <button className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-            <i className="material-icons">save</i>
-          </button>
-          <button className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-            <i className="material-icons">share</i>
-          </button>
+          {post.authorId === user.id ? (<EditButton edit={edit} onClick={this.onClick} />) : null}
         </div>
       </div>
     );
@@ -80,6 +109,7 @@ Post.propTypes = {
       blocks: PropTypes.arrayOf(PropTypes.object),
     }),
   }),
+  updatePost: PropTypes.func.isRequired,
 };
 
 export default Post;
