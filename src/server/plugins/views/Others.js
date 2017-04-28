@@ -50,29 +50,32 @@ export default {
 
       let store = configureStore();
       const initialState = store.getState();
-      context.initialState = JSON.stringify(initialState);
 
-      const { isSignedIn, id, token } = request.state;
+      const { isSignedIn, id, username, token } = request.state;
+      const { elements } = initialState;
 
       if (isSignedIn === 'true') {
-        const { user } = initialState;
         store = configureStore({
           ...initialState,
-          user: {
-            ...user,
-            isSignedIn: true,
-            id: parseInt(id, 10),
-            token,
-          },
+          elements: [
+            {
+              ...elements[0],
+              isSignedIn: true,
+              id: parseInt(id, 10),
+              username,
+              token,
+            }
+          ],
         });
       }
-      context.initialState = JSON.stringify(store.getState());
 
       context.app = renderToString(
         <Provider store={store}>
           <RouterContext {...renderProps} />
         </Provider>,
       );
+
+      context.initialState = JSON.stringify(store.getState());
       return reply.view('index', context);
     });
   },

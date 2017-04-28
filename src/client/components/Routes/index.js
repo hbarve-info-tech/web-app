@@ -22,6 +22,14 @@ const routes = (
     />
 
     <Route
+      path="signin" getComponent={(nextState, callback) => {
+        require.ensure([], (require) => {
+          callback(null, require('../SignInPage').default);
+        });
+      }}
+    />
+
+    <Route
       path="contact-us" getComponent={(nextState, callback) => {
         require.ensure([], (require) => {
           callback(null, require('../ContactUs').default);

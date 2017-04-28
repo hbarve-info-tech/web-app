@@ -7,9 +7,9 @@ import LandingPage from '../LandingPage';
 import Home from '../Home';
 
 const IndexPage = ({ elements }) => {
-  if (elements[0].isSignedIn) {
-    return <Home />;
-  }
+  // if (elements[0].isSignedIn) {
+  //   return <Home />;
+  // }
   return <LandingPage />;
 };
 
