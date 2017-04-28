@@ -27,36 +27,12 @@ class Layout extends Component {
     return (
       <div>
         <div style={{ position: 'fixed', zIndex: '1000', bottom: '0px', left: '0px'}}>
-          <a
-            onClick={(e) => {
-              e.preventDefault(); browserHistory.push('/');
-            }}
-          >Home </a>
-          <a
-            onClick={(e) => {
-              e.preventDefault(); browserHistory.push('/signin');
-            }}
-          >Sign In </a>
-          <a
-            onClick={(e) => {
-              e.preventDefault(); browserHistory.push('/hbarve1');
-            }}
-          >User </a>
-          <a
-            onClick={(e) => {
-              e.preventDefault(); browserHistory.push('/');
-            }}
-          >Course </a>
-          <a
-            onClick={(e) => {
-              e.preventDefault(); browserHistory.push('/');
-            }}
-          >Post </a>
-          <a
-            onClick={(e) => {
-              e.preventDefault(); browserHistory.push('/');
-            }}
-          >classroom </a>
+          <a href="/">Home </a>
+          <a href="/signin">Sign In </a>
+          <a href="/hbarve1">User </a>
+          <a href="/courses/1234">Course </a>
+          <a href="/posts/5654891867406336">Post </a>
+          <a href="/hbarve1/classroom">classroom </a>
         </div>
         {children}
       </div>
