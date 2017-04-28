@@ -28,23 +28,23 @@ class ElementPage extends Component {
     }
 
     if (element.elementType === 'user') {
-      return <User />;
+      return <User {...this.props} />;
     }
 
     if (element.elementType === 'circle' && element.circleType === 'edu') {
-      return <CircleEdu/>;
+      return <CircleEdu {...this.props} />;
     }
 
     if (element.elementType === 'circle' && element.circleType === 'org') {
-      return <CircleOrg/>;
+      return <CircleOrg {...this.props} />;
     }
 
     if (element.elementType === 'circle' && element.circleType === 'field') {
-      return <CircleField/>;
+      return <CircleField {...this.props} />;
     }
 
     if (element.elementType === 'circle' && element.circleType === 'location') {
-      return <CircleLocation/>;
+      return <CircleLocation {...this.props} />;
     }
   }
 }
@@ -54,6 +54,8 @@ ElementPage.propTypes = {
     username: PropTypes.string.isRequired,
   }).isRequired,
   elements: PropTypes.array,
+  posts: PropTypes.array,
+  courses: PropTypes.array,
 };
 
 const mapStateToProps = state => state;
