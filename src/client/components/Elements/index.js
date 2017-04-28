@@ -18,16 +18,7 @@ import Timeline from '../Timeline';
 import ErrorPage from '../ErrorPage';
 
 class ElementPage extends Component {
-  componentDidMount() {
-    const { username } = this.props.routeParams;
-    const element = this.props.elements.find(e => e.username === username);
-    const { token } = this.props.elements[0];
 
-    if (element.isFetched) {
-      // this.props.getPosts({ id: element.id, token });
-    }
-  }
-  
   render() {
     const { username } = this.props.routeParams;
     const element = this.props.elements.find(e => e.username === username);

@@ -14,6 +14,10 @@ import ErrorPage from '../ErrorPage';
 class User extends Component {
 
   render() {
+    const { elements } = this.props;
+    const user = elements[0];
+    const posts = this.props.posts.filter(a => a.authorId === elements[0].id);
+    const courses = this.props.courses.filter(a => a.authorId === elements[0].id);
 
     return (
       <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--no-drawer-button">
@@ -49,13 +53,80 @@ class User extends Component {
         </header>
         <main className="mdl-layout__content">
           <section className="mdl-layout__tab-panel is-active" id="scroll-tab-1">
-            <div className="page-content">Tab 1</div>
+            <div className="page-content">
+              <div className="mdl-grid">
+                <div className="mdl-cell mdl-cell--3-col">
+                  <div className="mdl-card">
+                    <div className="mdl-card__media">
+                      <img src={user.avatar} style={{width: '100%'}}/>
+                    </div>
+                    <div className="mdl-card__title">
+                      <h2 className="mdl-card__title-text">{user.name}</h2>
+                      <h5 className="mdl-card__subtitle-text">@{user.username}</h5>
+                    </div>
+                    <div className="mdl-card__supporting-text">
+                      {user.description}
+                    </div>
+                    <div className="mdl-card__actions mdl-card--border">
+                      <a className="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
+                        Follow
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div className="mdl-cell mdl-cell--8-col">
+
+                </div>
+              </div>
+            </div>
           </section>
           <section className="mdl-layout__tab-panel" id="scroll-tab-2">
-            <div className="page-content">Tab2</div>
+            <div className="page-content">
+              <div className="mdl-grid">
+                <div className="mdl-cell mdl-cell--8-col mdl-cell--2-offset-desktop">
+                  {posts.map(post => (
+                    <div
+                      className="mdl-card mdl-shadow--4dp"
+                      style={{minHeight: '50px', width: '100%', marginBottom: '10px'}}
+                      key={post.postId}
+                    >
+                      <div className="mdl-card__title">
+                        <div className="mdl-card__title-text">{post.title}</div>
+                      </div>
+                      {post.description ? (
+                        <div className="mdl-card__supporting-text">
+                          {post.description}
+                        </div>
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </section>
           <section className="mdl-layout__tab-panel" id="scroll-tab-3">
-            <div className="page-content">Tab3</div>
+            <div className="page-content">
+              <div className="mdl-grid">
+                <div className="mdl-cell mdl-cell--8-col mdl-cell--2-offset-desktop">
+                  {courses.map(course => (
+                    <div
+                      className="mdl-card mdl-shadow--4dp"
+                      style={{minHeight: '50px', width: '100%', marginBottom: '10px'}}
+                      key={course.courseId}
+                    >
+                      <div className="mdl-card__title">
+                        <div className="mdl-card__title-text">{course.title}</div>
+                      </div>
+                      {course.description ? (
+                        <div className="mdl-card__supporting-text">
+                          {course.description}
+                        </div>
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </section>
         </main>
       </div>
