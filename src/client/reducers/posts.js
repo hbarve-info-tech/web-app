@@ -7,6 +7,43 @@ import {
   POST_GET_START, POST_GET_ERROR, POST_GET_SUCCESS,
 } from '../constants/posts';
 
+const devInitialState = [
+  {
+    postId: 1,
+    authorId: 1,
+    postType: 'status',
+    title: 'This is first Status',
+    timestamp: ''
+  },
+  {
+    postId: 2,
+    authorId: 1,
+    postType: 'article',
+    title: 'This is First Article.',
+    description: 'this description is awesome.',
+    data: undefined, // add draft-js raw state.,
+    timestamp: ''
+  },
+  {
+    postId: 3,
+    authorId: 1,
+    postType: 'report',
+    title: 'This is First Report.',
+    description: 'this description is awesome report.',
+    data: undefined, // add draft-js raw state.,
+    timestamp: ''
+  },
+  {
+    postId: 4,
+    authorId: 1,
+    postType: 'question',
+    title: 'This is First question.',
+    description: 'this description is awesome question.',
+    data: undefined, // add draft-js raw state.,
+    timestamp: ''
+  },
+];
+
 const postReducer = (state = {}, action) => {
   switch (action.type) {
     case POST_CREATE_SUCCESS: {
@@ -98,7 +135,7 @@ const postReducer = (state = {}, action) => {
   }
 };
 
-export const postsReducer = (state = [], action) => {
+export const postsReducer = (state = devInitialState, action) => {
   switch (action.type) {
     case POST_CREATE_SUCCESS: {
       return [

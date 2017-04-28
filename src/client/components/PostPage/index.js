@@ -7,56 +7,37 @@ import { connect } from 'react-redux';
 
 import actions from '../../actions';
 
-import Post from './Post';
-import Error from '../Error';
+import Status from './Status';
+import Article from './Article';
+import Question from './Questions';
+import Report from './Report';
+
+import ErrorPage from '../ErrorPage';
 
 class PostPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   render() {
-    const { postId } = this.props.routeParams;
-    const post = this.props.posts.find(p => p.postId === parseInt(postId, 10));
-    const user = this.props.elements[0];
+    const { posts, routeParams } = this.props;
+    const post = posts.find(p => p.postId === parseInt(routeParams.postId, 10));
 
-    if (typeof post !== 'undefined' && post.statusCode < 300 && post.statusCode >= 200) {
-      return (
-        <div className="mdl-grid">
-          <div
-            className="mdl-cell mdl-cell--12-col mdl-cell--2-offset-desktop mdl-cell--8-col-desktop mdl-cell--8-col-tablet mdl-cell--0-offset-phone mdl-cell--4-col-phone"
-          >
-            <Post
-              user={user}
-              post={post}
-              updatePost={this.props.updatePost}
-            />
-          </div>
-        </div>
-      );
+    if (post.postType === 'status') {
+      return (<Status/>);
     }
 
-    return (
-      <div className="mdl-grid">
-        <div
-          className="mdl-cell mdl-cell--12-col mdl-cell--2-offset-desktop mdl-cell--8-col-desktop mdl-cell--8-col-tablet mdl-cell--0-offset-phone mdl-cell--4-col-phone"
-        >
-          <Error {...post} />
-        </div>
-      </div>
-    );
+    if (post.postType === 'article') {
+      return (<Article/>);
+    }
+
+    if (post.postType === 'question') {
+      return (<Question/>);
+    }
+
+    if (post.postType === 'report') {
+      return (<Report/>);
+    }
+
+    return (<ErrorPage {...post} />);
   }
 }
-
-PostPage.propTypes = {
-  routeParams: PropTypes.shape({
-    postId: PropTypes.string.isRequired,
-  }).isRequired,
-  elements: PropTypes.array.isRequired,
-  posts: PropTypes.array.isRequired,
-  updatePost: PropTypes.func.isRequired,
-};
 
 const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
