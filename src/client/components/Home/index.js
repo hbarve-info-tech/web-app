@@ -139,7 +139,19 @@ class Home extends Component {
             </div>
           </section>
           <section className="mdl-layout__tab-panel" id="settings">
-            <div className="page-content">Tab4</div>
+            <div className="page-content">
+              <div className="mdl-grid">
+                <div className="mdl-cell mdl-cell--12-col">
+                  <div className="mdl-card mdl-shadow--4dp" style={{width: '100%'}}>
+                    <div className="mdl-card__title">
+                      <div className="mdl-card__title-text">
+                        Settings
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </section>
         </main>
       </div>
