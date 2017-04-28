@@ -31,16 +31,13 @@ class ElementPage extends Component {
   render() {
     const { username } = this.props.routeParams;
     const element = this.props.elements.find(e => e.username === username);
-    console.log(element);
 
-    // if (element.statusCode !== 200) {
-    //   return (<ErrorPage {...element} />);
-    // }
-
-    // const posts = this.props.posts.filter(a => a.authorId === element.id);
+    if (!element || element.statusCode !== 200) {
+      return (<ErrorPage {...element} />);
+    }
 
     if (element.elementType === 'user') {
-      return <User />
+      return <User />;
     }
 
     if (element.elementType === 'circle' && element.circleType === 'edu') {
@@ -65,8 +62,7 @@ ElementPage.propTypes = {
   routeParams: PropTypes.shape({
     username: PropTypes.string.isRequired,
   }).isRequired,
-  elements: PropTypes.array.isRequired,
-  posts: PropTypes.array.isRequired,
+  elements: PropTypes.array,
 };
 
 const mapStateToProps = state => state;
