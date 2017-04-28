@@ -25,7 +25,8 @@ class Home extends Component {
   render() {
     const { elements } = this.props;
     const user = elements[0];
-    // const posts = this.props.posts.filter(a => a.authorId === elements[0].id);
+    const posts = this.props.posts.filter(a => a.authorId === elements[0].id);
+    const courses = this.props.courses.filter(a => a.authorId === elements[0].id);
 
     return (
       <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--no-drawer-button">
@@ -55,14 +56,14 @@ class Home extends Component {
           </div>
 
           <div className="mdl-layout__tab-bar mdl-js-ripple-effect">
-            <a href="#scroll-tab-1" className="mdl-layout__tab is-active">Profile</a>
-            <a href="#scroll-tab-2" className="mdl-layout__tab">Posts</a>
-            <a href="#scroll-tab-3" className="mdl-layout__tab">Courses</a>
-            <a href="#scroll-tab-4" className="mdl-layout__tab">Settings</a>
+            <a href="#profile" className="mdl-layout__tab is-active">Profile</a>
+            <a href="#posts" className="mdl-layout__tab">Posts</a>
+            <a href="#courses" className="mdl-layout__tab">Courses</a>
+            <a href="#settings" className="mdl-layout__tab">Settings</a>
           </div>
         </header>
         <main className="mdl-layout__content">
-          <section className="mdl-layout__tab-panel is-active" id="scroll-tab-1">
+          <section className="mdl-layout__tab-panel is-active" id="profile">
             <div className="page-content">
               <div className="mdl-grid">
                 <div className="mdl-cell mdl-cell--3-col">
@@ -89,13 +90,55 @@ class Home extends Component {
               </div>
             </div>
           </section>
-          <section className="mdl-layout__tab-panel" id="scroll-tab-2">
-            <div className="page-content">Tab2</div>
+          <section className="mdl-layout__tab-panel" id="posts">
+            <div className="page-content">
+              <div className="mdl-grid">
+                <div className="mdl-cell mdl-cell--8-col mdl-cell--2-offset-desktop">
+                  {posts.map(post => (
+                    <div
+                      className="mdl-card mdl-shadow--4dp"
+                      style={{minHeight: '50px', width: '100%', marginBottom: '10px'}}
+                      key={post.postId}
+                    >
+                      <div className="mdl-card__title">
+                        <div className="mdl-card__title-text">{post.title}</div>
+                      </div>
+                      {post.description ? (
+                        <div className="mdl-card__supporting-text">
+                          {post.description}
+                        </div>
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </section>
-          <section className="mdl-layout__tab-panel" id="scroll-tab-3">
-            <div className="page-content">Tab3</div>
+          <section className="mdl-layout__tab-panel" id="courses">
+            <div className="page-content">
+              <div className="mdl-grid">
+                <div className="mdl-cell mdl-cell--8-col mdl-cell--2-offset-desktop">
+                  {courses.map(course => (
+                    <div
+                      className="mdl-card mdl-shadow--4dp"
+                      style={{minHeight: '50px', width: '100%', marginBottom: '10px'}}
+                      key={course.courseId}
+                    >
+                      <div className="mdl-card__title">
+                        <div className="mdl-card__title-text">{course.title}</div>
+                      </div>
+                      {course.description ? (
+                        <div className="mdl-card__supporting-text">
+                          {course.description}
+                        </div>
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </section>
-          <section className="mdl-layout__tab-panel" id="scroll-tab-4">
+          <section className="mdl-layout__tab-panel" id="settings">
             <div className="page-content">Tab4</div>
           </section>
         </main>
