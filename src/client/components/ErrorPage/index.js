@@ -9,7 +9,7 @@ const ErrorPage = ({
   error = 'Not Found',
   message = 'Not Found',
 }) => (
-  <div className="mdl-grid mdl-shadow--4dp">
+  <div className="mdl-grid">
     <div className="mdl-cell mdl-cell--12-col mdl-cell--2-offset-desktop mdl-cell--8-col-desktop mdl-cell--8-col-tablet mdl-cell--0-offset-phone mdl-cell--4-col-phone">
       <div
         className="mdl-card mdl-shadow--4dp"
@@ -33,9 +33,9 @@ const ErrorPage = ({
 
 
 ErrorPage.propTypes = {
-  statusCode: PropTypes.number.isRequired,
-  error: PropTypes.string.isRequired,
-  message: PropTypes.string.isRequired,
+  statusCode: PropTypes.number,
+  error: PropTypes.string,
+  message: PropTypes.string,
 };
 
 export default ErrorPage;
