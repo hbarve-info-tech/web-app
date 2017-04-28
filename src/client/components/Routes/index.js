@@ -63,7 +63,7 @@ const routes = (
     <Route
       path=":username/classroom" getComponent={(nextState, callback) => {
         require.ensure([], (require) => {
-          callback(null, require('../Classroom').default);
+          callback(null, require('../ClassroomPage').default);
         });
       }}
     />
