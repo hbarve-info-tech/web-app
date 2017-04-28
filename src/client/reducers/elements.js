@@ -34,6 +34,7 @@ const devInitialState = [
     name: 'Himank Barve',
     avatar: 'https://storage.googleapis.com/mayash/12993536_1078754218834834_8314114430867694644_n.jpg',
     classroom: true,
+    description: 'this description is too cool, it is going to be awesome.',
     elementType: 'user',
     isSignedIn: true,
     token: 'this is token string.',

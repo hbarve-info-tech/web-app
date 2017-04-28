@@ -24,6 +24,7 @@ class Home extends Component {
 
   render() {
     const { elements } = this.props;
+    const user = elements[0];
     // const posts = this.props.posts.filter(a => a.authorId === elements[0].id);
 
     return (
@@ -62,7 +63,31 @@ class Home extends Component {
         </header>
         <main className="mdl-layout__content">
           <section className="mdl-layout__tab-panel is-active" id="scroll-tab-1">
-            <div className="page-content">Tab 1</div>
+            <div className="page-content">
+              <div className="mdl-grid">
+                <div className="mdl-cell mdl-cell--3-col">
+                  <div className="mdl-card">
+                    <div className="mdl-card__media">
+                      <img src={user.avatar} style={{width: '100%'}}/>
+                    </div>
+                    <div className="mdl-card__title">
+                      <h2 className="mdl-card__title-text">{user.name}</h2>
+                      <h5 className="mdl-card__subtitle-text">@{user.username}</h5>
+                    </div>
+                    <div className="mdl-card__supporting-text">
+                      {user.description}
+                    </div>
+                    <div className="mdl-card__supporting-text">
+                      <span className="mdl-badge" data-badge="4">Followers</span>
+                      <span className="mdl-badge" data-badge="4">Following</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="mdl-cell mdl-cell--8-col">
+
+                </div>
+              </div>
+            </div>
           </section>
           <section className="mdl-layout__tab-panel" id="scroll-tab-2">
             <div className="page-content">Tab2</div>

@@ -155,10 +155,13 @@ class LandingPage extends Component {
                   Sign Out
                 </li>
               ) : (
-                <li className="mdl-menu__item" onClick={(e) => {
-                  // e.preventDefault();
-                  browserHistory.push('/signin');
-                }}>
+                <li
+                  className="mdl-menu__item"
+                  onClick={(e) => {
+                    // e.preventDefault();
+                    browserHistory.push('/signin');
+                  }}
+                >
                   Sign In
                 </li>
               )}
