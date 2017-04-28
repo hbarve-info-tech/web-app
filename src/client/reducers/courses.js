@@ -269,7 +269,26 @@ const courseReducer = (state = initialCourseState, action) => {
   }
 };
 
-const coursesReducer = (state = [], action) => {
+
+const devCoursesState = [
+  {
+    courseId: 1,
+    authorId: 1,
+    rating: 4.5,
+    level: 'beginner', // beginner, moderate, difficult.
+    title: 'Introduction to Science',
+    description: 'idsaf asdf ads f',
+    detailedDescription: {}, //draft-js raw state.
+    syllabus: {}, //draft-js raw state
+    modules: [],
+    discussion: [],
+    questions: [],
+
+    statusCode: 200,
+  }
+];
+
+const coursesReducer = (state = devCoursesState, action) => {
   switch (action.type) {
     case COURSES_GET_SUCCESS: {
       const { payload } = action;

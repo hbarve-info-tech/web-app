@@ -48,7 +48,7 @@ const routes = (
     <Route
       path="courses/:courseId" getComponent={(nextState, callback) => {
         require.ensure([], (require) => {
-          callback(null, require('../Course').default);
+          callback(null, require('../CoursePage').default);
         });
       }}
     />
