@@ -19,14 +19,14 @@ import Others from './Others';
 export default [
   { method: 'GET', path: '/', config: Home },
 
-  { method: 'GET', path: '/contact-us', config: ContactUs },
-
-  { method: 'GET', path: '/articles/{articleId}', config: Article },
-  { method: 'GET', path: '/posts/{postId}', config: Post },
-  { method: 'GET', path: '/courses/{courseId}', config: Course },
-
-  { method: 'GET', path: '/{username}', config: Elements },
-  { method: 'GET', path: '/{username}/classroom', config: Classroom },
+  // { method: 'GET', path: '/contact-us', config: ContactUs },
+  //
+  // { method: 'GET', path: '/articles/{articleId}', config: Article },
+  // { method: 'GET', path: '/posts/{postId}', config: Post },
+  // { method: 'GET', path: '/courses/{courseId}', config: Course },
+  //
+  // { method: 'GET', path: '/{username}', config: Elements },
+  // { method: 'GET', path: '/{username}/classroom', config: Classroom },
 
   { method: 'GET', path: '/public/{url*}', handler: { directory: { path: 'public' } } },
   { method: 'GET', path: '/{url*}', config: Others },

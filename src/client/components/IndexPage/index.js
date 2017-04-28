@@ -8,9 +8,9 @@ import Home from '../Home';
 
 const IndexPage = ({ elements }) => {
   // if (elements[0].isSignedIn) {
-  //   return <Home />;
+    return <Home />;
   // }
-  return <LandingPage />;
+  // return <LandingPage />;
 };
 
 IndexPage.propTypes = {

@@ -8,24 +8,12 @@ import { connect } from 'react-redux';
 import actions from '../../actions';
 
 import ProfileInfo from '../ProfileInfo';
-import CreatePost from '../Create/CreatePost';
 import Timeline from '../Timeline';
+import ErrorPage from '../ErrorPage';
 
-class Home extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  componentDidMount() {
-    const { id, token } = this.props.elements[0];
-    // this.props.getPosts({ id, token });
-  }
+class ElementPage extends Component {
 
   render() {
-    const { elements } = this.props;
-    // const posts = this.props.posts.filter(a => a.authorId === elements[0].id);
-
     return (
       <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--no-drawer-button">
         <header className="mdl-layout__header">
@@ -57,7 +45,6 @@ class Home extends Component {
             <a href="#scroll-tab-1" className="mdl-layout__tab is-active">Profile</a>
             <a href="#scroll-tab-2" className="mdl-layout__tab">Posts</a>
             <a href="#scroll-tab-3" className="mdl-layout__tab">Courses</a>
-            <a href="#scroll-tab-4" className="mdl-layout__tab">Settings</a>
           </div>
         </header>
         <main className="mdl-layout__content">
@@ -70,22 +57,13 @@ class Home extends Component {
           <section className="mdl-layout__tab-panel" id="scroll-tab-3">
             <div className="page-content">Tab3</div>
           </section>
-          <section className="mdl-layout__tab-panel" id="scroll-tab-4">
-            <div className="page-content">Tab4</div>
-          </section>
         </main>
       </div>
     );
   }
 }
 
-Home.propTypes = {
-  elements: PropTypes.array,
-  posts: PropTypes.array,
-  create: PropTypes.object,
-};
-
 const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(ElementPage);

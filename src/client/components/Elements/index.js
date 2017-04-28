@@ -7,8 +7,15 @@ import { connect } from 'react-redux';
 
 import actions from '../../actions';
 
+import User from './User';
+import CircleEdu from './CircleEdu';
+import CircleOrg from './CircleOrg';
+import CircleField from './CircleField';
+import CircleLocation from './CircleLocation';
+
 import ProfileInfo from '../ProfileInfo';
 import Timeline from '../Timeline';
+import ErrorPage from '../ErrorPage';
 
 class ElementPage extends Component {
   componentDidMount() {
@@ -17,34 +24,40 @@ class ElementPage extends Component {
     const { token } = this.props.elements[0];
 
     if (element.isFetched) {
-      this.props.getPosts({ id: element.id, token });
+      // this.props.getPosts({ id: element.id, token });
     }
   }
   
   render() {
     const { username } = this.props.routeParams;
     const element = this.props.elements.find(e => e.username === username);
+    console.log(element);
 
-    if (element.statusCode === 404) {
-      return (
-        <div>
-          Not Found...
-        </div>
-      );
+    // if (element.statusCode !== 200) {
+    //   return (<ErrorPage {...element} />);
+    // }
+
+    // const posts = this.props.posts.filter(a => a.authorId === element.id);
+
+    if (element.elementType === 'user') {
+      return <User />
     }
 
-    const posts = this.props.posts.filter(a => a.authorId === element.id);
-    
-    return (
-      <div className="mdl-grid">
-        <div className="mdl-cell mdl-cell--2-col mdl-cell--2-col-tablet mdl-cell--4-col-phone">
-          <ProfileInfo {...element} />
-        </div>
-        <div className="mdl-cell mdl-cell--10-col mdl-cell--6-col-tablet mdl-cell--4-col-phone">
-          <Timeline posts={posts} type="post"/>
-        </div>
-      </div>
-    );
+    if (element.elementType === 'circle' && element.circleType === 'edu') {
+      return <CircleEdu/>;
+    }
+
+    if (element.elementType === 'circle' && element.circleType === 'org') {
+      return <CircleOrg/>;
+    }
+
+    if (element.elementType === 'circle' && element.circleType === 'field') {
+      return <CircleField/>;
+    }
+
+    if (element.elementType === 'circle' && element.circleType === 'location') {
+      return <CircleLocation/>;
+    }
   }
 }
 
