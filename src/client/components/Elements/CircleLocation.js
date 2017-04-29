@@ -3,6 +3,7 @@ import React from 'react';
 import Component from 'react/lib/ReactComponent';
 import PropTypes from 'react/lib/ReactPropTypes';
 
+import HeaderRow from '../Header/HeaderRow';
 import ProfileInfo from '../ProfileInfo';
 import PostTimeline from '../PostTimeline';
 
@@ -16,29 +17,7 @@ class ElementPage extends Component {
     return (
       <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--no-drawer-button">
         <header className="mdl-layout__header">
-          <div className="mdl-layout__header-row">
-            <span className="mdl-layout-title">Mayash</span>
-
-            <div className="mdl-layout-spacer" />
-
-            <button
-              id="sign-in-dropdown"
-              className="mdl-button mdl-js-button mdl-button--icon"
-            >
-              <i className="material-icons">more_vert</i>
-            </button>
-            <ul
-              className="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
-              htmlFor="sign-in-dropdown"
-            >
-              <li
-                className="mdl-menu__item"
-                onClick={this.props.signOut}
-              >
-                Sign Out
-              </li>
-            </ul>
-          </div>
+          <HeaderRow/>
 
           <div className="mdl-layout__tab-bar mdl-js-ripple-effect">
             <a href="#scroll-tab-1" className="mdl-layout__tab is-active">Profile</a>
