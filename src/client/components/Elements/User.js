@@ -14,10 +14,10 @@ import ErrorPage from '../ErrorPage';
 class User extends Component {
 
   render() {
-    const { elements } = this.props;
-    const user = elements[0];
-    const posts = this.props.posts.filter(a => a.authorId === elements[0].id);
-    const courses = this.props.courses.filter(a => a.authorId === elements[0].id);
+    const { username } = this.props.routeParams;
+    const element = this.props.elements.find(e => e.username === username);
+    const posts = this.props.posts.filter(a => a.authorId === element.id);
+    const courses = this.props.courses.filter(a => a.authorId === element.id);
 
     return (
       <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--no-drawer-button">
@@ -56,23 +56,7 @@ class User extends Component {
             <div className="page-content">
               <div className="mdl-grid">
                 <div className="mdl-cell mdl-cell--3-col">
-                  <div className="mdl-card">
-                    <div className="mdl-card__media">
-                      <img src={user.avatar} style={{width: '100%'}}/>
-                    </div>
-                    <div className="mdl-card__title">
-                      <h2 className="mdl-card__title-text">{user.name}</h2>
-                      <h5 className="mdl-card__subtitle-text">@{user.username}</h5>
-                    </div>
-                    <div className="mdl-card__supporting-text">
-                      {user.description}
-                    </div>
-                    <div className="mdl-card__actions mdl-card--border">
-                      <a className="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
-                        Follow
-                      </a>
-                    </div>
-                  </div>
+                  <ProfileInfo {...element} />
                 </div>
                 <div className="mdl-cell mdl-cell--8-col">
 

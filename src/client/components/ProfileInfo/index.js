@@ -61,12 +61,25 @@ const Follow = ({ followers, following }) => (
   </div>
 );
 
+const FollowButton = ({ follow }) => {
+  if (follow !== true) return null;
+
+  return (
+    <div className="mdl-card__actions mdl-card--border">
+      <a className="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
+        Follow
+      </a>
+    </div>
+  );
+};
+
 const ProfileInfo = ({
   username,
   name,
   avatar,
   classroom = false,
   description,
+  follow = true,
   followers = 0,
   following = 0,
 }) => (
@@ -75,6 +88,7 @@ const ProfileInfo = ({
     <Title name={name} username={username} />
     <Description description={description} />
     <Follow followers={followers} following={following} />
+    <FollowButton follow={follow} />
   </div>
 );
 
