@@ -67,22 +67,7 @@ class Home extends Component {
             <div className="page-content">
               <div className="mdl-grid">
                 <div className="mdl-cell mdl-cell--3-col">
-                  <div className="mdl-card">
-                    <div className="mdl-card__media">
-                      <img src={user.avatar} style={{width: '100%'}}/>
-                    </div>
-                    <div className="mdl-card__title">
-                      <h2 className="mdl-card__title-text">{user.name}</h2>
-                      <h5 className="mdl-card__subtitle-text">@{user.username}</h5>
-                    </div>
-                    <div className="mdl-card__supporting-text">
-                      {user.description}
-                    </div>
-                    <div className="mdl-card__supporting-text">
-                      <span className="mdl-badge" data-badge="4">Followers</span>
-                      <span className="mdl-badge" data-badge="4">Following</span>
-                    </div>
-                  </div>
+                  <ProfileInfo {...user} />
                 </div>
                 <div className="mdl-cell mdl-cell--8-col">
 
