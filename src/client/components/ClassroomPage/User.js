@@ -38,7 +38,9 @@ class ClassroomPage extends Component {
             </div>
           </section>
           <section className="mdl-layout__tab-panel" id="scroll-tab-2">
-            <div className="page-content">Tab2</div>
+            <div className="page-content">
+              <CourseTimeline courses={courses} />
+            </div>
           </section>
         </main>
       </div>
