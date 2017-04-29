@@ -7,10 +7,6 @@ import { connect } from 'react-redux';
 
 import actions from '../../actions';
 
-import ProfileInfo from '../ProfileInfo';
-import CreateCourse from '../Create/CreateCourse';
-import Timeline from '../Timeline';
-
 import User from './User';
 import Org from './Org';
 import Edu from './Edu';
@@ -22,40 +18,36 @@ class ClassroomPage extends Component {
 
   render() {
     const { username } = this.props.routeParams;
-    const user = this.props.elements[0];
     const element = this.props.elements.find(e => e.username === username);
 
-    if (element.statusCode !== 200) {
+    if (!element || element.statusCode !== 200) {
       return (<ErrorPage {...element} />);
     }
 
     if (element.classroom !== true) {
       return (
-        <div className="mdl-grid">
-          <div className="mdl-cell mdl-cell--8-col mdl-cell--6-col-tablet mdl-cell--4-col-phone">
-            This element is not having classroom.
-          </div>
-          <div className="mdl-cell mdl-cell--4-col mdl-cell--2-col-tablet mdl-cell--4-col-phone" />
-        </div>
+        <ErrorPage
+          statusCode={'404'}
+          error={'This Element is not having Classroom Feature.'}
+          message={'This Element is not having Classroom Feature.'}
+        />
       );
     }
 
-    console.log(element);
-
     if (element.elementType === 'user') {
-      return <User />
+      return <User {...this.props} />
     }
 
     if (element.elementType === 'circle' && element.circleType === 'edu') {
-      return <Edu/>;
+      return <Edu {...this.props} />;
     }
 
     if (element.elementType === 'circle' && element.circleType === 'org') {
-      return <Org/>;
+      return <Org {...this.props} />;
     }
 
     if (element.elementType === 'circle' && element.circleType === 'field') {
-      return <Field/>;
+      return <Field {...this.props} />;
     }
   }
 }
@@ -65,8 +57,6 @@ ClassroomPage.propTypes = {
     username: PropTypes.string.isRequired,
   }).isRequired,
   elements: PropTypes.array.isRequired,
-  // fetchCourses: PropTypes.func,
-  // fetchClassroomCourses: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => state;
