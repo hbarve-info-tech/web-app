@@ -14,7 +14,7 @@ class CoursePage extends Component {
     const { course } = props;
     this.state = {
       course,
-      syllabus: typeof course.syllabus !== 'undefined' ? EditorState.createEmpty() : EditorState.createWithContent(course.syllabus),
+      syllabus: typeof course.syllabus === 'undefined' ? EditorState.createEmpty() : EditorState.createWithContent(course.syllabus),
       edit: false,
     };
   }

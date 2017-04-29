@@ -279,8 +279,45 @@ const devCoursesState = [
     title: 'Introduction to Science',
     description: 'idsaf asdf ads f',
     detailedDescription: {}, //draft-js raw state.
-    syllabus: {}, //draft-js raw state
-    modules: [],
+    syllabus: undefined, //draft-js raw state
+    modules: [
+      {
+        moduleId: 1,
+        courseId: 1,
+        authorId: 1,
+        index: 1,
+        title: 'Introduction',
+        data: undefined,
+        timestamp: undefined,
+      },
+      {
+        moduleId: 2,
+        courseId: 1,
+        authorId: 1,
+        index: 2,
+        title: 'Chapter 1',
+        data: undefined,
+        timestamp: undefined,
+      },
+      {
+        moduleId: 3,
+        courseId: 1,
+        authorId: 1,
+        index: 4,
+        title: 'Chapter 2',
+        data: undefined,
+        timestamp: undefined,
+      },
+      {
+        moduleId: 4,
+        courseId: 1,
+        authorId: 1,
+        index: 5,
+        title: 'Chapter 3',
+        data: undefined,
+        timestamp: undefined,
+      }
+    ],
     discussion: [],
     questions: [],
 
