@@ -9,7 +9,8 @@ import actions from '../../actions';
 
 import ProfileInfo from '../ProfileInfo';
 import CreatePost from '../Create/CreatePost';
-import Timeline from '../Timeline';
+import PostTimeline from '../PostTimeline';
+import CourseTimeline from '../CourseTimeline';
 
 class Home extends Component {
   constructor(props) {
@@ -77,50 +78,12 @@ class Home extends Component {
           </section>
           <section className="mdl-layout__tab-panel" id="posts">
             <div className="page-content">
-              <div className="mdl-grid">
-                <div className="mdl-cell mdl-cell--8-col mdl-cell--2-offset-desktop">
-                  {posts.map(post => (
-                    <div
-                      className="mdl-card mdl-shadow--4dp"
-                      style={{minHeight: '50px', width: '100%', marginBottom: '10px'}}
-                      key={post.postId}
-                    >
-                      <div className="mdl-card__title">
-                        <div className="mdl-card__title-text">{post.title}</div>
-                      </div>
-                      {post.description ? (
-                        <div className="mdl-card__supporting-text">
-                          {post.description}
-                        </div>
-                      ) : null}
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <PostTimeline posts={posts} />
             </div>
           </section>
           <section className="mdl-layout__tab-panel" id="courses">
             <div className="page-content">
-              <div className="mdl-grid">
-                <div className="mdl-cell mdl-cell--8-col mdl-cell--2-offset-desktop">
-                  {courses.map(course => (
-                    <div
-                      className="mdl-card mdl-shadow--4dp"
-                      style={{minHeight: '50px', width: '100%', marginBottom: '10px'}}
-                      key={course.courseId}
-                    >
-                      <div className="mdl-card__title">
-                        <div className="mdl-card__title-text">{course.title}</div>
-                      </div>
-                      {course.description ? (
-                        <div className="mdl-card__supporting-text">
-                          {course.description}
-                        </div>
-                      ) : null}
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <CourseTimeline courses={courses} />
             </div>
           </section>
           <section className="mdl-layout__tab-panel" id="settings">
