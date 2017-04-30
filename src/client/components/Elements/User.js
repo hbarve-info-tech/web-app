@@ -9,9 +9,18 @@ import CourseTimeline from '../CourseTimeline';
 
 class User extends Component {
 
+  componentDidMount() {
+    const { token } = this.props.elements[0];
+    const { id, classroom } = this.props.element;
+
+    this.props.getPosts({id, token});
+    if (classroom === true) {
+      this.props.getCourses({ id, token });
+    }
+  }
+
   render() {
-    const { username } = this.props.routeParams;
-    const element = this.props.elements.find(e => e.username === username);
+    const { element } = this.props;
     const posts = this.props.posts.filter(a => a.authorId === element.id);
     const courses = this.props.courses.filter(a => a.authorId === element.id);
 
@@ -23,7 +32,7 @@ class User extends Component {
           <div className="mdl-layout__tab-bar mdl-js-ripple-effect">
             <a href="#scroll-tab-1" className="mdl-layout__tab is-active">Profile</a>
             <a href="#scroll-tab-2" className="mdl-layout__tab">Posts</a>
-            <a href="#scroll-tab-3" className="mdl-layout__tab">Courses</a>
+            {element.classroom === true ? (<a href="#scroll-tab-3" className="mdl-layout__tab">Courses</a>) : null}
           </div>
         </header>
         <main className="mdl-layout__content">
