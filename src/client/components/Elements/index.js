@@ -13,8 +13,6 @@ import CircleOrg from './CircleOrg';
 import CircleField from './CircleField';
 import CircleLocation from './CircleLocation';
 
-import ProfileInfo from '../ProfileInfo';
-import Timeline from '../Timeline';
 import ErrorPage from '../ErrorPage';
 
 class ElementPage extends Component {
@@ -28,23 +26,23 @@ class ElementPage extends Component {
     }
 
     if (element.elementType === 'user') {
-      return <User {...this.props} />;
+      return <User element={element} {...this.props} />;
     }
 
     if (element.elementType === 'circle' && element.circleType === 'edu') {
-      return <CircleEdu {...this.props} />;
+      return <CircleEdu element={element} {...this.props} />;
     }
 
     if (element.elementType === 'circle' && element.circleType === 'org') {
-      return <CircleOrg {...this.props} />;
+      return <CircleOrg element={element} {...this.props} />;
     }
 
     if (element.elementType === 'circle' && element.circleType === 'field') {
-      return <CircleField {...this.props} />;
+      return <CircleField element={element} {...this.props} />;
     }
 
     if (element.elementType === 'circle' && element.circleType === 'location') {
-      return <CircleLocation {...this.props} />;
+      return <CircleLocation element={element} {...this.props} />;
     }
   }
 }
