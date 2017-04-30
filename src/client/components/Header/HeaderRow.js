@@ -23,7 +23,12 @@ const HeaderRow = ({}) => (
       className="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
       htmlFor="sign-in-dropdown"
     >
-      <li className="mdl-menu__item">
+      <li
+        className="mdl-menu__item"
+        onClick={() => {
+          window.location.href = '/signin';
+        }}
+      >
         Sign Out
       </li>
     </ul>

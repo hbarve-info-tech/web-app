@@ -2,8 +2,11 @@
 import React from 'react';
 import PropTypes from 'react/lib/ReactPropTypes';
 import Component from 'react/lib/ReactComponent';
+import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
+import HeaderRow from '../Header/HeaderRow';
 import actions from '../../actions';
 
 class SignInPage extends Component {
@@ -17,6 +20,13 @@ class SignInPage extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.signIn = this.signIn.bind(this);
+  }
+
+  componentWillReceiveProps({ elements }) {
+    const user = elements[0];
+    if (user.isSignedIn === true) {
+      window.location.href = '/';
+    }
   }
 
   onChange(key, e) {
@@ -52,13 +62,18 @@ class SignInPage extends Component {
     return (
       <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--no-drawer-button">
         <header className="mdl-layout__header">
-          <div className="mdl-layout__header-row">
-            <span className="mdl-layout-title">Mayash</span>
-            <div className="mdl-layout-spacer"/>
-          </div>
+          <HeaderRow/>
         </header>
         <main className="mdl-layout__content">
-          <div className="page-content">
+          <div
+            className="page-content"
+            style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          >
             <div className="mdl-card mdl-shadow--4dp">
               <div className="mdl-card__title">
                 <h2 className="mdl-card__title-text">Sign In</h2>
@@ -76,8 +91,8 @@ class SignInPage extends Component {
                   />
                   <label className="mdl-textfield__label">Username</label>
                   <span className="mdl-textfield__error">
-                Only these characters are allowed [a-z0-9_-] & 20 > username length > 3
-              </span>
+                    Please use lowercase alphabets, length must be greater than 3 and less then 20.
+                  </span>
                 </div>
 
                 <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -92,8 +107,8 @@ class SignInPage extends Component {
                   />
                   <label className="mdl-textfield__label">Password</label>
                   <span className="mdl-textfield__error">
-                Only these characters are allowed [a-z0-9_-] & 30 > password length > 5
-              </span>
+                    Please use lowercase alphabets, length must be greater than 3 and less then 20.
+                  </span>
                 </div>
               </div>
               <div className="mdl-card__actions mdl-card--border">
@@ -115,9 +130,6 @@ class SignInPage extends Component {
 }
 
 const mapStateToProps = state => state;
-const mapDispatchToProps = (dispatch) => {
-  const { signIn, signOut } = actions;
-  return bindActionCreators({ signIn, signOut }, dispatch);
-};
+const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignInPage);
