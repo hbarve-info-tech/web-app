@@ -8,7 +8,7 @@ import {
 import { writeLocalStore, writeCookie,
   removeLocalStore, removeAllCookies } from '../api/clientApi';
 
-export const initialElementState = {
+const initialElementState = {
   isFetching: false,
   isFetched: false,
 
@@ -19,13 +19,76 @@ export const initialElementState = {
   message: '',
   lastUpdated: Date.now(),
 };
-export const initialElementsState = [
+const initialElementsState = [
   {
     ...initialElementState,
     isSignedIn: false,
     isSigningIn: false,
   },
 ];
+
+const devInitialState = [
+  {
+    id: 1,
+    username: 'hbarve1',
+    name: 'Himank Barve',
+    avatar: 'https://storage.googleapis.com/mayash/12993536_1078754218834834_8314114430867694644_n.jpg',
+    classroom: true,
+    description: 'this description is too cool, it is going to be awesome.',
+    elementType: 'user',
+    isSignedIn: true,
+    token: 'this is token string.',
+    statusCode: 200,
+  },
+  {
+    id: 2,
+    username: 'shubham',
+    name: 'Shubham Maurya',
+    avatar: 'https://storage.googleapis.com/mayash/12993536_1078754218834834_8314114430867694644_n.jpg',
+    elementType: 'user',
+    statusCode: 200,
+  },
+  {
+    id: 3,
+    username: 'iitdhn',
+    name: 'Indian Institute of Technology (ISM), Dhanbad.',
+    avatar: 'https://storage.googleapis.com/mayash/12993536_1078754218834834_8314114430867694644_n.jpg',
+    classroom: true,
+    elementType: 'circle',
+    circleType: 'edu',
+    statusCode: 200,
+  },
+  {
+    id: 4,
+    username: 'google',
+    name: 'Google Inc.',
+    avatar: 'https://storage.googleapis.com/mayash/12993536_1078754218834834_8314114430867694644_n.jpg',
+    classroom: true,
+    elementType: 'circle',
+    circleType: 'org',
+    statusCode: 200,
+  },
+  {
+    id: 4,
+    username: 'science',
+    name: 'Science',
+    avatar: 'https://storage.googleapis.com/mayash/12993536_1078754218834834_8314114430867694644_n.jpg',
+    classroom: true,
+    elementType: 'circle',
+    circleType: 'field',
+    statusCode: 200,
+  },
+  {
+    id: 5,
+    username: 'dhanbad',
+    name: 'Dhanbad',
+    avatar: 'https://storage.googleapis.com/mayash/12993536_1078754218834834_8314114430867694644_n.jpg',
+    elementType: 'circle',
+    circleType: 'location',
+    statusCode: 200,
+  },
+];
+
 
 const elementReducer = (state = initialElementState, action) => {
   switch (action.type) {

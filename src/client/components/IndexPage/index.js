@@ -6,12 +6,7 @@ import { connect } from 'react-redux';
 import LandingPage from '../LandingPage';
 import Home from '../Home';
 
-const IndexPage = ({ elements }) => {
-  if (elements[0].isSignedIn) {
-    return <Home />;
-  }
-  return <LandingPage />;
-};
+const IndexPage = ({ elements }) => elements[0].isSignedIn === true ? (<Home/>) : (<LandingPage />);
 
 IndexPage.propTypes = {
   elements: PropTypes.array.isRequired,

@@ -22,6 +22,14 @@ const routes = (
     />
 
     <Route
+      path="signin" getComponent={(nextState, callback) => {
+        require.ensure([], (require) => {
+          callback(null, require('../SignInPage').default);
+        });
+      }}
+    />
+
+    <Route
       path="contact-us" getComponent={(nextState, callback) => {
         require.ensure([], (require) => {
           callback(null, require('../ContactUs').default);
@@ -40,7 +48,7 @@ const routes = (
     <Route
       path="courses/:courseId" getComponent={(nextState, callback) => {
         require.ensure([], (require) => {
-          callback(null, require('../Course').default);
+          callback(null, require('../CoursePage').default);
         });
       }}
     />
@@ -55,7 +63,7 @@ const routes = (
     <Route
       path=":username/classroom" getComponent={(nextState, callback) => {
         require.ensure([], (require) => {
-          callback(null, require('../Classroom').default);
+          callback(null, require('../ClassroomPage').default);
         });
       }}
     />

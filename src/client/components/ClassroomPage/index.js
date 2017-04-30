@@ -8,14 +8,13 @@ import { connect } from 'react-redux';
 import actions from '../../actions';
 
 import User from './User';
-import CircleEdu from './CircleEdu';
-import CircleOrg from './CircleOrg';
-import CircleField from './CircleField';
-import CircleLocation from './CircleLocation';
+import Org from './Org';
+import Edu from './Edu';
+import Field from './Field';
 
 import ErrorPage from '../ErrorPage';
 
-class ElementPage extends Component {
+class ClassroomPage extends Component {
 
   render() {
     const { username } = this.props.routeParams;
@@ -25,38 +24,42 @@ class ElementPage extends Component {
       return (<ErrorPage {...element} />);
     }
 
+    if (element.classroom !== true) {
+      return (
+        <ErrorPage
+          statusCode={'404'}
+          error={'This Element is not having Classroom Feature.'}
+          message={'This Element is not having Classroom Feature.'}
+        />
+      );
+    }
+
     if (element.elementType === 'user') {
-      return <User element={element} {...this.props} />;
+      return <User {...this.props} />
     }
 
     if (element.elementType === 'circle' && element.circleType === 'edu') {
-      return <CircleEdu element={element} {...this.props} />;
+      return <Edu {...this.props} />;
     }
 
     if (element.elementType === 'circle' && element.circleType === 'org') {
-      return <CircleOrg element={element} {...this.props} />;
+      return <Org {...this.props} />;
     }
 
     if (element.elementType === 'circle' && element.circleType === 'field') {
-      return <CircleField element={element} {...this.props} />;
-    }
-
-    if (element.elementType === 'circle' && element.circleType === 'location') {
-      return <CircleLocation element={element} {...this.props} />;
+      return <Field {...this.props} />;
     }
   }
 }
 
-ElementPage.propTypes = {
+ClassroomPage.propTypes = {
   routeParams: PropTypes.shape({
     username: PropTypes.string.isRequired,
   }).isRequired,
-  elements: PropTypes.array,
-  posts: PropTypes.array,
-  courses: PropTypes.array,
+  elements: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(ElementPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ClassroomPage);
