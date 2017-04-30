@@ -8,6 +8,12 @@ import ProfileInfo from '../ProfileInfo';
 import PostTimeline from '../PostTimeline';
 
 class ElementPage extends Component {
+  componentDidMount() {
+    const { token } = this.props.elements[0];
+    const { id } = this.props.element;
+
+    this.props.getPosts({id, token});
+  }
 
   render() {
     const { username } = this.props.routeParams;

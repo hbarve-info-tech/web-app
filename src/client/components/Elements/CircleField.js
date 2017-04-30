@@ -9,12 +9,20 @@ import PostTimeline from '../PostTimeline';
 import CourseTimeline from '../CourseTimeline';
 
 class ElementPage extends Component {
+  componentDidMount() {
+    const { token } = this.props.elements[0];
+    const { id, classroom } = this.props.element;
+
+    this.props.getPosts({id, token});
+    if (classroom === true) {
+      this.props.getClassroomCourses({ id, token });
+    }
+  }
 
   render() {
-    const { username } = this.props.routeParams;
-    const element = this.props.elements.find(e => e.username === username);
+    const { element } = this.props;
     const posts = this.props.posts.filter(a => a.authorId === element.id);
-    const courses = this.props.courses.filter(a => a.authorId === element.id);
+    const courses = this.props.courses.filter(a => a.circleId === element.id);
 
     return (
       <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--no-drawer-button">
