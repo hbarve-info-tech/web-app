@@ -8,7 +8,7 @@ import {
   EditorState,
 } from 'draft-js';
 
-class CoursePage extends Component {
+class Syllabus extends Component {
   constructor(props) {
     super(props);
     const { course } = props;
@@ -20,12 +20,14 @@ class CoursePage extends Component {
   }
 
   render() {
-    const { course, syllabus, edit } = this.state;
+    const { id } = this.props.elements[0];
+    const { courseId, authorId } = this.props.course;
+    const { syllabus, edit } = this.state;
 
     return (
       <div className="mdl-grid">
-        <div className="mdl-cell mdl-cell--8-col">
-          <div className="mdl-card mdl-shadow--4dp" style={{width: '100%', minHeight: '50px'}}>
+        <div className="mdl-cell mdl-cell--8-col mdl-cell--2-offset-desktop mdl-cell--8-desktop">
+          <div className="mdl-card mdl-shadow--4dp">
             <div className="mdl-card__title">
               <div className="mdl-card__title-text">Syllabus</div>
             </div>
@@ -37,12 +39,14 @@ class CoursePage extends Component {
               />
             </div>
             <div className="mdl-card__menu">
-              <button
-                className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"
-                onClick={() => this.setState({ edit: !edit })}
-              >
-                <i className="material-icons">{edit ? 'save' : 'edit'}</i>
-              </button>
+              {authorId === id ? (
+                <button
+                  className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"
+                  onClick={() => this.setState({ edit: !edit })}
+                >
+                  <i className="material-icons">{edit ? 'save' : 'edit'}</i>
+                </button>
+              ) : null}
             </div>
           </div>
         </div>
@@ -52,4 +56,4 @@ class CoursePage extends Component {
 }
 
 
-export default CoursePage;
+export default Syllabus;

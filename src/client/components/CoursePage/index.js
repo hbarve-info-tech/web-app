@@ -23,6 +23,16 @@ class CoursePage extends Component {
     this.state = {};
   }
 
+  componentDidMount() {
+    const { token } = this.props.elements[0];
+    const { courseId } = this.props.routeParams;
+    const course = this.props.courses.find(a => a.courseId === parseInt(courseId, 10));
+
+    if (course || course.statusCode === 200) {
+      this.props.getModules({ token, courseId });
+    }
+  }
+
   render() {
     const { courseId } = this.props.routeParams;
     const course = this.props.courses.find(a => a.courseId === parseInt(courseId, 10));
