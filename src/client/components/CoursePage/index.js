@@ -63,7 +63,7 @@ class CoursePage extends Component {
           </section>
           <section className="mdl-layout__tab-panel" id="scroll-tab-4">
             <div className="page-content">
-              <Discussions {...this.props} />
+              <Discussions course={course} {...this.props} />
             </div>
           </section>
           <section className="mdl-layout__tab-panel" id="scroll-tab-5">

@@ -10,6 +10,7 @@ import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 
 import 'draft-js/dist/Draft.css';
+import './stylesheet.css';
 
 import configureStore from './store/configureStore';
 import App from './App';
