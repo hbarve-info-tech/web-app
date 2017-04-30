@@ -12,6 +12,9 @@ export const PostTimeline = ({ posts }) => {
             className="mdl-card mdl-shadow--4dp"
             style={{minHeight: '50px', width: '100%', marginBottom: '10px'}}
             key={post.postId}
+            onClick={() => {
+              window.open(`/posts/${post.postId}`);
+            }}
           >
             <div className="mdl-card__title">
               <div className="mdl-card__title-text">{post.title}</div>
