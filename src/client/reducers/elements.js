@@ -125,7 +125,7 @@ const elementReducer = (state = initialElementState, action) => {
   }
 };
 
-const elementsReducer = (state = devInitialState, action) => {
+const elementsReducer = (state = initialElementsState, action) => {
   switch (action.type) {
     case USER_SIGN_IN_START: {
       return [

@@ -135,7 +135,7 @@ const postReducer = (state = {}, action) => {
   }
 };
 
-export const postsReducer = (state = devInitialState, action) => {
+export const postsReducer = (state = [], action) => {
   switch (action.type) {
     case POST_CREATE_SUCCESS: {
       return [

@@ -325,7 +325,7 @@ const devCoursesState = [
   }
 ];
 
-const coursesReducer = (state = devCoursesState, action) => {
+const coursesReducer = (state = [], action) => {
   switch (action.type) {
     case COURSES_GET_SUCCESS: {
       const { payload } = action;
