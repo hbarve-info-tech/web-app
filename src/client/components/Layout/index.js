@@ -17,7 +17,7 @@ class Layout extends Component {
   componentDidMount() {
     const { id, token, isFetched, isSignedIn } = this.props.elements[0];
     if (isSignedIn && !isFetched) {
-      // this.props.getElement({ id, token });
+      this.props.getElement({ id, token });
     }
   }
 
@@ -26,14 +26,6 @@ class Layout extends Component {
 
     return (
       <div>
-        <div style={{ position: 'fixed', zIndex: '1000', bottom: '0px', left: '0px'}}>
-          <a href="/"> Home </a>
-          <a href="/signin"> Sign In </a>
-          <a href="/hbarve1"> User </a>
-          <a href="/courses/1"> Course </a>
-          <a href="/posts/1"> Post </a>
-          <a href="/hbarve1/classroom"> classroom </a>
-        </div>
         {children}
       </div>
     );
@@ -52,7 +44,3 @@ const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Layout);
-//
-// const Layout1 = ({ children }) => (<div>{children}</div>);
-//
-// export default Layout1;
