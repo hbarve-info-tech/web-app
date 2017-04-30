@@ -21,7 +21,7 @@ class Home extends Component {
 
   componentDidMount() {
     const { id, token } = this.props.elements[0];
-    // this.props.getPosts({ id, token });
+    this.props.getPosts({ id, token });
   }
 
   render() {
@@ -38,7 +38,7 @@ class Home extends Component {
           <div className="mdl-layout__tab-bar mdl-js-ripple-effect">
             <a href="#profile" className="mdl-layout__tab is-active">Profile</a>
             <a href="#posts" className="mdl-layout__tab">Posts</a>
-            <a href="#courses" className="mdl-layout__tab">Courses</a>
+            {user.classroom === true ? (<a href="#courses" className="mdl-layout__tab">Courses</a>) : null}
             <a href="#settings" className="mdl-layout__tab">Settings</a>
           </div>
         </header>
@@ -60,11 +60,13 @@ class Home extends Component {
               <PostTimeline posts={posts} />
             </div>
           </section>
-          <section className="mdl-layout__tab-panel" id="courses">
-            <div className="page-content">
-              <CourseTimeline courses={courses} />
-            </div>
-          </section>
+          {user.classroom === true ? (
+            <section className="mdl-layout__tab-panel" id="courses">
+              <div className="page-content">
+                <CourseTimeline courses={courses} />
+              </div>
+            </section>
+          ) : null}
           <section className="mdl-layout__tab-panel" id="settings">
             <div className="page-content">
               <div className="mdl-grid">
