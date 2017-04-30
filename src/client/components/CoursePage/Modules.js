@@ -7,6 +7,7 @@ import {
   Editor,
   EditorState,
   ContentState,
+  convertFromRaw,
 } from 'draft-js';
 
 class Module extends Component {
@@ -14,19 +15,23 @@ class Module extends Component {
     super(props);
     const { title, data } = props;
     this.state = {
-      edit: false,
       title: EditorState.createWithContent(ContentState.createFromText(title || '')),
-      data: typeof data === 'undefined' ? EditorState.createEmpty() : EditorState.createWithContent(data),
+      data: typeof data === 'undefined' ? EditorState.createEmpty() : EditorState.createWithContent(convertFromRaw(data)),
+      edit: false,
+      display: 'none'
     };
   }
 
   render() {
     const { moduleId, authorId, courseId } = this.props;
-    const { title, data, edit } = this.state;
+    const { title, data, edit, display } = this.state;
 
     return (
-      <div className="mdl-card mdl-shadow--4dp" style={{minHeight: '50px', width: '100%', marginBottom: '10px'}}>
-        <div className="mdl-card__title">
+      <div className="mdl-card mdl-shadow--4dp" style={{marginBottom: '10px'}}>
+        <div
+          className="mdl-card__title"
+          onClick={() => this.setState({ display: display === 'none' ? 'block' : 'none' })}
+        >
           <h2 className="mdl-card__title-text">
             <Editor
               editorState={title}
@@ -34,7 +39,10 @@ class Module extends Component {
             />
           </h2>
         </div>
-        <div className="mdl-card__supporting-text">
+        <div
+          className="mdl-card__supporting-text"
+          style={{display}}
+        >
           <Editor
             editorState={data}
             onChange={(data) => this.setState({data})}
@@ -63,7 +71,7 @@ class Modules extends Component {
 
     return (
       <div className="mdl-grid">
-        <div className="mdl-cell mdl-cell--12-col mdl-cell--8-col-desktop mdl-cell--8-col-desktop-offset">
+        <div className="mdl-cell mdl-cell--12-col mdl-cell--8-col-desktop mdl-cell--2-offset-desktop">
           {modules.map(m => (<Module {...m} key={m.moduleId} />))}
         </div>
       </div>
