@@ -28,7 +28,7 @@ class CoursePage extends Component {
     const { courseId } = this.props.routeParams;
     const course = this.props.courses.find(a => a.courseId === parseInt(courseId, 10));
 
-    if (course || course.statusCode === 200) {
+    if (course && course.statusCode === 200) {
       this.props.getModules({ token, courseId });
     }
   }
@@ -47,41 +47,41 @@ class CoursePage extends Component {
           <HeaderRow/>
 
           <div className="mdl-layout__tab-bar mdl-js-ripple-effect">
-            <a href="#scroll-tab-1" className="mdl-layout__tab is-active">Introduction</a>
-            <a href="#scroll-tab-2" className="mdl-layout__tab">Syllabus</a>
-            <a href="#scroll-tab-3" className="mdl-layout__tab">Modules</a>
-            <a href="#scroll-tab-4" className="mdl-layout__tab">Discussion</a>
-            <a href="#scroll-tab-5" className="mdl-layout__tab">Test Yourself</a>
-            <a href="#scroll-tab-6" className="mdl-layout__tab">feedback</a>
+            <a href="#introduction" className="mdl-layout__tab is-active">Introduction</a>
+            <a href="#syllabus" className="mdl-layout__tab">Syllabus</a>
+            <a href="#modules" className="mdl-layout__tab">Modules</a>
+            <a href="#discussion" className="mdl-layout__tab">Discussion</a>
+            <a href="#test-yourself" className="mdl-layout__tab">Test Yourself</a>
+            <a href="#feedback" className="mdl-layout__tab">feedback</a>
           </div>
         </header>
         <main className="mdl-layout__content">
-          <section className="mdl-layout__tab-panel is-active" id="scroll-tab-1">
+          <section className="mdl-layout__tab-panel is-active" id="introduction">
             <div className="page-content">
               <Introduction course={course} {...this.props} />
             </div>
           </section>
-          <section className="mdl-layout__tab-panel" id="scroll-tab-2">
+          <section className="mdl-layout__tab-panel" id="syllabus">
             <div className="page-content">
               <Syllabus course={course} {...this.props} />
             </div>
           </section>
-          <section className="mdl-layout__tab-panel" id="scroll-tab-3">
+          <section className="mdl-layout__tab-panel" id="modules">
             <div className="page-content">
               <Modules course={course} {...this.props} />
             </div>
           </section>
-          <section className="mdl-layout__tab-panel" id="scroll-tab-4">
+          <section className="mdl-layout__tab-panel" id="discussion">
             <div className="page-content">
               <Discussions course={course} {...this.props} />
             </div>
           </section>
-          <section className="mdl-layout__tab-panel" id="scroll-tab-5">
+          <section className="mdl-layout__tab-panel" id="test-yourself">
             <div className="page-content">
               <TestYourself course={course} {...this.props} />
             </div>
           </section>
-          <section className="mdl-layout__tab-panel" id="scroll-tab-6">
+          <section className="mdl-layout__tab-panel" id="feedback">
             <div className="page-content">
               <Feedback course={course} {...this.props} />
             </div>
