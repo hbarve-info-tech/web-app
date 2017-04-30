@@ -8,6 +8,12 @@ import ProfileInfo from '../ProfileInfo';
 import CourseTimeline from '../CourseTimeline';
 
 class ClassroomPage extends Component {
+  componentDidMount() {
+    const { token } = this.props.elements[0];
+    const { id } = this.props.element;
+
+    this.props.getCourses({ id, token });
+  }
 
   render() {
     const { username } = this.props.routeParams;
