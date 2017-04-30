@@ -2,51 +2,64 @@
 import React from 'react';
 import Component from 'react/lib/ReactComponent';
 import PropTypes from 'react/lib/ReactPropTypes';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 
-import actions from '../../actions';
+import {
+  Editor,
+  EditorState,
+  ContentState,
+  convertFromRaw,
+} from 'draft-js';
 
-import Post from './Post';
-import Error from '../Error';
+import HeaderRow from '../Header/HeaderRow';
 
-class PostPage extends Component {
+import style from './style';
+
+const EditButton = ({ edit, onEdit, onSave }) => {
+  return (
+    <button
+      className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"
+      onClick={edit ? onSave : onEdit}
+    >
+      <i className="material-icons">{edit ? 'save' : 'edit'}</i>
+    </button>
+  );
+};
+
+class Article extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    const { title, description, data } = props.post;
+
+    this.state = {
+      edit: false,
+      title: EditorState.createWithContent(ContentState.createFromText(title)),
+      description: EditorState.createWithContent(ContentState.createFromText(description || '')),
+      data: typeof data === 'undefined' ? EditorState.createEmpty() : EditorState.createWithContent(convertFromRaw(data)),
+    };
+
+    this.onEdit = this.onEdit.bind(this);
+    this.onSave = this.onSave.bind(this);
   }
 
+  onEdit = () => {
+    const { edit } = this.state;
+    this.setState({edit: !edit});
+  };
+  onSave = () => {
+    const { edit } = this.state;
+    this.setState({edit: !edit});
+    console.log('save')
+  };
+
   render() {
-    // const { postId } = this.props.routeParams;
-    // const post = this.props.posts.find(p => p.postId === parseInt(postId, 10));
-    // const user = this.props.elements[0];
+    const { post } = this.props;
+    const user = this.props.elements[0];
+    const { edit } = this.state;
 
     return (
       <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--no-drawer-button">
         <header className="mdl-layout__header">
-          <div className="mdl-layout__header-row">
-            <span className="mdl-layout-title">Mayash</span>
-
-            <div className="mdl-layout-spacer" />
-
-            <button
-              id="sign-in-dropdown"
-              className="mdl-button mdl-js-button mdl-button--icon"
-            >
-              <i className="material-icons">more_vert</i>
-            </button>
-            <ul
-              className="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
-              htmlFor="sign-in-dropdown"
-            >
-              <li
-                className="mdl-menu__item"
-                onClick={this.props.signOut}
-              >
-                Sign Out
-              </li>
-            </ul>
-          </div>
+          <HeaderRow/>
 
           <div className="mdl-layout__tab-bar mdl-js-ripple-effect">
             <a href="#scroll-tab-1" className="mdl-layout__tab is-active">Article</a>
@@ -55,10 +68,51 @@ class PostPage extends Component {
         </header>
         <main className="mdl-layout__content">
           <section className="mdl-layout__tab-panel is-active" id="scroll-tab-1">
-            <div className="page-content">Tab 1</div>
+            <div className="page-content">
+              <div className="mdl-grid">
+                <div className="mdl-cell mdl-cell--12-col mdl-cell--2-offset-desktop mdl-cell--8-col-desktop">
+                  <div
+                    className="mdl-card mdl-shadow--4dp"
+                    style={style.container}
+                  >
+                    <div className="mdl-card__title">
+                      <h2 className="mdl-card__title-text">
+                        <Editor
+                          editorState={this.state.title}
+                          onChange={(title) => this.setState({title})}
+                          readOnly={!edit}
+                          placeholder={'Article Title'}
+                        />
+                      </h2>
+                    </div>
+                    <div className="mdl-card__supporting-text">
+                      <Editor
+                        editorState={this.state.description}
+                        onChange={(description) => this.setState({description})}
+                        readOnly={!edit}
+                        placeholder={'Short Description'}
+                      />
+                    </div>
+                    <div className="mdl-card__supporting-text">
+                      <Editor
+                        editorState={this.state.data}
+                        onChange={(data) => this.setState({data})}
+                        readOnly={!edit}
+                        placeholder={'Article Goes here...'}
+                      />
+                    </div>
+                    <div className="mdl-card__menu">
+                      {post.authorId === user.id ? (<EditButton edit={edit} onEdit={this.onEdit} onSave={this.onSave} />) : null}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </section>
           <section className="mdl-layout__tab-panel" id="scroll-tab-2">
-            <div className="page-content">Tab2</div>
+            <div className="page-content">
+              Coming Soon...
+            </div>
           </section>
         </main>
       </div>
@@ -66,16 +120,4 @@ class PostPage extends Component {
   }
 }
 
-PostPage.propTypes = {
-  // routeParams: PropTypes.shape({
-  //   postId: PropTypes.string.isRequired,
-  // }).isRequired,
-  // elements: PropTypes.array.isRequired,
-  // posts: PropTypes.array.isRequired,
-  // updatePost: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = state => state;
-const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(PostPage);
+export default Article;

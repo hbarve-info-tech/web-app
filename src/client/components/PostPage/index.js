@@ -24,19 +24,19 @@ class PostPage extends Component {
     }
 
     if (post.postType === 'status') {
-      return (<Status/>);
+      return (<Status post={post} {...this.props} />);
     }
 
     if (post.postType === 'article') {
-      return (<Article/>);
+      return (<Article post={post} {...this.props} />);
     }
 
     if (post.postType === 'question') {
-      return (<Question/>);
+      return (<Question post={post} {...this.props} />);
     }
 
     if (post.postType === 'report') {
-      return (<Report/>);
+      return (<Report post={post} {...this.props} />);
     }
   }
 }
