@@ -20,8 +20,11 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    const { id, token } = this.props.elements[0];
+    const { id, token, classroom } = this.props.elements[0];
     this.props.getPosts({ id, token });
+    if (classroom === true) {
+      this.props.getCourses({ id, token });
+    }
   }
 
   render() {

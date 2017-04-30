@@ -11,6 +11,9 @@ export const CourseTimeline = ({ courses }) => {
             className="mdl-card mdl-shadow--4dp"
             style={{minHeight: '50px', width: '100%', marginBottom: '10px'}}
             key={course.courseId}
+            onClick={() => {
+              window.open(`/courses/${course.courseId}`)
+            }}
           >
             <div className="mdl-card__title">
               <div className="mdl-card__title-text">{course.title}</div>
