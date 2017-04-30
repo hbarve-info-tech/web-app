@@ -283,6 +283,10 @@ const LandingPage = () => {
         </div>
       </header>
       <main className="mdl-layout__content">
+        <p style={{textAlign: 'center', position: 'fixed', bottom: '0', zIndex: 999, }}>
+          <b>Note:</b> We are in Beta stage right now, our website is in active development. If you are having any trouble feel free
+          to contact us.
+        </p>
         <section className="mdl-layout__tab-panel is-active" id="introduction">
           <div className="page-content">
             <Introduction/>
