@@ -16,8 +16,12 @@ import ErrorPage from '../ErrorPage';
 
 class PostPage extends Component {
   render() {
-    const { posts, routeParams } = this.props;
-    const post = posts.find(p => p.postId === parseInt(routeParams.postId, 10));
+    const { postId } = this.props.routeParams;
+    const post = this.props.posts.find(p => p.postId === parseInt(postId, 10));
+
+    if (!post || post.statusCode !== 200) {
+      return (<ErrorPage {...post} />);
+    }
 
     if (post.postType === 'status') {
       return (<Status/>);
@@ -34,8 +38,6 @@ class PostPage extends Component {
     if (post.postType === 'report') {
       return (<Report/>);
     }
-
-    return (<ErrorPage {...post} />);
   }
 }
 
