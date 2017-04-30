@@ -9,7 +9,7 @@ import actions from '../../actions';
 
 import HeaderRow from '../Header/HeaderRow';
 import ProfileInfo from '../ProfileInfo';
-import CreatePost from '../Create/CreatePost';
+import CourseCreate from '../CourseCreate';
 import PostTimeline from '../PostTimeline';
 import CourseTimeline from '../CourseTimeline';
 
@@ -66,6 +66,7 @@ class Home extends Component {
           {user.classroom === true ? (
             <section className="mdl-layout__tab-panel" id="courses">
               <div className="page-content">
+                <CourseCreate/>
                 <CourseTimeline courses={courses} />
               </div>
             </section>
