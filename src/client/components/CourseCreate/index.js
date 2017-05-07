@@ -95,7 +95,7 @@ class CreateCourse extends Component {
                 disabled={!valid}
                 style={{alignContent: 'flex-end'}}
               >
-                Create Course
+                Create
               </button>
             </div>
           </div>

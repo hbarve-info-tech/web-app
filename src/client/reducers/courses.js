@@ -2,8 +2,11 @@
 import _ from 'lodash';
 
 import {
+  COURSE_CREATE_SUCCESS,
   COURSES_GET_SUCCESS,
   COURSE_GET_START, COURSE_GET_ERROR, COURSE_GET_SUCCESS,
+
+  MODULE_CREATE_START, MODULE_CREATE_ERROR, MODULE_CREATE_SUCCESS,
   MODULES_GET_START, MODULES_GET_ERROR, MODULES_GET_SUCCESS,
   MODULE_GET_START, MODULE_GET_ERROR, MODULE_GET_SUCCESS,
 } from '../constants/courses';
@@ -120,6 +123,26 @@ const moduleReducer = (state = initialModuleState, action) => {
 
 const courseReducer = (state = initialCourseState, action) => {
   switch (action.type) {
+    case COURSE_CREATE_SUCCESS: {
+      return {
+        ...state,
+        ...action.payload,
+
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
+
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+
+        isError: false,
+        error: '',
+        message: '',
+        lastUpdated: Date.now(),
+      };
+    }
+
     case COURSE_GET_START: {
       return {
         ...state,
@@ -327,6 +350,14 @@ const devCoursesState = [
 
 const coursesReducer = (state = [], action) => {
   switch (action.type) {
+    case COURSE_CREATE_SUCCESS: {
+      return [
+        courseReducer(undefined, action),
+        ...state,
+      ];
+    }
+
+
     case COURSES_GET_SUCCESS: {
       const { payload } = action;
 
