@@ -278,7 +278,6 @@ const LandingPage = () => {
           <a href="#motivation" className="mdl-layout__tab">Motivation</a>
           <a href="#team" className="mdl-layout__tab">Team</a>
           <a href="#product-and-services" className="mdl-layout__tab">Product & Services</a>
-          <a href="#mayash-media" className="mdl-layout__tab">Mayash Media</a>
           <a href="#contact-us" className="mdl-layout__tab">Contact Us</a>
         </div>
       </header>
@@ -305,11 +304,6 @@ const LandingPage = () => {
         <section className="mdl-layout__tab-panel" id="product-and-services">
           <div className="page-content">
             <ProductAndServices/>
-          </div>
-        </section>
-        <section className="mdl-layout__tab-panel" id="mayash-media">
-          <div className="page-content">
-            <MayashMedia/>
           </div>
         </section>
         <section className="mdl-layout__tab-panel" id="contact-us">
