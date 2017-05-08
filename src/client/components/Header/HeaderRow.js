@@ -16,7 +16,7 @@ const HeaderRow = ({ elements, signOut }) => {
     <div className="mdl-layout__header-row">
     <span className="mdl-layout-title">
       <a href="/" style={style.headerTitle}>
-        Mayash
+        Mayash &beta;eta
       </a>
     </span>
 
