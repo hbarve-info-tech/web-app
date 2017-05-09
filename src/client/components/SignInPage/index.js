@@ -67,7 +67,7 @@ class SignInPage extends Component {
         <main className="mdl-layout__content">
           <div className="page-content">
             <div className="mdl-grid">
-              <div className="mdl-cell mdl-cell--4-col mdl-cell--4-offset-desktop">
+              <div className="mdl-cell mdl-cell--4-col mdl-cell--4-offset-desktop mdl-cell--2-offset-tablet">
                 <div className="mdl-card mdl-shadow--4dp">
                   <div className="mdl-card__title">
                     <h2 className="mdl-card__title-text">Sign In</h2>
