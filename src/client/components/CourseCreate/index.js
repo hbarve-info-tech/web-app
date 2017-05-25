@@ -5,6 +5,7 @@ import PropTypes from 'react/lib/ReactPropTypes';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Editor, EditorState, convertToRaw } from 'draft-js';
+import fetch from 'isomorphic-fetch';
 
 import actions from '../../actions';
 
@@ -40,33 +41,43 @@ class CreateCourse extends Component {
     e.preventDefault();
     const { id, token } = this.props.elements[0];
     const { title, description, data } = this.state;
+    const { createCourseSuccess, createCourseError } = this.props;
 
-    const params = {
-      id,
-      token,
+    const body = {
       title: convertToString(convertToRaw(title.getCurrentContent())),
     };
-    this.props.createCourse(params);
-  };
 
-  componentWillReceiveProps({ create }) {
-    const { course } = create;
-    if (course.isCreating === true) {
-      this.setState({message: 'Creating Course...'});
-    }
-    if (course.isCreated === true) {
-      this.setState({message: 'Successfully Created.'});
-      setTimeout(() => {
-        this.props.resetCreate('course');
-        this.setState({
-          valid: false,
-          message: '',
-          title: EditorState.createEmpty(),
-          titleLength: 0,
-        });
-      }, 1000);
-    }
-  }
+    this.setState({message: 'Creating Course...'});
+
+    fetch(`/api/elements/${id}/courses`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+      body: JSON.stringify(body),
+    })
+      .then(response => response.json())
+      .then(json => {
+        if (json.statusCode === 201) {
+          this.setState({message: 'Successfully Created.'});
+          createCourseSuccess({ ...body, ...json.payload });
+
+          setTimeout(() => {
+            this.setState({
+              valid: false,
+              message: '',
+              title: EditorState.createEmpty(),
+              titleLength: 0,
+            });
+          }, 1000);
+        }
+        else if (json.statusCode >= 400) {
+          this.setState({ message: json.error || json.message });
+        }
+      });
+  };
 
   render() {
     const { title, titleLength, valid, message } = this.state;
