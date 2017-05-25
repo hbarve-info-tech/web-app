@@ -4,6 +4,7 @@ import Component from 'react/lib/ReactComponent';
 import PropTypes from 'react/lib/ReactPropTypes';
 
 import HeaderRow from '../Header/HeaderRow';
+import SignIn from '../SignIn';
 
 import style from './style';
 
@@ -327,51 +328,31 @@ const LandingPage = () => (
   <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--no-drawer-button">
     <header className="mdl-layout__header">
       <HeaderRow />
-
-      <div className="mdl-layout__tab-bar mdl-js-ripple-effect">
-        <a href="#introduction" className="mdl-layout__tab is-active">Introduction</a>
-        <a href="#vision" className="mdl-layout__tab">Vision</a>
-        <a href="#team" className="mdl-layout__tab">Team</a>
-        <a href="#services" className="mdl-layout__tab">Services</a>
-        <a href="#hiring" className="mdl-layout__tab">We are Hiring</a>
-        <a href="#contact-us" className="mdl-layout__tab">Contact Us</a>
-      </div>
     </header>
     <main className="mdl-layout__content">
-      <p style={{textAlign: 'center', position: 'fixed', bottom: '0', zIndex: 999 }}>
-        <b>Note:</b> We are in Beta stage right now, our website is in active development. If you are having any trouble feel free
-        to contact us.
-      </p>
-      <section className="mdl-layout__tab-panel is-active" id="introduction">
-        <div className="page-content">
-          <Introduction/>
+      <div className="page-content">
+        <div className="mdl-grid">
+          <div className="mdl-cell mdl-cell--12-col mdl-cell--8-col-desktop mdl-cell--5-col-tablet mdl-cell--4-col-mobile">
+            <div className="mdl-card mdl-shadow--4dp">
+              <div className="mdl-card__title">
+                <h2 className="mdl-card__title-text">
+                  Contact Us
+                </h2>
+              </div>
+              <div className="mdl-card__supporting-text">
+                <p><b>Name: </b> Himank Honey Barve</p>
+                <p><b>Email: </b> hbarve1592@gmail.com</p>
+                <p><b>Mobile No.: </b> 9097535837</p>
+                <p><b>Facebook: </b> https://facebook.com/hbarve1</p>
+                <p><b>Twitter: </b> https://twitter.com/hbarve1</p>
+              </div>
+            </div>
+          </div>
+          <div className="mdl-cell mdl-cell--12-col mdl-cell--4-col-desktop mdl-cell--3-col-tablet mdl-cell--4-col-mobile">
+            <SignIn />
+          </div>
         </div>
-      </section>
-      <section className="mdl-layout__tab-panel" id="vision">
-        <div className="page-content">
-          <Vision/>
-        </div>
-      </section>
-      <section className="mdl-layout__tab-panel" id="team">
-        <div className="page-content">
-          <Team/>
-        </div>
-      </section>
-      <section className="mdl-layout__tab-panel" id="services">
-        <div className="page-content">
-          <Services/>
-        </div>
-      </section>
-      <section className="mdl-layout__tab-panel" id="hiring">
-        <div className="page-content">
-          <Hiring/>
-        </div>
-      </section>
-      <section className="mdl-layout__tab-panel" id="contact-us">
-        <div className="page-content">
-          <ContactUs/>
-        </div>
-      </section>
+      </div>
     </main>
   </div>
 );

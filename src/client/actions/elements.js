@@ -42,7 +42,10 @@ export const getElement = ({ id, username, token }) => (dispatch) => {
 
 
 export default {
+  signInSuccess,
+  signInError,
   signIn,
+
   signOut,
 
   getElement,
