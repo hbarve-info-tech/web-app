@@ -52,9 +52,9 @@ export default {
             });
           }
 
-          const { id, username, name, profilePic, classroom } = orgUser;
+          const { id, username, name, avatar, profilePic, classroom } = orgUser;
 
-          const payload = { id, username, name, profilePic, token };
+          const payload = { id, username, name, avatar, profilePic, token };
 
           if (classroom === true) {
             payload.classroom = true;
