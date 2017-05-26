@@ -1,17 +1,20 @@
 
 import React from 'react';
 import PropTypes from 'react/lib/ReactPropTypes';
+import { browserHistory } from 'react-router';
 
 const CoursePost = ({ courseId, authorId, title, description }) => {
   return (
     <div
       className="mdl-card mdl-shadow--4dp"
       style={{minHeight: '50px', width: '100%', marginBottom: '10px'}}
-      onClick={() => {
-        window.open(`/courses/${courseId}`)
-      }}
     >
-      <div className="mdl-card__title">
+      <div
+        className="mdl-card__title"
+        onClick={() => {
+          window.open(`/courses/${courseId}`)
+        }}
+      >
         <div className="mdl-card__title-text">{title}</div>
       </div>
       {typeof description !== "undefined" ? (
@@ -21,13 +24,13 @@ const CoursePost = ({ courseId, authorId, title, description }) => {
       ) : null}
       <div className="mdl-card__menu">
         <button className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-          <i className="material-icons">edit</i>
-        </button>
-        <button className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
           <i className="material-icons">delete</i>
         </button>
         <button className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
           <i className="material-icons">share</i>
+        </button>
+        <button className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+          <i className="material-icons">more_vert</i>
         </button>
       </div>
     </div>
