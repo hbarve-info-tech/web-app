@@ -81,5 +81,8 @@ export default {
   createCourseSuccess,
   createCourseError,
   createCourse,
+
+  createModuleSuccess,
+
   resetCreate,
 };

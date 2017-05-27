@@ -56,6 +56,21 @@ const initialCourseState = {
 
 const moduleReducer = (state = initialModuleState, action) => {
   switch (action.type) {
+    case MODULE_CREATE_SUCCESS: {
+      return {
+        ...state,
+        ...action.payload,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
+
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+        lastUpdated: Date.now(),
+      };
+    }
+
     case MODULE_GET_START: {
       return {
         ...state,
@@ -287,6 +302,29 @@ const courseReducer = (state = initialCourseState, action) => {
       };
     }
 
+    case MODULE_CREATE_SUCCESS: {
+      return {
+        ...state,
+        modules: [
+          ...state.modules,
+          moduleReducer(undefined, action),
+        ],
+        isCreating: false,
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
+        isCreated: true,
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+        isError: false,
+        error: '',
+        message: '',
+        lastUpdated: Date.now(),
+      };
+    }
+
+
     default:
       return state;
   }
@@ -431,6 +469,19 @@ const coursesReducer = (state = [], action) => {
         ...state.slice(index + 1, state.length),
       ];
     }
+
+
+    case MODULE_CREATE_SUCCESS: {
+      const { courseId } = action.payload;
+      const index = state.findIndex(c => c.courseId === courseId);
+
+      return [
+        ...state.slice(0, index),
+        courseReducer(state[index], action),
+        ...state.slice(index + 1, state.length),
+      ];
+    }
+
 
     default:
       return state;
