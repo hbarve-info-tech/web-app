@@ -162,6 +162,18 @@ class Module extends Component {
           >
             <i className="material-icons">{edit ? 'save' : 'edit'}</i>
           </button>
+          <button
+            className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"
+            onClick={() => {}}
+          >
+            <i className="material-icons">delete</i>
+          </button>
+          <button
+            className="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"
+            onClick={() => {}}
+          >
+            <i className="material-icons">more_vert</i>
+          </button>
         </div>
       </div>
     );
@@ -175,15 +187,17 @@ class Modules extends Component {
 
   render() {
     const { modules, authorId } = this.props.course;
-    const user = this.props.elements[0];
+    const { id } = this.props.elements[0];
 
     return (
       <div className="mdl-grid">
+        {typeof id !== "undefined" && id === authorId ? (
+          <div className="mdl-cell mdl-cell--12-col mdl-cell--8-col-desktop mdl-cell--2-offset-desktop">
+            <ModuleCreate {...this.props} />
+          </div>
+        ) : null}
         <div className="mdl-cell mdl-cell--12-col mdl-cell--8-col-desktop mdl-cell--2-offset-desktop">
-          <ModuleCreate {...this.props} />
-        </div>
-        <div className="mdl-cell mdl-cell--12-col mdl-cell--8-col-desktop mdl-cell--2-offset-desktop">
-          {modules.map(m => (<Module {...m} user={user} key={m.moduleId} />))}
+          {modules.map(m => (<Module {...m} {...this.props.elements[0]} key={m.moduleId} />))}
         </div>
       </div>
     );
