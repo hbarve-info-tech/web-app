@@ -2,6 +2,10 @@
 import _ from 'lodash';
 
 import {
+  COURSES_GET, COURSE_GET, COURSE_CREATE, COURSE_UPDATE, COURSE_DELETE,
+  MODULES_GET, MODULE_GET, MODULE_CREATE, MODULE_UPDATE, MODULE_DELETE,
+  QUESTIONS_GET, QUESTION_GET, QUESTION_CREATE, QUESTION_UPDATE, QUESTION_DELETE,
+
   COURSE_CREATE_SUCCESS,
   COURSES_GET_SUCCESS,
   COURSE_GET_START, COURSE_GET_ERROR, COURSE_GET_SUCCESS,
@@ -33,8 +37,13 @@ const initialModuleState = {
   message: '',
   lastUpdated: Date.now(),
 };
+const initialQuestionState = {
+
+  lastUpdated: Date.now(),
+};
 const initialCourseState = {
   modules: [],
+  discussions: [],
   isUpdating: false,
   isFetching: false,
   isDeleting: false,
@@ -127,6 +136,40 @@ const moduleReducer = (state = initialModuleState, action) => {
         isError: false,
         error: '',
         message: '',
+        lastUpdated: Date.now(),
+      };
+    }
+
+    default:
+      return state;
+  }
+};
+
+const questionReducer = (state = initialQuestionState, action) => {
+  switch (action.type) {
+    case QUESTION_GET: {
+      return {
+        ...state,
+        ...action.payload,
+
+        lastUpdated: Date.now(),
+      };
+    }
+
+    case QUESTION_CREATE: {
+      return {
+        ...state,
+        ...action.payload,
+
+        lastUpdated: Date.now(),
+      };
+    }
+
+    case QUESTION_UPDATE: {
+      return {
+        ...state,
+        ...action.payload,
+
         lastUpdated: Date.now(),
       };
     }
@@ -324,6 +367,16 @@ const courseReducer = (state = initialCourseState, action) => {
       };
     }
 
+    case QUESTION_CREATE: {
+      return {
+        ...state,
+        discussions: [
+          ...state.discussions,
+          questionReducer(undefined, action),
+        ],
+        lastUpdated: Date.now(),
+      };
+    }
 
     default:
       return state;
@@ -482,6 +535,16 @@ const coursesReducer = (state = [], action) => {
       ];
     }
 
+    case QUESTION_CREATE: {
+      const { courseId } = action.payload;
+      const index = state.findIndex(c => c.courseId === courseId);
+
+      return [
+        ...state.slice(0, index),
+        courseReducer(state[index], action),
+        ...state.slice(index + 1, state.length),
+      ];
+    }
 
     default:
       return state;
