@@ -77,6 +77,12 @@ export const resetCreate = (payload = 'post') => ({ type: RESET_CREATE, payload 
 
 export default {
   createPost,
+
+  createCourseSuccess,
+  createCourseError,
   createCourse,
+
+  createModuleSuccess,
+
   resetCreate,
 };

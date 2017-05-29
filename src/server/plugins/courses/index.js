@@ -112,7 +112,7 @@ const createModule = {
       courseId: CourseId.required(),
     }),
     payload: Joi.object({
-      moduleName: ModuleName.required(),
+      title: Title.required(),
     }),
   },
   handler: (request, reply) => {

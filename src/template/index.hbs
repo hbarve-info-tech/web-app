@@ -2,15 +2,6 @@
 <html>
 <head>
     {{#if PRODUCTION}}
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-7913833609955757",
-            enable_page_level_ads: true
-        });
-    </script>
-    {{/if}}
-    {{#if PRODUCTION}}
     <!-- Google Tag Manager -->
     <script>
         (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -83,26 +74,7 @@
                       height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     {{/if}}
-    {{#if PRODUCTION}}
-    <script>
-    window.fbAsyncInit = function() {
-        FB.init({
-            appId      : '1127493807309843',
-            xfbml      : true,
-            version    : 'v2.8'
-        });
-        FB.AppEvents.logPageView();
-    };
 
-    (function(d, s, id){
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {return;}
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-    </script>
-    {{/if}}
     <div id="app">{{{app}}}</div>
 
     <script>

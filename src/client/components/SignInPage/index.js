@@ -65,61 +65,57 @@ class SignInPage extends Component {
           <HeaderRow/>
         </header>
         <main className="mdl-layout__content">
-          <div
-            className="page-content"
-            style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          >
-            <div className="mdl-card mdl-shadow--4dp">
-              <div className="mdl-card__title">
-                <h2 className="mdl-card__title-text">Sign In</h2>
-              </div>
-              <div className="mdl-card__supporting-text">
-                <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input
-                    className="mdl-textfield__input"
-                    type="text"
-                    pattern="^[a-z0-9]+([_]?[a-z0-9])*$"
-                    minLength={3}
-                    maxLength={20}
-                    value={username}
-                    onChange={this.onChange.bind(this, 'username')}
-                  />
-                  <label className="mdl-textfield__label">Username</label>
-                  <span className="mdl-textfield__error">
+          <div className="page-content">
+            <div className="mdl-grid">
+              <div className="mdl-cell mdl-cell--4-col mdl-cell--4-offset-desktop mdl-cell--2-offset-tablet">
+                <div className="mdl-card mdl-shadow--4dp">
+                  <div className="mdl-card__title">
+                    <h2 className="mdl-card__title-text">Sign In</h2>
+                  </div>
+                  <div className="mdl-card__supporting-text">
+                    <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style={{width: '100%'}}>
+                      <input
+                        className="mdl-textfield__input"
+                        type="text"
+                        pattern="^[a-z0-9]+([_]?[a-z0-9])*$"
+                        minLength={3}
+                        maxLength={20}
+                        value={username}
+                        onChange={this.onChange.bind(this, 'username')}
+                      />
+                      <label className="mdl-textfield__label">Username</label>
+                      <span className="mdl-textfield__error">
                     Please use lowercase alphabets, length must be greater than 3 and less then 20.
                   </span>
-                </div>
+                    </div>
 
-                <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input
-                    className="mdl-textfield__input"
-                    type="password"
-                    pattern="^[a-z0-9]+([a-z0-9])*$"
-                    minLength={5}
-                    maxLength={20}
-                    value={password}
-                    onChange={this.onChange.bind(this, 'password')}
-                  />
-                  <label className="mdl-textfield__label">Password</label>
-                  <span className="mdl-textfield__error">
+                    <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style={{width: '100%'}}>
+                      <input
+                        className="mdl-textfield__input"
+                        type="password"
+                        pattern="^[a-z0-9]+([a-z0-9])*$"
+                        minLength={5}
+                        maxLength={20}
+                        value={password}
+                        onChange={this.onChange.bind(this, 'password')}
+                      />
+                      <label className="mdl-textfield__label">Password</label>
+                      <span className="mdl-textfield__error">
                     Please use lowercase alphabets, length must be greater than 3 and less then 20.
                   </span>
+                    </div>
+                  </div>
+                  <div className="mdl-card__actions mdl-card--border" style={{textAlign: 'right'}}>
+                    <button
+                      type="button"
+                      className="mdl-button"
+                      disabled={invalid}
+                      onClick={this.signIn}
+                    >
+                      {user.isSigningIn ? 'Signing In...' : 'Sign In'}
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <div className="mdl-card__actions mdl-card--border">
-                <button
-                  type="button"
-                  className="mdl-button"
-                  disabled={invalid}
-                  onClick={this.signIn}
-                >
-                  {user.isSigningIn ? 'Signing In...' : 'Sign In'}
-                </button>
               </div>
             </div>
           </div>

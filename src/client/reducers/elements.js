@@ -174,25 +174,9 @@ const elementsReducer = (state = initialElementsState, action) => {
       writeCookie('username', payload.username);
       writeCookie('token', payload.token);
 
-      return [
-        {
-          ...state[0],
-          ...payload,
-          ...state[0],
-          isSigningIn: false,
-          isSignedIn: true,
+      window.location.href = '/';
 
-          isFetching: false,
-          isFetched: false,
-
-          isError: false,
-          error: '',
-          message: '',
-
-          lastUpdated: Date.now(),
-        },
-        ...state.slice(1, state.length)
-      ];
+      return state;
     }
 
     case USER_SIGN_OUT: {

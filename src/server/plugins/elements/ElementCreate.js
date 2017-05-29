@@ -5,10 +5,10 @@ import { elementdb } from '../../database';
 import { Username, Password, Name, ElementType, CircleType, Classroom } from '../../config/schema';
 
 export default {
-  auth: {
-    mode: 'required',
-    strategies: ['admin'],
-  },
+  // auth: {
+  //   mode: 'required',
+  //   strategies: ['admin'],
+  // },
   validate: {
     payload: Joi.object({
       username: Username.required(),

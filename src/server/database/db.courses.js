@@ -215,7 +215,7 @@ export const createModuleByCourseId = (courseId, payload, callback) => {
       }
 
       return callback({
-        statusCode: 200,
+        statusCode: 201,
         message: 'Success',
         payload: { ...data, courseId, moduleId: key.id },
       });
