@@ -111,7 +111,7 @@ export const getElementByUsername = (username, callback) => {
 export const createElement = ({
   username,
   name,
-  profilePic = 'https://storage.googleapis.com/mayash/12993536_1078754218834834_8314114430867694644_n.jpg',
+  avatar = 'https://storage.googleapis.com/mayash/12993536_1078754218834834_8314114430867694644_n.jpg',
   classroom = false,
   password = '12345',
   elementType = 'circle',
@@ -154,7 +154,7 @@ export const createElement = ({
         username,
         name,
         password: crypto.createHash('sha256').update(password).digest('hex'),
-        profilePic,
+        avatar,
         elementType,
       };
       if (typeof circleType !== 'undefined') {
@@ -188,3 +188,19 @@ export const createElement = ({
   });
 };
 
+const deleteElementById = (id, callback) => {
+  db.delete(db.key(['elements', id]), (err, resp) => {
+    if (err) {
+      console.error(err);
+       return callback({
+        statusCode: 500,
+        error: 'Server Error',
+      });
+    }
+
+    return callback({
+      statusCode: 200,
+      message: 'successfully deleted',
+    });
+  });
+}
