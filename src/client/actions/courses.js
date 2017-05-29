@@ -17,8 +17,8 @@ import {
   MODULE_UPDATE_START, MODULE_UPDATE_SUCCESS, MODULE_UPDATE_ERROR,
 } from '../constants/courses';
 
-const getCourses = (payload) => ({ type: COURSES_GET, payload });
-const getCourse = (payload) => ({ type: COURSE_GET, payload });
+// const getCourses = (payload) => ({ type: COURSES_GET, payload });
+// const getCourse = (payload) => ({ type: COURSE_GET, payload });
 const createCourse = (payload) => ({ type: COURSE_CREATE, payload });
 const updateCourse = (payload) => ({ type: COURSE_UPDATE, payload });
 const deleteCourse = (payload) => ({ type: COURSE_DELETE, payload });
@@ -35,38 +35,38 @@ const createQuestion = (payload) => ({ type: QUESTION_CREATE, payload });
 const updateQuestion = (payload) => ({ type: QUESTION_UPDATE, payload });
 const deleteQuestion = (payload) => ({ type: QUESTION_DELETE, payload });
 
-//
-// const getCourseStart = payload => ({ type: COURSE_GET_START, payload });
-// const getCourseSuccess = payload => ({ type: COURSE_GET_SUCCESS, payload });
-// const getCourseError = payload => ({ type: COURSE_GET_ERROR, payload });
-// export const getCourse = ({ courseId, token }) => (dispatch) => {
-//   dispatch(getCourseStart({ courseId: parseInt(courseId, 10) }));
-//
-//   api.getCourse({ courseId, token }, (json) => {
-//     if (json.statusCode === 200) {
-//       dispatch(getCourseSuccess({ ...json.payload, courseId: parseInt(courseId, 10) }));
-//     }
-//     else if (json.statusCode >= 400) {
-//       dispatch(getCourseError({ courseId: parseInt(courseId, 10), ...json }));
-//     }
-//   });
-// };
-//
-// export const getCoursesStart = payload => ({ type: COURSES_GET_START, payload });
-// export const getCoursesSuccess = payload => ({ type: COURSES_GET_SUCCESS, payload });
-// export const getCoursesError = payload => ({ type: COURSES_GET_ERROR, payload });
-// export const getCourses = ({ id, token }) => (dispatch) => {
-//   dispatch(getCoursesStart({ id }));
-//
-//   api.getCourses({ id, token }, (json) => {
-//     if (json.statusCode === 200) {
-//       dispatch(getCoursesSuccess(json.payload));
-//     }
-//     else if (json.statusCode >= 400) {
-//       dispatch(getCoursesError(json));
-//     }
-//   });
-// };
+
+const getCourseStart = payload => ({ type: COURSE_GET_START, payload });
+const getCourseSuccess = payload => ({ type: COURSE_GET_SUCCESS, payload });
+const getCourseError = payload => ({ type: COURSE_GET_ERROR, payload });
+export const getCourse = ({ courseId, token }) => (dispatch) => {
+  dispatch(getCourseStart({ courseId: parseInt(courseId, 10) }));
+
+  api.getCourse({ courseId, token }, (json) => {
+    if (json.statusCode === 200) {
+      dispatch(getCourseSuccess({ ...json.payload, courseId: parseInt(courseId, 10) }));
+    }
+    else if (json.statusCode >= 400) {
+      dispatch(getCourseError({ courseId: parseInt(courseId, 10), ...json }));
+    }
+  });
+};
+
+export const getCoursesStart = payload => ({ type: COURSES_GET_START, payload });
+export const getCoursesSuccess = payload => ({ type: COURSES_GET_SUCCESS, payload });
+export const getCoursesError = payload => ({ type: COURSES_GET_ERROR, payload });
+export const getCourses = ({ id, token }) => (dispatch) => {
+  dispatch(getCoursesStart({ id }));
+
+  api.getCourses({ id, token }, (json) => {
+    if (json.statusCode === 200) {
+      dispatch(getCoursesSuccess(json.payload));
+    }
+    else if (json.statusCode >= 400) {
+      dispatch(getCoursesError(json));
+    }
+  });
+};
 //
 // const updateCourseStart = payload => ({ type: COURSE_UPDATE_START, payload });
 // const updateCourseSuccess = payload => ({ type: COURSE_UPDATE_SUCCESS, payload });

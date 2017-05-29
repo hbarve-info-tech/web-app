@@ -15,6 +15,9 @@ class SignIn extends Component {
       username: '',
       password: '',
       invalid: true,
+      statusCode: 0,
+      error: '',
+      message: '',
     };
 
     this.onChange = this.onChange.bind(this);
@@ -45,6 +48,10 @@ class SignIn extends Component {
   onSubmit() {
     const { username, password } = this.state;
     const { signInSuccess, signInError } = this.props;
+    const temp = (params) => {
+      this.setState({...params});
+    }
+    const { setState } = this;
 
     fetch('/api/signin', {
       method: 'POST',
@@ -56,20 +63,21 @@ class SignIn extends Component {
     })
       .then(response => response.json())
       .then(json => {
-        if (json.statusCode === 200) { signInSuccess(json.payload); }
-        else if (json.statusCode >= 400) { signInError(json);}
+        if (json.statusCode === 200) {
+          signInSuccess(json.payload);
+        }
+        else if (json.statusCode >= 400) {
+          temp({ ...json });
+        }
       });
   }
 
   render() {
-    const { username, password, invalid } = this.state;
+    const { username, password, invalid, statusCode, error, message } = this.state;
     const user = this.props.elements[0];
 
     return (
-      <div className="mdl-card mdl-shadow--4dp">
-        <div className="mdl-card__title">
-          <h2 className="mdl-card__title-text">Sign In</h2>
-        </div>
+      <div className="mdl-card">
         <div className="mdl-card__supporting-text">
           <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style={{width: '100%'}}>
             <input
@@ -83,8 +91,8 @@ class SignIn extends Component {
             />
             <label className="mdl-textfield__label">Username</label>
             <span className="mdl-textfield__error">
-                    Please use lowercase alphabets, length must be greater than 3 and less then 20.
-                  </span>
+              Please use lowercase alphabets, length must be greater than 3 and less then 20.
+            </span>
           </div>
 
           <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style={{width: '100%'}}>
@@ -99,10 +107,15 @@ class SignIn extends Component {
             />
             <label className="mdl-textfield__label">Password</label>
             <span className="mdl-textfield__error">
-                    Please use lowercase alphabets, length must be greater than 3 and less then 20.
-                  </span>
+              Please use lowercase alphabets, length must be greater than 3 and less then 20.
+            </span>
           </div>
         </div>
+        {message.length ? (
+          <div className="mdl-card__supporting-text">
+            <p>{statusCode}: {error || message}</p>
+          </div>
+        ) : null}
         <div className="mdl-card__actions mdl-card--border" style={{textAlign: 'right'}}>
           <button
             type="button"

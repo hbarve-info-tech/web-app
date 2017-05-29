@@ -4,6 +4,7 @@
   "description": "This is a project for Mayash website",
   "main": "dist/server/index.js",
   "scripts": {
+    "dev:db": "(gcloud beta emulators datastore env-init) && gcloud beta emulators datastore start",
     "dev:redux": "cross-env babel-node redux/index.js",
     "dev:build-webpack": "cross-env NODE_ENV='development' webpack --config=webpack/development.js",
     "dev:client": "npm run dev:build-webpack && cross-env NODE_ENV='development' babel-node webpack/devServer.js",

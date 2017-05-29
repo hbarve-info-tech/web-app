@@ -5,6 +5,7 @@ import PropTypes from 'react/lib/ReactPropTypes';
 
 import HeaderRow from '../Header/HeaderRow';
 import SignIn from '../SignIn';
+import SignUp from '../SignUp';
 
 import style from './style';
 
@@ -349,7 +350,19 @@ const LandingPage = () => (
             </div>
           </div>
           <div className="mdl-cell mdl-cell--12-col mdl-cell--4-col-desktop mdl-cell--3-col-tablet mdl-cell--4-col-mobile">
-            <SignIn />
+            <div className="mdl-tabs mdl-js-tabs mdl-js-ripple-effect mdl-shadow--4dp">
+              <div className="mdl-tabs__tab-bar">
+                <a href="#signin" className="mdl-tabs__tab is-active">Sign In</a>
+                <a href="#signup" className="mdl-tabs__tab">Sign Up</a>
+              </div>
+
+              <div className="mdl-tabs__panel is-active" id="signin">
+                <SignIn/>
+              </div>
+              <div className="mdl-tabs__panel" id="signup">
+                <SignUp/>
+              </div>
+            </div>
           </div>
         </div>
       </div>
