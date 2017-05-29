@@ -18,7 +18,11 @@ class CreateCourse extends Component {
     super(props);
     this.state = {
       valid: false,
+
+      statusCode: 0,
+      error: '',
       message: '',
+
       title: EditorState.createEmpty(),
       titleLength: 0,
     };
@@ -41,7 +45,7 @@ class CreateCourse extends Component {
     e.preventDefault();
     const { id, token } = this.props.elements[0];
     const { title, description, data } = this.state;
-    const { createCourseSuccess, createCourseError } = this.props;
+    const { createCourseSuccess } = this.props;
 
     const body = {
       title: convertToString(convertToRaw(title.getCurrentContent())),
