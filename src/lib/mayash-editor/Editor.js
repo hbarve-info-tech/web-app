@@ -72,19 +72,19 @@ export class MayashEditor extends Component {
     return (
       <div>
         <button
-          className="mdl-button mdl-js-button mdl-button--primary"
+          className="mdl-button mdl-js-button mdl-button--icon mdl-button--primary"
           onClick={this._onBoldClick.bind(this)}
         >
           <i className="material-icons">format_bold</i>
         </button>
         <button
-          className="mdl-button mdl-js-button mdl-button--primary"
+          className="mdl-button mdl-js-button mdl-button--icon mdl-button--primary"
           onClick={this._onItalicClick.bind(this)}
         >
           <i className="material-icons">format_italic</i>
         </button>
         <button
-          className="mdl-button mdl-js-button mdl-button--primary"
+          className="mdl-button mdl-js-button mdl-button--icon mdl-button--primary"
           onClick={this._onUnderLineClick.bind(this)}
         >
           <i className="material-icons">format_underlined</i>
