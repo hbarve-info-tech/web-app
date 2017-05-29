@@ -22,6 +22,25 @@ const HeaderRow = ({ elements, signOut }) => {
 
       <div className="mdl-layout-spacer" />
 
+      <div className="mdl-textfield mdl-js-textfield mdl-textfield--expandable
+                  mdl-textfield--floating-label mdl-textfield--align-right">
+        <label
+          className="mdl-button mdl-js-button mdl-button--icon"
+          htmlFor="search-input"
+        >
+          <i className="material-icons">search</i>
+        </label>
+        <div className="mdl-textfield__expandable-holder">
+          <input
+            className="mdl-textfield__input"
+            type="text"
+            name="sample"
+            id="search-input"
+            onChange={() => {}}
+          />
+        </div>
+      </div>
+
       <button
         id="sign-in-dropdown"
         className="mdl-button mdl-js-button mdl-button--icon"
