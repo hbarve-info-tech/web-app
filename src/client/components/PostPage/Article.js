@@ -11,11 +11,13 @@ import {
   convertToRaw,
 } from 'draft-js';
 
-import HeaderRow from '../Header/HeaderRow';
-
 import {
+  MayashEditor,
+  createEditorState,
   convertToString,
 } from '../../../lib/mayash-editor';
+
+import HeaderRow from '../Header/HeaderRow';
 
 import style from './style';
 
@@ -39,7 +41,7 @@ class Article extends Component {
       edit: false,
       title: EditorState.createWithContent(ContentState.createFromText(title)),
       description: EditorState.createWithContent(ContentState.createFromText(description || '')),
-      data: typeof data === 'undefined' ? EditorState.createEmpty() : EditorState.createWithContent(convertFromRaw(data)),
+      data: createEditorState(data),
     };
 
     this.onEdit = this.onEdit.bind(this);
@@ -133,7 +135,7 @@ class Article extends Component {
                       />
                     </div>
                     <div className="mdl-card__supporting-text">
-                      <Editor
+                      <MayashEditor
                         editorState={this.state.data}
                         onChange={(data) => this.setState({data})}
                         readOnly={!edit}
