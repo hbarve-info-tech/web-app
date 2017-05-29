@@ -101,16 +101,11 @@ class CreatePost extends Component {
     e.preventDefault();
     const { id, token } = this.props.elements[0];
     const { postType, title } = this.state;
-
-    const params = {
-      id,
-      postType,
-      title: convertToString(convertToRaw(title.getCurrentContent())),
-    };
+    const { createPost } = this.props;
 
     const body = {
       postType,
-      title,
+      title: convertToString(convertToRaw(title.getCurrentContent())),
     };
 
     this.setState({message: 'Creating Article...'});
@@ -128,6 +123,22 @@ class CreatePost extends Component {
       .then(json => {
         if (json.statusCode === 201) {
           this.setState({ message: 'Successfully Created.' });
+
+          setTimeout(() => {
+            this.setState({
+              valid: false,
+              statusCode: 0,
+              error: '',
+              message: '',
+
+              postType: 'article',
+
+              titlePlaceholder: 'Title...',
+              title: EditorState.createEmpty(),
+              titleLength: 0,
+            });
+          }, 1500);
+          createPost({ ...json.payload, ...body });
         } else if (json.statusCode >= 400) {
           this.setState({ ...json });
         }

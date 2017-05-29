@@ -76,7 +76,7 @@ export const createModule = ({ id, token, courseId, moduleName }) => (dispatch) 
 export const resetCreate = (payload = 'post') => ({ type: RESET_CREATE, payload });
 
 export default {
-  createPost,
+  // createPost,
 
   createCourseSuccess,
   createCourseError,
