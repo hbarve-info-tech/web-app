@@ -7,15 +7,12 @@ import Vision from 'vision';
 import Good from 'good';
 import HapiAuthJwt2 from 'hapi-auth-jwt2';
 import Traffic from './traffic';
-import Auth from './auth';
-import Views from './views';
-import User from './user';
-import Elements from './elements';
-import Posts from './posts';
-import Articles from './articles';
-import Courses from './courses';
-import Classroom from './classrooms';
-import Images from './images';
+
+import MayashAuth from './../../lib/mayash-auth';
+
+import MayashViews from '../../lib/mayash-views';
+
+import MayashApi from '../../lib/mayash-api';
 
 const { NODE_ENV } = process.env;
 
@@ -93,47 +90,17 @@ plugins.push({
 });
 
 plugins.push({
-  register: Auth,
+  register: MayashAuth,
   options: {},
 });
 
 plugins.push({
-  register: Views,
-  options: {},
-});
-
-// plugins.push({
-//   register: User,
-//   options: {},
-// });
-
-plugins.push({
-  register: Elements,
+  register: MayashApi,
   options: {},
 });
 
 plugins.push({
-  register: Posts,
-  options: {},
-});
-//
-// plugins.push({
-//   register: Articles,
-//   options: {},
-// });
-//
-plugins.push({
-  register: Courses,
-  options: {},
-});
-
-plugins.push({
-  register: Classroom,
-  options: {},
-});
-
-plugins.push({
-  register: Images,
+  register: MayashViews,
   options: {},
 });
 
