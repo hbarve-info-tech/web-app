@@ -42,13 +42,13 @@ class Introduction extends Component {
     const { title: titleState, description: descriptionState } = this.state;
 
     const payload = {};
-    const newTitle = convertToString(convertToRaw(titleState));
-    const newDescription = convertToString(convertToRaw(descriptionState));
+    const newTitle = convertToString(convertToRaw(titleState.getCurrentContent()));
+    const newDescription = convertToString(convertToRaw(descriptionState.getCurrentContent()));
 
-    if (title === newTitle) {
+    if (title !== newTitle) {
       payload.title = newTitle;
     }
-    if (description === newDescription) {
+    if (description !== newDescription) {
       payload.description = newDescription;
     }
 
