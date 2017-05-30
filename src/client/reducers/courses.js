@@ -181,7 +181,7 @@ const questionReducer = (state = initialQuestionState, action) => {
 
 const courseReducer = (state = initialCourseState, action) => {
   switch (action.type) {
-    case COURSE_CREATE_SUCCESS: {
+    case COURSE_CREATE: {
       return {
         ...state,
         ...action.payload,
@@ -441,7 +441,7 @@ const devCoursesState = [
 
 const coursesReducer = (state = [], action) => {
   switch (action.type) {
-    case COURSE_CREATE_SUCCESS: {
+    case COURSE_CREATE: {
       return [
         courseReducer(undefined, action),
         ...state,

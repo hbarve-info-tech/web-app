@@ -4,14 +4,17 @@ import Component from 'react/lib/ReactComponent';
 import PropTypes from 'react/lib/ReactPropTypes';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Editor, EditorState, convertToRaw } from 'draft-js';
 import fetch from 'isomorphic-fetch';
+
+import { Editor, EditorState, convertToRaw } from 'draft-js';
+import {
+  convertToString,
+} from '../../../lib/mayash-editor';
 
 import actions from '../../actions';
 
 import style from './style';
 
-const convertToString = state => state.blocks.map(block => block.text).join(' ').trim();
 
 class CreateCourse extends Component {
   constructor(props) {
@@ -44,8 +47,8 @@ class CreateCourse extends Component {
   onSubmit = (e) => {
     e.preventDefault();
     const { id, token } = this.props.elements[0];
-    const { title, description, data } = this.state;
-    const { createCourseSuccess } = this.props;
+    const { title } = this.state;
+    const { createCourse } = this.props;
 
     const body = {
       title: convertToString(convertToRaw(title.getCurrentContent())),
@@ -66,7 +69,7 @@ class CreateCourse extends Component {
       .then(json => {
         if (json.statusCode === 201) {
           this.setState({message: 'Successfully Created.'});
-          createCourseSuccess({ ...body, ...json.payload });
+          createCourse({ ...body, ...json.payload });
 
           setTimeout(() => {
             this.setState({
@@ -102,16 +105,15 @@ class CreateCourse extends Component {
                 <div>{message}</div>
               </div>
             ) : null}
-            <div className="mdl-card__actions mdl-card--border" style={{display: 'flex', alignItems: 'center'}}>
-              <p>{titleLength}/148</p>
+            <div className="mdl-card__actions mdl-card--border" style={{display: 'flex'}}>
               <button
                 className="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--colored"
                 onClick={this.onSubmit}
                 disabled={!valid}
-                style={{alignContent: 'flex-end'}}
               >
                 Create
               </button>
+              <p>{titleLength}/148</p>
             </div>
           </div>
         </div>
