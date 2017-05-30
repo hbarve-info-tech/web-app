@@ -6,9 +6,10 @@ import Inert from 'inert';
 import Vision from 'vision';
 import Good from 'good';
 import HapiAuthJwt2 from 'hapi-auth-jwt2';
-import Traffic from './traffic';
 
-import MayashAuth from './../../lib/mayash-auth';
+import MayashTraffic from '../../lib/mayash-traffic';
+
+import MayashAuth from '../../lib/mayash-auth';
 
 import MayashViews from '../../lib/mayash-views';
 
@@ -85,7 +86,7 @@ if (NODE_ENV === 'development') {
 }
 
 plugins.push({
-  register: Traffic,
+  register: MayashTraffic,
   options: {},
 });
 
