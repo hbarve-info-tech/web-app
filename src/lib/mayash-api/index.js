@@ -5,8 +5,11 @@ import courses from '../mayash-api-courses';
 import classroom from '../mayash-api-classrooms';
 
 import photos from '../mayash-api-photos';
+import videos from '../mayash-api-videos';
+import files from '../mayash-api-files';
 
 const register = (server, options, next) => {
+
   server.route([
     ...elements,
     ...posts,
@@ -14,6 +17,8 @@ const register = (server, options, next) => {
     ...classroom,
 
     ...photos,
+    ...videos,
+    ...files,
   ]);
 
   next();
