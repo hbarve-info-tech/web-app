@@ -68,7 +68,7 @@ class Introduction extends Component {
   }
 
   render() {
-    const { course, edit } = this.state;
+    const { course, title, description, edit } = this.state;
     const user = this.props.elements[0];
 
     return (
@@ -78,7 +78,7 @@ class Introduction extends Component {
             <div className="mdl-card__title">
               <h2 className="mdl-card__title-text">
                 <Editor
-                  editorState={this.state.title}
+                  editorState={title}
                   onChange={(title) => this.setState({title})}
                   readOnly={!edit}
                   placeholder={'Course Name'}
@@ -87,7 +87,7 @@ class Introduction extends Component {
             </div>
             <div className="mdl-card__supporting-text">
               <Editor
-                editorState={this.state.description}
+                editorState={description}
                 onChange={(description) => this.setState({description})}
                 readOnly={!edit}
                 placeholder={'Short Description'}
