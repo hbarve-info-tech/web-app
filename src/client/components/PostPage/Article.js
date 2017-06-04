@@ -8,7 +8,14 @@ import {
   EditorState,
   ContentState,
   convertFromRaw,
+  convertToRaw,
 } from 'draft-js';
+
+import {
+  MayashEditor,
+  createEditorState,
+  convertToString,
+} from '../../../lib/mayash-editor';
 
 import HeaderRow from '../Header/HeaderRow';
 
@@ -34,7 +41,7 @@ class Article extends Component {
       edit: false,
       title: EditorState.createWithContent(ContentState.createFromText(title)),
       description: EditorState.createWithContent(ContentState.createFromText(description || '')),
-      data: typeof data === 'undefined' ? EditorState.createEmpty() : EditorState.createWithContent(convertFromRaw(data)),
+      data: createEditorState(data),
     };
 
     this.onEdit = this.onEdit.bind(this);
@@ -46,9 +53,43 @@ class Article extends Component {
     this.setState({edit: !edit});
   };
   onSave = () => {
-    const { edit } = this.state;
+    const { id, token } = this.props.elements[0];
+    const { edit, title: titleState, description: descriptionState, data: dataState } = this.state;
+    const { postId, title: titleProp, description: descriptionProp, data: dataProp } = this.props.post;
+    const body = {};
+
+    const newTitle = convertToString(convertToRaw(titleState.getCurrentContent()));
+    const newDescription = convertToString(convertToRaw(descriptionState.getCurrentContent()));
+
+    if (newTitle !== titleProp) {
+      body.title = newTitle;
+    }
+    if (newDescription.length && newDescription !== descriptionProp) {
+      body.description = newDescription;
+    }
+
+    body.data = convertToRaw(dataState.getCurrentContent());
+
+    fetch(`/api/elements/${id}/posts/${postId}`, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+      body: JSON.stringify(body),
+    })
+      .then(response => response.json())
+      .then(json => {
+        if (json.statusCode === 200) {
+          this.setState({ ...json });
+        }
+        else if (json.statusCode >= 400) {
+          this.setState({ ...json });
+        }
+      });
+
     this.setState({edit: !edit});
-    console.log('save')
   };
 
   render() {
@@ -94,7 +135,7 @@ class Article extends Component {
                       />
                     </div>
                     <div className="mdl-card__supporting-text">
-                      <Editor
+                      <MayashEditor
                         editorState={this.state.data}
                         onChange={(data) => this.setState({data})}
                         readOnly={!edit}

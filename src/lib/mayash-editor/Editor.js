@@ -51,6 +51,12 @@ export class MayashEditor extends Component {
   _onBoldClick() {
     this.onChange(RichUtils.toggleInlineStyle(this.props.editorState, 'BOLD'));
   }
+  _onItalicClick() {
+    this.onChange(RichUtils.toggleInlineStyle(this.props.editorState, 'ITALIC'));
+  }
+  _onUnderLineClick() {
+    this.onChange(RichUtils.toggleInlineStyle(this.props.editorState, 'UNDERLINE'));
+  }
 
   onTab(e) {
     const { editorState } = this.props;
@@ -65,7 +71,24 @@ export class MayashEditor extends Component {
 
     return (
       <div>
-        <button onClick={this._onBoldClick.bind(this)}>Bold</button>
+        <button
+          className="mdl-button mdl-js-button mdl-button--icon mdl-button--primary"
+          onClick={this._onBoldClick.bind(this)}
+        >
+          <i className="material-icons">format_bold</i>
+        </button>
+        <button
+          className="mdl-button mdl-js-button mdl-button--icon mdl-button--primary"
+          onClick={this._onItalicClick.bind(this)}
+        >
+          <i className="material-icons">format_italic</i>
+        </button>
+        <button
+          className="mdl-button mdl-js-button mdl-button--icon mdl-button--primary"
+          onClick={this._onUnderLineClick.bind(this)}
+        >
+          <i className="material-icons">format_underlined</i>
+        </button>
         <Editor
           ref={(node) => { this._editorNode = node; }}
           handleKeyCommand={this.handleKeyCommand}

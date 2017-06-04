@@ -2,6 +2,7 @@
 import uniqBy from 'lodash/uniqBy';
 
 import {
+  POST_CREATE,
   POST_CREATE_SUCCESS,
   POSTS_GET_START, POSTS_GET_ERROR, POSTS_GET_SUCCESS,
   POST_GET_START, POST_GET_ERROR, POST_GET_SUCCESS,
@@ -46,6 +47,27 @@ const devInitialState = [
 
 const postReducer = (state = {}, action) => {
   switch (action.type) {
+    case POST_CREATE: {
+      return {
+        ...state,
+        ...action.payload,
+
+        isUpdating: false,
+        isFetching: false,
+        isDeleting: false,
+
+        isUpdated: false,
+        isFetched: false,
+        isDeleted: false,
+
+        statusCode: 0,
+        isError: false,
+        error: '',
+        message: '',
+        lastUpdated: 0,
+      };
+    }
+
     case POST_CREATE_SUCCESS: {
       return {
         ...state,
@@ -137,6 +159,13 @@ const postReducer = (state = {}, action) => {
 
 export const postsReducer = (state = [], action) => {
   switch (action.type) {
+    case POST_CREATE: {
+      return [
+        ...state,
+        postReducer(undefined, action),
+      ];
+    }
+
     case POST_CREATE_SUCCESS: {
       return [
         ...state,

@@ -2,12 +2,14 @@
 import api from '../api/posts';
 
 import {
+  POST_CREATE,
   POSTS_GET_START, POSTS_GET_SUCCESS, POSTS_GET_ERROR,
   POST_GET_START, POST_GET_SUCCESS,  POST_GET_ERROR,
   POST_UPDATE_START, POST_UPDATE_SUCCESS, POST_UPDATE_ERROR,
   POST_DELETE_START, POST_DELETE_SUCCESS, POST_DELETE_ERROR,
 } from '../constants/posts';
 
+const createPost = payload => ({ type: POST_CREATE, payload });
 
 const getPostStart = payload => ({ type: POST_GET_START, payload });
 const getPostSuccess = payload => ({ type: POST_GET_SUCCESS, payload });
@@ -60,6 +62,8 @@ export const updatePost = ({ postId, token, ...restProps }) => (dispatch) => {
 
 
 export default {
+  createPost,
+
   getPosts,
   getPost,
 

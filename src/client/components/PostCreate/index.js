@@ -72,14 +72,15 @@ class CreatePost extends Component {
     super(props);
     this.state = {
       valid: false,
+      statusCode: 0,
+      error: '',
       message: '',
-      postType: 'tweet',
-      titlePlaceholder: 'Tweet something...',
+
+      postType: 'article',
+
+      titlePlaceholder: 'Title...',
       title: EditorState.createEmpty(),
       titleLength: 0,
-      description: EditorState.createEmpty(),
-      descriptionLength: 0,
-      data: EditorState.createEmpty(),
     };
 
     this.onChange = this.onChange.bind(this);
@@ -99,51 +100,53 @@ class CreatePost extends Component {
   onSubmit = (e) => {
     e.preventDefault();
     const { id, token } = this.props.elements[0];
-    const { postType, title, data } = this.state;
+    const { postType, title } = this.state;
+    const { createPost } = this.props;
 
-    const params = {
-      id,
-      token,
+    const body = {
       postType,
       title: convertToString(convertToRaw(title.getCurrentContent())),
     };
-    if (postType === 'article') {
-      params.data = convertToRaw(data.getCurrentContent());
-    }
 
-    this.props.createPost(params);
+    this.setState({message: 'Creating Article...'});
+
+    fetch(`/api/elements/${id}/posts`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+      body: JSON.stringify(body),
+    })
+      .then(response => response.json())
+      .then(json => {
+        if (json.statusCode === 201) {
+          this.setState({ message: 'Successfully Created.' });
+
+          setTimeout(() => {
+            this.setState({
+              valid: false,
+              statusCode: 0,
+              error: '',
+              message: '',
+
+              postType: 'article',
+
+              titlePlaceholder: 'Title...',
+              title: EditorState.createEmpty(),
+              titleLength: 0,
+            });
+          }, 1500);
+          createPost({ ...json.payload, ...body });
+        } else if (json.statusCode >= 400) {
+          this.setState({ ...json });
+        }
+      });
   };
 
-  componentWillReceiveProps({ create }) {
-    const { post } = create;
-    if (post.isCreating === true) {
-      this.setState({message: 'Creating Post...'});
-    }
-    if (post.isError === true) {
-      this.setState({message: post.message});
-      setTimeout(() => {
-        this.props.resetCreate();
-        this.setState({message: ''});
-      }, 1000);
-    }
-    if (post.isCreated === true) {
-      this.setState({message: 'Successfully Created.'});
-      setTimeout(() => {
-        this.props.resetCreate();
-        this.setState({
-          valid: false,
-          message: '',
-          title: EditorState.createEmpty(),
-          titleLength: 0,
-          description: EditorState.createEmpty(),
-          data: EditorState.createEmpty(),
-        });
-      }, 1000);
-    }
-  }
-
   render() {
-    const { postType, titlePlaceholder, title, titleLength, data, valid, message } = this.state;
+    const { postType, titlePlaceholder, title, titleLength, valid, message } = this.state;
 
     return (
       <div className="mdl-grid">
@@ -154,28 +157,13 @@ class CreatePost extends Component {
               onChange={this.onChange}
               placeholder={titlePlaceholder}
             />
-            {postType === 'article' ? (
-              <CreatePostEditor
-                editorState={data}
-                onChange={(data) => this.setState({data})}
-                placeholder="Article Goes Here..."
-              />
-            ) : null }
             <CreatePostNotification message={message} />
             <div className="mdl-card__actions mdl-card--border" style={style.actions}>
-              <CreatePostType
-                onClick={() => this.setState({
-                  postType: postType === 'tweet' ? 'article' : 'tweet',
-                  titlePlaceholder: postType === 'article' ? 'Tweet something...' : 'Article Title Goes Here...',
-                })}
-                label={postType}
-                checked={postType === 'article'}
-              />
-              <p>{titleLength}/148</p>
               <CreatePostSubmitButton
                 disabled={!valid}
                 onSubmit={this.onSubmit}
               />
+              <div>{titleLength}/148</div>
             </div>
           </div>
         </div>
